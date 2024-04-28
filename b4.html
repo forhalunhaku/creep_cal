@@ -311,7 +311,7 @@ function calculate() {
       title: 'Value'
     }
   };
-
+  Plotly.purge('right-panel');
   Plotly.newPlot('right-panel', scatterData, layout);
 }
 
