@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>砂筛分计算</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.1.0/math.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            overflow: hidden;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #166cd3;
+        }
+        #message {
+            margin: 10px 0;
+            text-align: center;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="title">砂筛分计算</h2>
+    <input type="file" id="input-excel" style="display:none;"/>
+    <label for="input-excel" class="btn">选择Excel文件</label>
+    <div id="message"></div>
+    <button class="btn" onclick="handleButtonClick('readExcel')">读取Excel文件</button>
+    <button class="btn" onclick="handleButtonClick('calculate')">计算</button>
+    <button class="btn" onclick="handleButtonClick('exportExcel')">导出结果</button>
+    <div class="loading">
+        <i class="material-icons">cached</i>
+        <p>处理中，请稍候...</p>
+    </div>
+</div>
+<script>
+    let results = [];
+    let sieveSizes = [9.5, 4.75, 2.36, 1.18, 0.6, 0.3, 0.15, 0];
+
+    function handleButtonClick(action) {
+        switch (action) {
+            case 'readExcel':
+                readExcel();
+                break;
+            case 'calculate':
+                calculate();
+                break;
+            case 'exportExcel':
+                exportExcel();
+                break;
+            default:
+                console.error('未知操作');
+        }
+    }
+
+    function readExcel() {
+        showLoading();
+        let input = document.getElementById('input-excel');
+        let fileReader = new FileReader();
+
+        fileReader.onload = function(e) {
+            try {
+                let workbook = XLSX.read(e.target.result, {
+                    type: 'binary'
+                });
+                let sheet = workbook.Sheets[workbook.SheetNames[0]];
+                let data = XLSX.utils.sheet_to_json(sheet);
+
+                data.forEach(row => {
+                    let percentages = sieveSizes.map(size => row[size] || 0);
+                    let cumulativePercentages = calculateCumulativePercentages(percentages);
+                    let params = calculateParameters(sieveSizes, cumulativePercentages);
+                    results.push(params);
+                });
+
+                hideLoading();
+                document.getElementById('message').innerText = "读取完成!";
+            } catch (error) {
+                hideLoading();
+                console.error('读取Excel文件时发生错误:', error);
+                alert('读取Excel文件时发生错误，请检查文件格式或内容。');
+            }
+        };
+
+        fileReader.readAsBinaryString(input.files[0]);
+    }
+
+    function calculateCumulativePercentages(percentages) {
+        let cumulative = 100;
+        return percentages.map(percentage => cumulative -= percentage);
+    }
+
+    function linearInterpolation(x0, y0, x1, y1, y) {
+        return x0 + ((y - y0) * (x1 - x0)) / (y1 - y0);
+    }
+
+    function calculateParameters(sizes, percentages) {
+        let interpolatedValues = {};
+
+        for (let i = 0; i < percentages.length - 1; i++) {
+            let x0 = percentages[i];
+            let y0 = sizes[i];
+            let x1 = percentages[i + 1];
+            let y1 = sizes[i + 1];
+
+            if (percentages[i] >= 10 && percentages[i + 1] <= 10) {
+                interpolatedValues['D10'] = linearInterpolation(y0, x0, y1, x1, 10);
+            }
+
+            if (percentages[i] >= 30 && percentages[i + 1] <= 30) {
+                interpolatedValues['D30'] = linearInterpolation(y0, x0, y1, x1, 30);
+            }
+
+            if (percentages[i] >= 60 && percentages[i + 1] <= 60) {
+                interpolatedValues['D60'] = linearInterpolation(y0, x0, y1, x1, 60);
+            }
+        }
+
+        let Cu = interpolatedValues['D60'] / interpolatedValues['D10'];
+        let Cc = (interpolatedValues['D30'] ** 2) / (interpolatedValues['D60'] * interpolatedValues['D10']);
+
+        return {
+            'D10': interpolatedValues['D10'],
+            'D30': interpolatedValues['D30'],
+            'D60': interpolatedValues['D60'],
+            'Cu': Cu,
+            'Cc': Cc
+        };
+    }
+
+    function calculate() {
+        if (results.length === 0) {
+            alert("请先读取Excel文件.");
+            return;
+        }
+
+        alert("计算完成!");
+    }
+
+    function exportExcel() {
+        if (results.length === 0) {
+            alert("无结果可导出，请先进行计算.");
+            return;
+        }
+
+        const ws = XLSX.utils.json_to_sheet(results);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Results");
+            
+        XLSX.writeFile(wb, "results.xlsx");
+
+        // 导出完成后清空结果并重置状态
+        resetApp();
+    }
+
+    function resetApp() {
+        results = []; // 清空结果数组
+        document.getElementById('message').innerText = ""; // 重置消息显示
+    }
+
+    function showLoading() {
+        document.querySelector('.loading').style.display = 'block';
+    }
+
+    function hideLoading() {
+        document.querySelector('.loading').style.display = 'none';
+    }
+</script>
+</body>
+</html>
