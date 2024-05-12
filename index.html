@@ -3,100 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <title>halunhaku</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=SF+Pro&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(45deg, #0F2027, #203A43, #2C5364);
-      color: white;
-    }
-    .card:hover {
-      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    a {
-      color: #FFD700;
-    }
-    a:hover {
-      color: #FDB813;
+      font-family: 'SF Pro', sans-serif;
+      background: linear-gradient(135deg, #4A90E2, #50E3C2);
+      color: #FFFFFF;
+      margin: 0;
+      padding: 0;
     }
     .container {
-      margin-top: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
     }
-    .center-align h3 {
-      text-decoration: underline;
-      text-underline-offset: 0.3em;
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #FFFFFF;
     }
     .card {
-      background-color: rgba(0, 0, 0, 0.55);
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      color: #FFFFFF;
     }
-
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 15px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    a {
+      display: inline-block;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #B3E5FC;
+    }
+    .icon {
+      margin-right: 10px;
+      color: #FFFFFF;
+    }
   </style>
 </head>
 <body>
-    <div class="container">
-        <h3 class="center-align">徐变计算</h3>
-        <div class="row">
-            <div class="col s12 m6">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">单参数组计算</span>
-                        <ul>
-                            <li><a href="aci209.html">ACI209</a></li>
-                            <li><a href="mc2010.html">MC2010</a></li>
-                            <li><a href="b4.html">B4</a></li>
-                            <li><a href="b4s.html">B4s</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m6">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Excel导入计算</span>
-                        <ul>
-                            <li><a href="aci209_excel.html">ACI209_EXCEL</a></li>
-                            <li><a href="mc2010_excel.html">MC2010_EXCEL</a></li>
-                            <li><a href="b4_excel.html">B4_EXCEL</a></li>
-                            <li><a href="b4s_excel.html">B4s_EXCEL</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h3 class="center-align">砂筛分计算</h3>
-        <div class="row">
-            <div class="col s12 m6 offset-m3">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">砂筛分计算</span>
-                        <ul>
-                            <li><a href="sieve.html">Cu_Cc计算</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <h3 class="center-align">Excel模板下载</h3>
-        <div class="row">
-            <div class="col s12 m6 offset-m3">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Excel模板下载</span>
-                        <ul>
-                            <li><a href="模型示例/aci209示例.xlsx">ACI209示例</a></li>
-                            <li><a href="模型示例/mc2010示例.xlsx">MC2010示例</a></li>
-                            <li><a href="模型示例/B4示例.xlsx">B4示例</a></li>
-                            <li><a href="模型示例/B4s示例.xlsx">B4s示例</a></li>
-                            <li><a href="模型示例/sieve_data.xlsx">砂筛分示例</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <h3>徐变计算</h3>
+    <div class="card">
+      <h4 class="card-title">单参数组计算</h4>
+      <ul>
+        <li><a href="aci209.html"><i class="fas fa-calculator icon"></i> ACI209</a></li>
+        <li><a href="mc2010.html"><i class="fas fa-calculator icon"></i> MC2010</a></li>
+        <li><a href="b4.html"><i class="fas fa-calculator icon"></i> B4</a></li>
+        <li><a href="b4s.html"><i class="fas fa-calculator icon"></i> B4s</a></li>
+      </ul>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <div class="card">
+      <h4 class="card-title">Excel导入计算</h4>
+      <ul>
+        <li><a href="aci209_excel.html"><i class="fas fa-file-excel icon"></i> ACI209_EXCEL</a></li>
+        <li><a href="mc2010_excel.html"><i class="fas fa-file-excel icon"></i> MC2010_EXCEL</a></li>
+        <li><a href="b4_excel.html"><i class="fas fa-file-excel icon"></i> B4_EXCEL</a></li>
+        <li><a href="b4s_excel.html"><i class="fas fa-file-excel icon"></i> B4s_EXCEL</a></li>
+      </ul>
+    </div>
+
+    <h3>砂筛分计算</h3>
+    <div class="card">
+      <h4 class="card-title">砂筛分计算</h4>
+      <ul>
+        <li><a href="sieve.html"><i class="fas fa-filter icon"></i> Cu_Cc计算</a></li>
+      </ul>
+    </div>
+
+    <h3>Excel模板下载</h3>
+    <div class="card">
+      <h4 class="card-title">Excel模板下载</h4>
+      <ul>
+        <li><a href="模型示例/aci209示例.xlsx"><i class="fas fa-download icon"></i> ACI209示例</a></li>
+        <li><a href="模型示例/mc2010示例.xlsx"><i class="fas fa-download icon"></i> MC2010示例</a></li>
+        <li><a href="模型示例/B4示例.xlsx"><i class="fas fa-download icon"></i> B4示例</a></li>
+        <li><a href="模型示例/B4s示例.xlsx"><i class="fas fa-download icon"></i> B4s示例</a></li>
+        <li><a href="模型示例/sieve_data.xlsx"><i class="fas fa-download icon"></i> 砂筛分示例</a></li>
+      </ul>
+    </div>
+  </div>
 </body>
 </html>
