@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC2010</title>
+    <!-- Load Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #50E3C2;
+            --text-color: #FFFFFF;
+            --hover-color: #FFD700;
+            --card-bg: rgba(255, 255, 255, 0.2);
+            --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'SF Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        #container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        #left-panel, #right-panel, #middle-panel {
+            padding: 20px;
+            background: var(--card-bg);
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            margin: 8px;
+            flex: 1; 
+        } 
+
+        #left-panel {
+            height: 70vh;
+            position: relative; 
+            flex-basis: 10%;
+            display: block;
+        }
+
+        #right-panel {
+            width: 500px; /* 设置固定宽度 */
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            flex-basis: 40%;
+        }
+
+        #middle-panel {
+            height: 70vh; 
+            overflow-y: auto;
+            flex-basis: 10%; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        #title-area {
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
+        #title-area h2 {
+          text-align: center; /* 水平居中 */
+        }
+
+        #input-area {
+          align-items: center;
+          max-height: 54vh; /* Set a maximum height */
+          overflow-y: auto; /* Enable vertical scroll if needed */
+        }
+
+
+        input, select, button {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        input, select {
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+        }
+
+        button {
+            background-color: #1E88E5;
+            color: white;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        button:hover {
+            background-color: #FFD700;
+        }
+
+        canvas {
+            width: auto;
+            height: 400px;
+        }
+
+        /* 整个滚动条 */
+        ::-webkit-scrollbar {
+          width: 8px; /* 滚动条宽度 */
+          background-color: rgba(255, 255, 255, 0.2); /* 滚动条背景色 */
+        }
+
+        /* 滚动条轨道 */
+        ::-webkit-scrollbar-track {
+          background-color: transparent; /* 轨道背景透明 */
+        }
+
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+          background-color: var(--primary-color); /* 滑块颜色 */
+          border-radius: 4px; /* 滑块圆角 */
+          transition: background-color var(--transition-speed); /* 添加过渡效果 */
+        }
+
+        /* 鼠标悬停在滑块上 */
+        ::-webkit-scrollbar-thumb:hover {
+          background-color: var(--hover-color); /* 悬停时滑块颜色 */
+        }
+
+        input::placeholder {
+          color: #999; 
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="left-panel">
+            <div id="title-area">
+                <h2>输入参数</h2>
+            </div>
+            <div id="input-area">
+                <label for="fcm">fcm:抗压强度平均值</label>
+                <input type="text" id="fcm" placeholder="MPa">
+                <label for="RH">RH:环境相对湿度</label>
+                <input type="text" id="RH" placeholder="60">
+                <label for="t0">t0:加载龄期</label>
+                <input type="text" id="t0" placeholder="day">
+                <label for="Ac">Ac:截面积</label>
+                <input type="text" id="Ac" placeholder="mm^2">
+                <label for="u">u:截面周长</label>
+                <input type="text" id="u" placeholder="mm">
+                <label for="T">T:养护温度</label>
+                <input type="text" id="T" placeholder="℃">
+                <label for="Cs">Cs:水泥强度等级</label>
+                <select id="Cs">
+                    <option value="32.5N">32.5N</option>
+                    <option value="32.5R">32.5R</option>
+                    <option value="42.5N">42.5N</option>
+                    <option value="42.5R">42.5R</option>
+                    <option value="52.5N">52.5N</option>
+                    <option value="52.5R">52.5R</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="middle-panel">
+            <button onclick="calculate()">Calculate</button>
+            <button onclick="exportToExcel()">Export to Excel</button>
+        </div>
+
+        <div id="right-panel">
+            <div id="title-area">
+                <h2>计算结果</h2>
+            </div>
+            <canvas id="chart"></canvas>
+            </div>
+        </div>
+</div>
+<script>
+function calculate_phi(fcm, RH, t0, Ac, u, T, Cs, t) {
+    let t0_T = t0 * Math.exp(13.65 - 4000 / (273 + T));
+    let alpha = {'32.5N': -1, '32.5R': 0, '42.5N': 0, '42.5R': 1, '52.5N': 1, '52.5R': 1}[Cs];
+    let t0_adj = t0_T * Math.pow((9 / (2 + Math.pow(t0_T, 1.2))) + 1, alpha);
+    let h = 2 * Ac / u;
+    let alpha_fcm = Math.sqrt(35 / fcm);
+    let beta_h = Math.min(1.5 * h + 250 * alpha_fcm, 1500 * alpha_fcm);
+    let gamma_t0 = 1 / (2.3 + 3.5 / Math.sqrt(t0_adj));
+    let beta_bc_fcm = 1.8 / Math.pow(fcm, 0.7);
+    let beta_bc_t_t0 = Math.log(Math.pow(((30 / t0_adj) + 0.035), 2) * (t - t0) + 1);
+    let phi_bc = beta_bc_fcm * beta_bc_t_t0;
+    let beta_dc_fcm = 412 / Math.pow(fcm, 1.4);
+    let beta_dc_RH = (1 - RH / 100) / Math.pow((0.1 * (h / 100)), 1/3);
+    let beta_dc_t0 = 1 / (0.1 + Math.pow(t0_adj, 0.2));
+    let beta_dc_t_t0 = Math.pow((t - t0) / (beta_h + (t - t0)), gamma_t0);
+    let phi_dc = beta_dc_fcm * beta_dc_RH * beta_dc_t0 * beta_dc_t_t0;
+    let phi = phi_bc + phi_dc;
+    return phi;
+}
+
+function plot_graph(fcm, RH, t0, Ac, u, T, Cs) {
+    let num_points = 10000;
+    let t_values = Array.from({ length: num_points }, (_, i) => t0 + i);
+    let phi_values = t_values.map(t => calculate_phi(fcm, RH, t0, Ac, u, T, Cs, t));
+
+    let ctx = document.getElementById('chart').getContext('2d');
+    if (window.myChart instanceof Chart) {
+        window.myChart.destroy(); // 销毁之前的图表
+    }
+    window.myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: t_values.map(t => t - t0),
+            datasets: [{
+                label: 'Phi',
+                data: phi_values,
+                borderColor: 'blue',
+                backgroundColor: 'transparent'
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'logarithmic',
+                    title: {
+                        display: true,
+                        text: 't - t0'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Phi'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function calculate() {
+    let fcm = parseFloat(document.getElementById('fcm').value);
+    let RH = parseFloat(document.getElementById('RH').value);
+    let t0 = parseFloat(document.getElementById('t0').value);
+    let Ac = parseFloat(document.getElementById('Ac').value);
+    let u = parseFloat(document.getElementById('u').value);
+    let T = parseFloat(document.getElementById('T').value);
+    let Cs = document.getElementById('Cs').value;
+    plot_graph(fcm, RH, t0, Ac, u, T, Cs);
+}
+
+function exportToExcel() {
+    let fcm = parseFloat(document.getElementById('fcm').value);
+    let RH = parseFloat(document.getElementById('RH').value);
+    let t0 = parseFloat(document.getElementById('t0').value);
+    let Ac = parseFloat(document.getElementById('Ac').value);
+    let u = parseFloat(document.getElementById('u').value);
+    let T = parseFloat(document.getElementById('T').value);
+    let Cs = document.getElementById('Cs').value;
+
+    let t_values = Array.from({ length: 10000 }, (_, i) => t0 + i);
+    let phi_values = t_values.map(t => calculate_phi(fcm, RH, t0, Ac, u, T, Cs, t));
+    let time_values = t_values.map(t => t - t0);
+
+    let csvContent = "data:text/csv;charset=utf-8,"
+        + "t-t0,Phi\n";
+    time_values.forEach((time, index) => {
+        let row = time + "," + phi_values[index] + "\n";
+        csvContent += row;
+    });
+
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "phi_data_mc2010.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+</body>
+</html>

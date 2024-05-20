@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B4s</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #50E3C2;
+            --text-color: #FFFFFF;
+            --hover-color: #FFD700;
+            --card-bg: rgba(255, 255, 255, 0.2);
+            --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --transition-speed: 0.3s;
+        }
+    
+        body {
+            font-family: 'SF Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+    
+        #container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: 100%;
+        }
+    
+        #left-panel, #middle-panel, #right-panel {
+            padding: 20px;
+            background: var(--card-bg);
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            margin: 8px;
+            flex: 1; 
+        } 
+    
+        #left-panel {
+            height: 70vh;
+            position: relative; 
+            flex-basis: 10%;
+            display: block;
+        }
+    
+        #right-panel {
+            width: 500px; /* 设置固定宽度 */
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            flex-basis: 40%;
+        }
+    
+        #middle-panel {
+            height: 70vh; 
+            overflow-y: auto;
+            flex-basis: 10%; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        #title-area {
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    
+        #title-area h2 {
+            text-align: center; /* 水平居中 */
+        }
+    
+        #input-area {
+            align-items: center;
+            max-height: 54vh; /* Set a maximum height */
+            overflow-y: auto; /* Enable vertical scroll if needed */
+        }
+    
+        label {
+            font-weight: 600;
+        }
+    
+        input, select, button {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-family: inherit;
+        }
+    
+        input, select {
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+        }
+    
+        button {
+            background-color: #1E88E5;
+            color: white;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+    
+        button:hover {
+            background-color: #FFD700;
+        }
+    
+        #chart-area {
+            align-items: center;
+            max-height: 54vh;
+            flex-grow: 1; /* 占据剩余空间 */
+            overflow-y: auto; /* 允许滚动 */
+        }
+    
+        /* 整个滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px; /* 滚动条宽度 */
+            background-color: rgba(255, 255, 255, 0.2); /* 滚动条背景色 */
+        }
+    
+        /* 滚动条轨道 */
+        ::-webkit-scrollbar-track {
+          background-color: transparent; /* 轨道背景透明 */
+        }
+    
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color); /* 滑块颜色 */
+            border-radius: 4px; /* 滑块圆角 */
+            transition: background-color var(--transition-speed); /* 添加过渡效果 */
+        }
+    
+        /* 鼠标悬停在滑块上 */
+        ::-webkit-scrollbar-thumb:hover {
+          background-color: var(--hover-color); /* 悬停时滑块颜色 */
+        }
+
+        input::placeholder {
+          color: #999; 
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="left-panel">
+            <div id="title-area">
+                <h2>输入参数</h2>
+            </div>
+            <div id="input-area">
+                <label for="cementType">Cement Type:水泥类型</label>
+                <select id="cementType">
+                    <option value="R">R</option>
+                    <option value="RS">RS</option>
+                    <option value="SL">SL</option>
+                </select><br><br>
+                <label for="tPrime">t':加载龄期</label>
+                <input type="text" id="tPrime" placeholder="days"><br><br>
+                <label for="t0">t0:干燥龄期</label>
+                <input type="text" id="t0" placeholder="days"><br><br>
+                <label for="T">T:温度</label>
+                <input type="text" id="T" placeholder="℃"><br><br>
+                <label for="h">h:环境相对湿度</label>
+                <input type="text" id="h" placeholder="0.5"><br><br>
+                <label for="fc">fc:平均抗压强度</label>
+                <input type="text" id="fc" placeholder="MPa"><br><br>
+                <label for="vS">V/S:体表比</label>
+                <input type="text" id="vS" placeholder="33"><br><br>
+                <label for="aggregateType">Aggregate Type:骨料类型</label>
+                <select id="aggregateType">
+                    <option value="Diabase">Diabase</option>
+                    <option value="Quartzite">Quartzite</option>
+                    <option value="Limestone">Limestone</option>
+                    <option value="Sandstone">Sandstone</option>
+                    <option value="Granite">Granite</option>
+                    <option value="Quartz Diorite">Quartz Diorite</option>
+                    <option value="No Information">No Information</option>
+                </select><br><br>
+                <label for="specimenShape">Specimen Shape:试件形状</label>
+                <select id="specimenShape">
+                    <option value="infinite slab">Infinite Slab</option>
+                    <option value="infinite cylinder">Infinite Cylinder</option>
+                    <option value="infinite square prism">Infinite Square Prism</option>
+                    <option value="sphere">Sphere</option>
+                    <option value="cube">Cube</option>
+                </select><br><br>
+            </div>
+        </div>
+
+        <div id="middle-panel">
+            <button onclick="calculate()">Calculate</button>
+            <button onclick="exportToExcel()">Export to Excel</button>
+        </div>
+
+        <div id="right-panel">
+            <div id="title-area">
+                <h2>计算结果</h2>
+            </div>
+            <div id="chart-area">
+                <div id="chart"></div>
+            </div>
+        </div>
+</div>
+
+<script>
+// Global variables to store calculated values
+var t_values = [];
+var epsilon_sh_values = [];
+var epsilon_au_values = [];
+var J_values = [];
+
+function calculate() {
+  // 清除之前的计算结果
+  t_values = [];
+  epsilon_sh_values = [];
+  epsilon_au_values = [];
+  J_values = [];
+
+  var cementType = document.getElementById("cementType").value;
+  var tPrime = parseFloat(document.getElementById("tPrime").value);
+  var t0 = parseFloat(document.getElementById("t0").value);
+  var T = parseFloat(document.getElementById("T").value);
+  var h = parseFloat(document.getElementById("h").value);
+  var fc = parseFloat(document.getElementById("fc").value);
+  var vS = parseFloat(document.getElementById("vS").value);
+  var aggregateType = document.getElementById("aggregateType").value;
+  var specimenShape = document.getElementById("specimenShape").value;
+  
+  // Constants based on cement type, aggregate type, and specimen shape...
+  switch(cementType) {
+    case "R":
+      tau_au_cem = 2.26; r_tau_f = 0.27; epsilon_au_cem = 78.2e-6; r_epsilon_f = 1.03; alpha_s = 1.73; r_t = -1.73;
+      tau_s_cem = 0.027; s_tau_f = 0.21; epsilon_s_cem = 590e-6; s_epsilon_f = -0.51;
+      p1 = 0.70; p5_epsilon =-0.85; p5H = 8; s2 = 14.2e-3; s3 = 0.976; s4 = 4.00e-3; s5 = 1.54e-3; s2f = -1.58; s3f = -1.61; s4f = -1.16; s5f = -0.45;
+      break;
+    case "RS":
+      tau_au_cem = 2.26; r_tau_f = 0.27; epsilon_au_cem = 78.2e-6; r_epsilon_f = 1.03; alpha_s = 1.73; r_t = -1.73;
+      tau_s_cem = 0.027; s_tau_f = 1.55; epsilon_s_cem = 830e-6; s_epsilon_f = -0.84;
+      p1 = 0.60; p5_epsilon =-0.85; p5H = 1; s2 = 29.9e-3; s3 = 0.976; s4 = 4.00e-3; s5 = 41.8e-3; s2f = -1.58; s3f = -1.61; s4f = -1.16; s5f = -0.45;
+      break;
+    case "SL":
+      tau_au_cem = 2.26; r_tau_f = 0.27; epsilon_au_cem = 78.2e-6; r_epsilon_f = 1.03; alpha_s = 1.73; r_t = -1.73;
+      tau_s_cem = 0.032; s_tau_f = -1.84; epsilon_s_cem = 640e-6; s_epsilon_f = -0.69;
+      p1 = 0.80; p5_epsilon =-0.85; p5H = 8; s2 = 11.2e-3; s3 = 0.976; s4 = 4.00e-3; s5 = 150e-3; s2f = -1.58; s3f = -1.61; s4f = -1.16; s5f = -0.45;
+      break;
+    default:
+      alert("Invalid cement type");
+  }
+  
+  // Set constants based on specimen shape
+  switch(specimenShape) {
+    case "infinite slab":
+      ks = 1.00;
+      break;
+    case "infinite cylinder":
+      ks = 1.15;
+      break;
+    case "infinite square prism":
+      ks = 1.25;
+      break;
+    case "sphere":
+      ks = 1.30;
+      break;
+    case "cube":
+      ks = 1.55;
+      break;
+    default:
+      alert("Invalid specimen shape");
+  }
+  
+
+  // Set constants based on aggregate type
+  switch(aggregateType) {
+    case "Diabase":
+      ks_tau_a = 0.06; ks_epsilon_a = 0.76;
+      break;
+    case "Quartzite":
+      ks_tau_a = 0.59; ks_epsilon_a = 0.71;
+      break;
+    case "Limestone":
+      ks_tau_a = 1.80; ks_epsilon_a = 0.95;
+      break;
+    case "Sandstone":
+      ks_tau_a = 2.30; ks_epsilon_a = 1.60;
+      break;
+    case "Granite":
+      ks_tau_a = 4.00; ks_epsilon_a = 1.05;
+      break;
+    case "Quartz Diorite":
+      ks_tau_a = 15.0; ks_epsilon_a = 2.20;
+      break;
+    case "No Information":
+      ks_tau_a = 1.00; ks_epsilon_a = 1.00;
+      break;
+    default:
+      alert("Invalid aggregate type");
+  }
+
+  // Calculate t_values
+  t_values = Array.from({ length: 10000 }, (_, i) => tPrime + i);
+
+  // Initialize arrays to store calculated values
+  epsilon_sh_values = [];
+  epsilon_au_values = [];
+  J_values = [];
+
+  // Calculate epsilon_sh, epsilon_au, and J for each t
+  t_values.forEach(t => {
+    // Your existing calculations...
+    var D = 2 * vS;
+    var E28 = (4734 * Math.sqrt(fc)) /1000 ;
+    var tau0 = tau_s_cem * Math.pow(fc/40, s_tau_f);
+    var tauSH = tau0 * ks_tau_a * Math.pow(ks * D, 2);
+    var epsilon0 = epsilon_s_cem * Math.pow(fc/40, s_epsilon_f);
+    var betaTh = Math.exp(4000 * (1 / 293 - 1 / (T + 273)));
+    var t0Tilde = t0 * betaTh;
+    var betaTs = Math.exp(4000 * (1 / 293 - 1 / (T + 273)));
+    var E1 = E28 * Math.sqrt((7*betaTh + 600*betaTs) / (4+(6/7)*(7*betaTh + 600*betaTs))) ;
+    var E2 = E28 * Math.sqrt((t0Tilde + tauSH * betaTs) / (4+(6/7)*(t0Tilde + tauSH * betaTs)))  ;
+    var epsilonSHInfinity = - epsilon0 * ks_epsilon_a * (E1/E2);
+    var tTilde = (t - t0) * betaTs;
+    var tPrimeHat = t0 * betaTh + (tPrime - t0) * betaTs;
+    var betaTc = Math.exp(4000 * (1 / 293 - 1 / (T + 273)));
+    var tHat = tPrimeHat + (t - tPrime) * betaTc;
+    var S = Math.tanh(Math.sqrt(tTilde / tauSH));
+    var kh = h <= 0.98 ? 1 - Math.pow(h, 3) : 12.94 * (1 - h) - 0.2;
+    var epsilonSH = epsilonSHInfinity * kh * S;
+
+    var epsilonAUInfinity = -epsilon_au_cem * Math.pow(fc/40, r_epsilon_f);
+    var tauAU = tau_au_cem * Math.pow(fc/40, r_tau_f);
+    var epsilonAU = epsilonAUInfinity * Math.pow(1 + Math.pow(tauAU / (tTilde + t0Tilde), alpha_s), r_t);
+
+    var q1 = p1 / E28 / 1000;
+    var q2 = s2  * Math.pow(fc / 40, s2f)  /1000 ;
+    var q3 = s3 * q2 * Math.pow(fc /40 , s3f)
+    var q4 = s4 * Math.pow(fc /40 , s4f) / 1000;
+    var rHat = 1.7 * Math.pow(tPrimeHat, 0.12) + 8;
+    var Z = Math.pow(tPrimeHat, -0.5) * Math.log(1 + Math.pow(tHat - tPrimeHat, 0.1));
+    var Qf = Math.pow((0.086 * Math.pow(tPrimeHat, 2 / 9) + 1.21 * Math.pow(tPrimeHat, 4 / 9)), -1);
+    var Q = Qf * Math.pow(1 + Math.pow(Qf / Z, rHat), -1 / rHat);
+    var C0 = q2 * Q + q3 * Math.log(1 + Math.pow(tHat - tPrimeHat, 0.1)) + q4 * Math.log(tHat / tPrimeHat);
+    var q5 = s5 / 1000 * Math.pow(fc /40, s5f) * (Math.abs(kh * epsilonSHInfinity) ** p5_epsilon);
+    var H = 1 - (1 - h) * Math.tanh(Math.sqrt((tHat - t0Tilde) / tauSH));
+    var tPrime0 = Math.max(tPrimeHat, t0Tilde);
+    var Hc = 1 - (1 - h) * Math.tanh(Math.sqrt((tPrime0 - t0Tilde) / tauSH));
+    var Cd = tHat >= tPrime0 ? q5 * Math.sqrt(Math.exp(-p5H * H) - Math.exp(-p5H * Hc)) : 0;
+    var RT = Math.exp(4000 * (1 / 293 - 1 / (T + 273)));
+    var J = q1 + RT * C0 + Cd;
+
+    // For demonstration purposes, let's just push some dummy values
+    epsilon_sh_values.push(epsilonSH);
+    epsilon_au_values.push(epsilonAU);
+    J_values.push(J);
+  });
+
+  // Plot the scatter plot
+  var scatterData = [
+    {
+      x: t_values.map(t => t - tPrime),
+      y: epsilon_sh_values,
+      mode: 'markers',
+      type: 'scatter',
+      name: 'epsilon_sh'
+    },
+    {
+      x: t_values.map(t => t - tPrime),
+      y: epsilon_au_values,
+      mode: 'markers',
+      type: 'scatter',
+      name: 'epsilon_au'
+    },
+    {
+      x: t_values.map(t => t - tPrime),
+      y: J_values,
+      mode: 'markers',
+      type: 'scatter',
+      name: 'J'
+    }
+  ];
+
+  var layout = {
+    title: 'Concrete Properties vs t-tPrime',
+    xaxis: {
+      title: 't - tPrime',
+      type: 'log'
+    },
+    yaxis: {
+      title: 'Value'
+    }
+  };
+
+
+  // 检查图表是否已初始化
+  var existingPlot = document.getElementById('chart');
+    if (existingPlot.data && existingPlot.data.length > 0) {
+        // 图表已初始化，使用 Plotly.react 更新数据
+        Plotly.react('chart', scatterData, layout);
+    } else {
+        // 图表未初始化，使用 Plotly.newPlot 创建新图表
+        Plotly.newPlot('chart', scatterData, layout);
+    }
+}
+
+
+function exportToExcel() {
+  // Check if values are available
+  if (t_values.length === 0 || epsilon_sh_values.length === 0 || epsilon_au_values.length === 0 || J_values.length === 0) {
+    alert("Please calculate first before exporting to Excel.");
+    return;
+  }
+
+  // Build data for Excel
+  var data = [
+    ['t-tPrime', 'epsilon_sh', 'epsilon_au', 'J']
+  ];
+
+  for (var i = 0; i < t_values.length; i++) {
+    var rowData = [
+      t_values[i] - parseFloat(document.getElementById("tPrime").value),
+      epsilon_sh_values[i],
+      epsilon_au_values[i],
+      J_values[i]
+    ];
+    data.push(rowData);
+  }
+
+  // Create Excel workbook and sheet
+  var ws = XLSX.utils.aoa_to_sheet(data);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Concrete Data');
+
+  // Export Excel file
+  XLSX.writeFile(wb, 'concrete_calculations.xlsx');
+}
+</script>
+</body>
+</html>
