@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aci209_excel</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #50E3C2;
+            --text-color: #FFFFFF;
+            --hover-color: #FFD700;
+            --card-bg: rgba(255, 255, 255, 0.2);
+            --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'SF Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        #container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        #left-panel, #right-panel {
+            padding: 20px;
+            background: var(--card-bg);
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            margin: 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #left-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            flex-basis: 10%;
+        }
+        
+
+        #right-panel {
+            height: 70vh;
+            flex-basis: 50%;
+            padding: 20px; /* 确保内部元素有足够的空间 */
+            flex-basis: 40%; /* 调整宽度比例 */
+            max-width: 800px; /* 设置最大宽度 */
+        }
+
+        #title-area {
+            padding: 10px 0;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        label {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            text-align: center; /* 水平居中 */
+            background-color: #1E88E5;
+            color: #FFFFFF;
+            transition: background-color var(--transition-speed);
+        }
+
+        label:hover, label:focus {
+            background-color: var(--hover-color);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .feedback {
+            color: var(--hover-color);
+            margin: 5px auto;
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="left-panel">
+            <label id="fileLabel" for="fileInput">
+                <span>Upload File</span>
+                <input type="file" id="fileInput" accept=".xlsx">
+            </label>
+            <label id="calculateLabel" onclick="handleCalculate()">
+                <span>Calculate</span>
+            </label>
+            <label id="exportLabel" onclick="handleExport()">
+                <span>Export</span>
+            </label>
+        </div>
+        <div id="right-panel">
+            <div id="title-area">
+                <h2>计算结果</h2>
+            </div>
+            <canvas id="chartCanvas"></canvas>
+        </div>
+    </div>
+    <div id="content">
+        <div class="feedback" id="fileFeedback"></div>
+        <div class="feedback" id="calculationFeedback"></div>
+        <div class="feedback" id="exportFeedback"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        let fileData = null;
+
+        const showFeedbackMessage = (message, feedbackId) => {
+            const feedbackElement = document.getElementById(feedbackId);
+            feedbackElement.textContent = message;
+            feedbackElement.style.display = 'block';
+            setTimeout(() => feedbackElement.style.display = 'none', 3000);
+        };
+
+        fileInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = e => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                fileData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                showFeedbackMessage('File uploaded and read successfully.', 'fileFeedback');
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        const calculatePhi = (t0, H, VS, sphi, Cc, alpha, t) => {
+            const beta_t0 = 1.25 * Math.pow(t0, -0.118);
+            const beta_RH = 1.27 - 0.0067 * H;
+            const beta_VS = 2 * (1 + 1.13 * Math.exp(-0.0213 * VS)) / 3;
+            const beta_sphi = 0.88 + 0.244 * sphi;
+            const beta_Cc = 0.75 + 0.00061 * Cc;
+            const beta_alpha = 0.46 + 9 * alpha;
+            const phi_infinity = 2.35 * beta_t0 * beta_RH * beta_VS * beta_sphi * beta_Cc * beta_alpha;
+            const beta_c = Math.pow(t - t0, 0.6) / (10 + Math.pow(t - t0, 0.6));
+            return (beta_c * phi_infinity).toFixed(2);
+        };
+
+        const handleCalculate = () => {
+            if (!fileData) {
+                showFeedbackMessage('Please upload a file first.', 'calculationFeedback');
+                return;
+            }
+
+            const canvas = document.getElementById('chartCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const chartData = fileData.slice(1).map(row => ({
+                x: row[6] - row[0],
+                y: parseFloat(calculatePhi(...row))
+            }));
+
+            new Chart(ctx, {
+                type: 'scatter',
+                maintainAspectRatio: true,
+                responsive: true,
+                data: {
+                    datasets: [{
+                        label: 'Phi',
+                        data: chartData,
+                        backgroundColor: '#FFD700',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: { display: true, text: 't-t0' }
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: 'phi' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            showFeedbackMessage('Calculation completed.', 'calculationFeedback');
+        };
+
+        const handleExport = () => {
+            if (!fileData) {
+                showFeedbackMessage('Please upload and calculate the data first.', 'exportFeedback');
+                return;
+            }
+
+            const ws_data = [["t-t0", "phi"], ...fileData.slice(1).map(row => [row[6] - row[0], calculatePhi(...row)])];
+            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Results");
+            XLSX.writeFile(wb, "calculated_results.xlsx");
+            showFeedbackMessage('Export successful.', 'exportFeedback');
+        };
+    </script>
+</body>
+</html>
