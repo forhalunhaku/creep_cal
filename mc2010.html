@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC2010</title>
+    <!-- Load Chart.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="mc2010.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="left-panel">
+            <div id="title-area">
+                <h2>输入参数</h2>
+            </div>
+            <div id="input-area">
+                <label for="fcm">fcm: 抗压强度平均值</label>
+                <input type="text" id="fcm" placeholder="MPa">
+                <label for="RH">RH: 环境相对湿度</label>
+                <input type="text" id="RH" placeholder="60">
+                <label for="t0">t0: 加载龄期</label>
+                <input type="text" id="t0" placeholder="day">
+                <label for="Ac">Ac: 截面积</label>
+                <input type="text" id="Ac" placeholder="mm^2">
+                <label for="u">u: 截面周长</label>
+                <input type="text" id="u" placeholder="mm">
+                <label for="T">T: 养护温度</label>
+                <input type="text" id="T" placeholder="℃">
+                <label for="Cs">Cs: 水泥强度等级</label>
+                <select id="Cs">
+                    <option value="32.5N">32.5N</option>
+                    <option value="32.5R">32.5R</option>
+                    <option value="42.5N">42.5N</option>
+                    <option value="42.5R">42.5R</option>
+                    <option value="52.5N">52.5N</option>
+                    <option value="52.5R">52.5R</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="middle-panel">
+            <button onclick="calculateMC2010()">Calculate</button>
+            <button onclick="exportToExcelMC2010()">Export to Excel</button>
+        </div>
+
+        <div id="right-panel">
+            <div id="title-area">
+                <h2>计算结果</h2>
+            </div>
+            <div id="chart-area">
+                <div id="chart"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

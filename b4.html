@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B4</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="b4.js"></script>
+</head>
+<body>
+<div id="container">
+    <div id="left-panel">
+        <div id="title-area">
+            <h2>输入参数</h2>
+        </div>
+        <div id="input-area">
+            <label for="cementType">Cement Type: 水泥类型</label>
+            <select id="cementType">
+                <option value="R">R</option>
+                <option value="RS">RS</option>
+                <option value="SL">SL</option>
+            </select>
+            <label for="tPrime">t': 加载龄期</label>
+            <input type="text" id="tPrime" placeholder="days">
+            <label for="t0">t0: 干燥龄期</label>
+            <input type="text" id="t0" placeholder="days">
+            <label for="T">T: 温度</label>
+            <input type="text" id="T" placeholder="℃">
+            <label for="h">h: 环境相对湿度</label>
+            <input type="text" id="h" placeholder="0.5">
+            <label for="fc">fc: 平均抗压强度</label>
+            <input type="text" id="fc" placeholder="MPa">
+            <label for="vS">V/S: 体表比</label>
+            <input type="text" id="vS" placeholder="33">
+            <label for="c">c: 水泥含量</label>
+            <input type="text" id="c" placeholder="Kg/m3">
+            <label for="wC">w/c: 水灰比</label>
+            <input type="text" id="wC" placeholder="0.4">
+            <label for="aC">a/c: 骨料水泥比</label>
+            <input type="text" id="aC" placeholder="6">
+            <label for="aggregateType">Aggregate Type: 骨料类型</label>
+            <select id="aggregateType">
+                <option value="Diabase">Diabase</option>
+                <option value="Quartzite">Quartzite</option>
+                <option value="Limestone">Limestone</option>
+                <option value="Sandstone">Sandstone</option>
+                <option value="Granite">Granite</option>
+                <option value="Quartz Diorite">Quartz Diorite</option>
+                <option value="No Information">No Information</option>
+            </select>
+            <label for="specimenShape">Specimen Shape: 试件形状</label>
+            <select id="specimenShape">
+                <option value="infinite slab">Infinite Slab</option>
+                <option value="infinite cylinder">Infinite Cylinder</option>
+                <option value="infinite square prism">Infinite Square Prism</option>
+                <option value="sphere">Sphere</option>
+                <option value="cube">Cube</option>
+            </select>
+        </div> 
+    </div>
+
+    <div id="middle-panel">
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="exportToExcel()">Export to Excel</button>
+    </div>
+
+    <div id="right-panel">
+      <div id="title-area">
+          <h2>计算结果</h2>
+      </div>
+      <div id="chart-area">
+          <div id="chart"></div>
+      </div>
+    </div>
+</div>
+</body>
+</html>

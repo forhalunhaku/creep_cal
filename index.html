@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Halunhaku</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" defer>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4A90E2;
+      --secondary-color: #50E3C2;
+      --text-color: #FFFFFF;
+      --hover-color: #FFD700;
+      --card-bg: rgba(255, 255, 255, 0.2);
+      --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      --border-radius: 16px;
+      --transition-speed: 0.3s;
+    }
+
+    body {
+      font-family: 'SF Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle, var(--primary-color), var(--secondary-color));
+      color: var(--text-color);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      animation: fadeIn var(--transition-speed) ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h3 {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-color);
+      text-align: center;
+      grid-column: 1 / -1;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      backdrop-filter: blur(15px);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--text-color);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      transition: background var(--transition-speed), color var(--transition-speed);
+    }
+
+    a:hover {
+      background: var(--hover-color);
+      color: #000;
+    }
+
+    .icon {
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>徐变计算</h3>
+    <div class="card">
+      <h4 class="card-title">单参数组计算</h4>
+      <ul>
+        <li><a href="aci209.html"><i class="fas fa-calculator icon"></i> ACI209</a></li>
+        <li><a href="mc2010.html"><i class="fas fa-calculator icon"></i> MC2010</a></li>
+        <li><a href="b4.html"><i class="fas fa-calculator icon"></i> B4</a></li>
+        <li><a href="b4s.html"><i class="fas fa-calculator icon"></i> B4s</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="card-title">Excel导入计算</h4>
+      <ul>
+        <li><a href="aci209_excel.html"><i class="fas fa-file-excel icon"></i> ACI209_EXCEL</a></li>
+        <li><a href="mc2010_excel.html"><i class="fas fa-file-excel icon"></i> MC2010_EXCEL</a></li>
+        <li><a href="b4_excel.html"><i class="fas fa-file-excel icon"></i> B4_EXCEL</a></li>
+        <li><a href="b4s_excel.html"><i class="fas fa-file-excel icon"></i> B4s_EXCEL</a></li>
+      </ul>
+    </div>
+    <h3>砂筛分计算</h3>
+    <div class="card">
+      <h4 class="card-title">砂筛分计算</h4>
+      <ul>
+        <li><a href="sieve.html"><i class="fas fa-filter icon"></i> Cu_Cc计算</a></li>
+      </ul>
+    </div>
+    <h3>Excel模板下载</h3>
+    <div class="card">
+      <h4 class="card-title">Excel模板下载</h4>
+      <ul>
+        <li><a href="模型示例/aci209示例.xlsx"><i class="fas fa-download icon"></i> ACI209示例</a></li>
+        <li><a href="模型示例/mc2010示例.xlsx"><i class="fas fa-download icon"></i> MC2010示例</a></li>
+        <li><a href="模型示例/B4示例.xlsx"><i class="fas fa-download icon"></i> B4示例</a></li>
+        <li><a href="模型示例/B4s示例.xlsx"><i class="fas fa-download icon"></i> B4s示例</a></li>
+        <li><a href="模型示例/sieve_data.xlsx"><i class="fas fa-download icon"></i> 砂筛分示例</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
