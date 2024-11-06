@@ -92,7 +92,10 @@ function calculate() {
   }
 
   // Calculate t_values
-  t_values = Array.from({ length: 10000 }, (_, i) => tPrime + i);
+  const numPoints = 1000;
+  t_values = Array.from({ length: numPoints }, (_, i) => {
+      return tPrime + Math.exp(Math.log(1) + (Math.log(100000) - Math.log(1)) * i / numPoints);
+  });
 
   // Initialize arrays to store calculated values
   epsilon_sh_values = [];
@@ -148,82 +151,188 @@ function calculate() {
     J_values.push(J);
   });
 
-  // Plot the scatter plot
-  var scatterData = [
-    {
+ // 创建图表数据
+ const data = [
+  {
       x: t_values.map(t => t - tPrime),
       y: epsilon_sh_values,
-      mode: 'markers',
       type: 'scatter',
-      name: 'epsilon_sh'
-    },
-    {
+      mode: 'lines',
+      name: '收缩应变',
+      line: {
+          color: '#4ADE80',
+          width: 2.5,
+          shape: 'spline'
+      }
+  },
+  {
       x: t_values.map(t => t - tPrime),
       y: epsilon_au_values,
-      mode: 'markers',
       type: 'scatter',
-      name: 'epsilon_au'
-    },
-    {
+      mode: 'lines',
+      name: '自生收缩应变',
+      line: {
+          color: '#60A5FA',
+          width: 2.5,
+          shape: 'spline'
+      }
+  },
+  {
       x: t_values.map(t => t - tPrime),
       y: J_values,
-      mode: 'markers',
       type: 'scatter',
-      name: 'J'
-    }
-  ];
+      mode: 'lines',
+      name: '徐变应变',
+      line: {
+          color: '#F472B6',
+          width: 2.5,
+          shape: 'spline'
+      }
+  }
+];
 
-  var layout = {
-    title: 'Concrete Properties vs t-tPrime',
-    xaxis: {
-      title: 't - tPrime',
-      type: 'log'
-    },
-    yaxis: {
-      title: 'Value'
-    }
-  };
+const layout = {
+  title: {
+      text: 'B4S模型计算结果',
+      font: {
+          size: 18,
+          color: '#333333'
+      },
+      y: 0.95
+  },
+  paper_bgcolor: 'rgba(255,255,255,0.98)',
+  plot_bgcolor: 'rgba(255,255,255,0.98)',
+  xaxis: {
+      title: 't - t\' (天)',
+      type: 'log',
+      gridcolor: 'rgba(200,200,200,0.3)',
+      gridwidth: 1,
+      zerolinecolor: 'rgba(200,200,200,0.5)',
+      zerolinewidth: 1,
+      title_font: {
+          size: 14,
+          color: '#333333'
+      },
+      tickfont: {
+          size: 12,
+          color: '#333333'
+      },
+      showgrid: true,
+      range: [0, 5],
+      dtick: 1,
+      tickformat: "3",
+      showline: true,
+      linecolor: 'rgba(200,200,200,0.5)',
+      mirror: true
+  },
+  yaxis: {
+      title: '数值',
+      gridcolor: 'rgba(200,200,200,0.3)',
+      gridwidth: 1,
+      zerolinecolor: 'rgba(200,200,200,0.5)',
+      zerolinewidth: 1,
+      title_font: {
+          size: 14,
+          color: '#333333'
+      },
+      tickfont: {
+          size: 12,
+          color: '#333333'
+      },
+      showgrid: true,
+      showline: true,
+      linecolor: 'rgba(200,200,200,0.5)',
+      mirror: true
+  },
+  autosize: true,
+  margin: {
+      l: 60,
+      r: 40,
+      t: 60,
+      b: 60
+  },
+  showlegend: true,
+  legend: {
+      x: 1,
+      xanchor: 'right',
+      y: 1,
+      bgcolor: 'rgba(255,255,255,0.8)',
+      bordercolor: 'rgba(200,200,200,0.5)',
+      borderwidth: 1
+  },
+  hovermode: 'closest',
+  hoverlabel: {
+      bgcolor: '#FFF',
+      bordercolor: '#4ADE80',
+      font: {
+          size: 13,
+          color: '#333333'
+      }
+  }
+};
 
+const config = {
+  responsive: true,
+  displayModeBar: false,
+  staticPlot: false,
+  toImageButtonOptions: {
+      format: 'png',
+      filename: 'B4S模型计算结果',
+      height: 800,
+      width: 1200,
+      scale: 2
+  }
+};
 
-  // 检查图表是否已初始化
-  var existingPlot = document.getElementById('chart');
-    if (existingPlot.data && existingPlot.data.length > 0) {
-        // 图表已初始化，使用 Plotly.react 更新数据
-        Plotly.react('chart', scatterData, layout);
-    } else {
-        // 图表未初始化，使用 Plotly.newPlot 创建新图表
-        Plotly.newPlot('chart', scatterData, layout);
-    }
+// 创建或更新图表
+Plotly.newPlot('chart', data, layout, config);
 }
+// 添加窗口大小改变时的自动调整
+window.addEventListener('resize', function() {
+Plotly.Plots.resize('chart');
+});
 
-
+// 修改导出函数，改为CSV格式
 function exportToExcel() {
-  // Check if values are available
-  if (t_values.length === 0 || epsilon_sh_values.length === 0 || epsilon_au_values.length === 0 || J_values.length === 0) {
-    alert("Please calculate first before exporting to Excel.");
-    return;
-  }
+try {
+    let csvContent = "data:text/csv;charset=utf-8," + 
+        "t-tPrime,epsilon_sh,epsilon_au,J\n";
+    
+    t_values.forEach((t, index) => {
+        let row = [
+            t - document.getElementById("tPrime").value,
+            epsilon_sh_values[index],
+            epsilon_au_values[index],
+            J_values[index]
+        ].join(",") + "\n";
+        csvContent += row;
+    });
 
-  // Build data for Excel
-  var data = [
-    ['t-tPrime', 'epsilon_sh', 'epsilon_au', 'J']
-  ];
-
-  for (var i = 0; i < t_values.length; i++) {
-    var rowData = [
-      t_values[i] - parseFloat(document.getElementById("tPrime").value),
-      epsilon_sh_values[i],
-      epsilon_au_values[i],
-      J_values[i]
-    ];
-    data.push(rowData);
-  }
-
-  // Create Excel workbook and sheet
-  var ws = XLSX.utils.aoa_to_sheet(data);
-  var wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Concrete Data');
-
-  // Export Excel file
-  XLSX.writeFile(wb, 'concrete_calculations.xlsx');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "b4s_calculation_results.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+} catch (error) {
+    alert('导出过程中发生错误，请检查输入值');
+    console.error('导出错误:', error);
 }
+}
+
+// 添加事件监听器
+document.addEventListener('DOMContentLoaded', function() {
+document.getElementById('calculateBtn').addEventListener('click', calculate);
+document.getElementById('exportBtn').addEventListener('click', exportToExcel);
+
+// 为输入框添加回车键监听器
+const inputs = document.querySelectorAll('input');
+inputs.forEach(input => {
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            calculate();
+        }
+    });
+});
+});

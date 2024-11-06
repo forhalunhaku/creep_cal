@@ -1,49 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACI209</title>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <title>ACI209 计算</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script defer src="aci209.js"></script>
 </head>
 <body>
-<div id="container">
-    <div id="left-panel">
-        <div id="title-area">
-            <h2>输入参数</h2>
+    <div id="container">
+        <div id="left-panel">
+            <div id="title-area">
+                <h2>输入参数</h2>
+            </div>
+            <div id="input-area">
+                <div class="input-group">
+                    <label for="t0">t0: 加载龄期</label>
+                    <input type="text" id="t0" placeholder="day">
+                </div>
+                
+                <div class="input-group">
+                    <label for="H">H: 环境相对湿度</label>
+                    <input type="text" id="H" placeholder="0.6">
+                </div>
+                
+                <div class="input-group">
+                    <label for="VS">V/S: 体表比</label>
+                    <input type="text" id="VS" placeholder="33">
+                </div>
+                
+                <div class="input-group">
+                    <label for="sphi">sphi: 砂率</label>
+                    <input type="text" id="sphi" placeholder="0.42">
+                </div>
+                
+                <div class="input-group">
+                    <label for="Cc">Cc: 水泥含量</label>
+                    <input type="text" id="Cc" placeholder="Kg/m^3">
+                </div>
+                
+                <div class="input-group">
+                    <label for="alpha">alpha: 空气含量</label>
+                    <input type="text" id="alpha" placeholder=">0.06,≤0.1">
+                </div>
+            </div>
         </div>
-        <div id="input-area">
-            <label for="t0">t0: 加载龄期</label>
-            <input type="text" id="t0" placeholder="day">
-            <label for="H">H: 环境相对湿度</label>
-            <input type="text" id="H" placeholder="0.6">
-            <label for="VS">V/S: 体表比</label>
-            <input type="text" id="VS" placeholder="33">
-            <label for="sphi">sphi: 砂率</label>
-            <input type="text" id="sphi" placeholder="0.42">
-            <label for="Cc">Cc: 水泥含量</label>
-            <input type="text" id="Cc" placeholder="Kg/m^3">
-            <label for="alpha">alpha: 空气含量</label>
-            <input type="text" id="alpha" placeholder=">0.06,如0.1">
-        </div>
-    </div>
 
-    <div id="middle-panel">
-        <button onclick="calculate()">Calculate</button>
-        <button onclick="exportToExcel()">Export to Excel</button>
-    </div>
-
-    <div id="right-panel">
-        <div id="title-area">
-            <h2>计算结果</h2>
+        <div id="middle-panel">
+            <button type="button" id="calculateBtn">Calculate</button>
+            <button type="button" id="exportBtn">Export to Excel</button>
         </div>
-        <div id="chart-area">
+
+        <div id="right-panel">
+            <div id="title-area">
+                <h2>计算结果</h2>
+            </div>
             <div id="chart"></div>
         </div>
     </div>
-</div>
+
+    <script src="aci209.js"></script>
 </body>
 </html>

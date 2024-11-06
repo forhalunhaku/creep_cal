@@ -2,159 +2,350 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Halunhaku</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" defer>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <title>Halunhaku - 工程计算工具</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     :root {
-      --primary-color: #4A90E2;
-      --secondary-color: #50E3C2;
-      --text-color: #FFFFFF;
-      --hover-color: #FFD700;
-      --card-bg: rgba(255, 255, 255, 0.2);
-      --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      --border-radius: 16px;
-      --transition-speed: 0.3s;
+      /* 浅色模式变量 */
+      --bg-gradient-1: #4158D0;
+      --bg-gradient-2: #C850C0;
+      --bg-gradient-3: #FFCC70;
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.8);
+      --accent-color: #00ff88;
+      --border-radius: 24px;
+      --transition: all 0.4s ease;
+    }
+
+    /* 深色模式变量 */
+    [data-theme="dark"] {
+      --bg-gradient-1: #1a1a2e;
+      --bg-gradient-2: #16213e;
+      --bg-gradient-3: #1a1a2e;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --text-primary: #e1e1e1;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --accent-color: #4ecca3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'SF Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background: radial-gradient(circle, var(--primary-color), var(--secondary-color));
-      color: var(--text-color);
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .container {
-      max-width: 1000px;
-      width: 100%;
-      padding: 40px 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      animation: fadeIn var(--transition-speed) ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    h3 {
-      font-size: 26px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: var(--text-color);
-      text-align: center;
-      grid-column: 1 / -1;
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      backdrop-filter: blur(15px);
-      border-radius: var(--border-radius);
-      padding: 20px;
-      box-shadow: var(--box-shadow);
-      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+      background: linear-gradient(45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3));
+      color: var(--text-primary);
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 2rem;
+    }
+
+    nav {
+      width: 100%;
+      max-width: 1200px;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #fff, var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 2rem 0;
       text-align: center;
+      position: relative;
+      color: var(--text-primary);
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 4px;
+      background: var(--accent-color);
+      border-radius: 2px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border-color: var(--accent-color);
     }
 
     .card-title {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: var(--text-color);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-color);
+      text-align: center;
     }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      width: 100%;
+    .card-list {
+      list-style: none;
     }
 
-    li {
-      margin-bottom: 10px;
+    .card-list li {
+      margin-bottom: 1rem;
     }
 
-    a {
+    .card-link {
       display: flex;
       align-items: center;
-      color: var(--text-color);
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      color: var(--text-primary);
       text-decoration: none;
-      padding: 10px;
+      transition: var(--transition);
+    }
+
+    .card-link:hover {
       background: rgba(255, 255, 255, 0.1);
-      border-radius: var(--border-radius);
-      transition: background var(--transition-speed), color var(--transition-speed);
+      transform: translateX(5px);
     }
 
-    a:hover {
-      background: var(--hover-color);
-      color: #000;
+    .card-link i {
+      margin-right: 1rem;
+      font-size: 1.2rem;
+      color: var(--accent-color);
+    }
+    .theme-toggle {
+      transition: transform 0.3s ease;
     }
 
-    .icon {
-      margin-right: 8px;
+    .theme-toggle:hover {
+      transform: rotate(45deg);
+    }
+
+    .theme-toggle i {
+      transition: all 0.3s ease;
+    }
+
+    /* 添加主题切换的过渡效果 */
+    body {
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .card {
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-secondary);
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
+  <nav>
+    <div class="logo">Halunhaku</div>
+    <button class="theme-toggle">
+      <i class="fas fa-moon"></i>
+    </button>
+  </nav>
+
   <div class="container">
-    <h3>徐变计算</h3>
+    <h2 class="section-title">徐变计算</h2>
+    
     <div class="card">
-      <h4 class="card-title">单参数组计算</h4>
-      <ul>
-        <li><a href="aci209.html"><i class="fas fa-calculator icon"></i> ACI209</a></li>
-        <li><a href="mc2010.html"><i class="fas fa-calculator icon"></i> MC2010</a></li>
-        <li><a href="b4.html"><i class="fas fa-calculator icon"></i> B4</a></li>
-        <li><a href="b4s.html"><i class="fas fa-calculator icon"></i> B4s</a></li>
+      <h3 class="card-title">单参数组计算</h3>
+      <ul class="card-list">
+        <li>
+          <a href="aci209.html" class="card-link">
+            <i class="fas fa-calculator"></i>
+            ACI209
+          </a>
+        </li>
+        <li>
+          <a href="mc2010.html" class="card-link">
+            <i class="fas fa-calculator"></i>
+            MC2010
+          </a>
+        </li>
+        <li>
+          <a href="b4.html" class="card-link">
+            <i class="fas fa-calculator"></i>
+            B4
+          </a>
+        </li>
+        <li>
+          <a href="b4s.html" class="card-link">
+            <i class="fas fa-calculator"></i>
+            B4s
+          </a>
+        </li>
       </ul>
     </div>
+
     <div class="card">
-      <h4 class="card-title">Excel导入计算</h4>
-      <ul>
-        <li><a href="aci209_excel.html"><i class="fas fa-file-excel icon"></i> ACI209_EXCEL</a></li>
-        <li><a href="mc2010_excel.html"><i class="fas fa-file-excel icon"></i> MC2010_EXCEL</a></li>
-        <li><a href="b4_excel.html"><i class="fas fa-file-excel icon"></i> B4_EXCEL</a></li>
-        <li><a href="b4s_excel.html"><i class="fas fa-file-excel icon"></i> B4s_EXCEL</a></li>
+      <h3 class="card-title">Excel导入计算</h3>
+      <ul class="card-list">
+        <li>
+          <a href="aci209_excel.html" class="card-link">
+            <i class="fas fa-file-excel"></i>
+            ACI209_EXCEL
+          </a>
+        </li>
+        <li>
+          <a href="mc2010_excel.html" class="card-link">
+            <i class="fas fa-file-excel"></i>
+            MC2010_EXCEL
+          </a>
+        </li>
+        <li>
+          <a href="b4_excel.html" class="card-link">
+            <i class="fas fa-file-excel"></i>
+            B4_EXCEL
+          </a>
+        </li>
+        <li>
+          <a href="b4s_excel.html" class="card-link">
+            <i class="fas fa-file-excel"></i>
+            B4s_EXCEL
+          </a>
+        </li>
       </ul>
     </div>
-    <h3>砂筛分计算</h3>
+
+    <h2 class="section-title">Excel模板下载</h2>
+    
     <div class="card">
-      <h4 class="card-title">砂筛分计算</h4>
-      <ul>
-        <li><a href="sieve.html"><i class="fas fa-filter icon"></i> Cu_Cc计算</a></li>
-      </ul>
-    </div>
-    <h3>Excel模板下载</h3>
-    <div class="card">
-      <h4 class="card-title">Excel模板下载</h4>
-      <ul>
-        <li><a href="模型示例/aci209示例.xlsx"><i class="fas fa-download icon"></i> ACI209示例</a></li>
-        <li><a href="模型示例/mc2010示例.xlsx"><i class="fas fa-download icon"></i> MC2010示例</a></li>
-        <li><a href="模型示例/B4示例.xlsx"><i class="fas fa-download icon"></i> B4示例</a></li>
-        <li><a href="模型示例/B4s示例.xlsx"><i class="fas fa-download icon"></i> B4s示例</a></li>
-        <li><a href="模型示例/sieve_data.xlsx"><i class="fas fa-download icon"></i> 砂筛分示例</a></li>
+      <h3 class="card-title">模板下载</h3>
+      <ul class="card-list">
+        <li>
+          <a href="模型示例/aci209示例.xlsx" class="card-link">
+            <i class="fas fa-download"></i>
+            ACI209示例
+          </a>
+        </li>
+        <li>
+          <a href="模型示例/mc2010示例.xlsx" class="card-link">
+            <i class="fas fa-download"></i>
+            MC2010示例
+          </a>
+        </li>
+        <li>
+          <a href="模型示例/B4示例.xlsx" class="card-link">
+            <i class="fas fa-download"></i>
+            B4示例
+          </a>
+        </li>
+        <li>
+          <a href="模型示例/B4s示例.xlsx" class="card-link">
+            <i class="fas fa-download"></i>
+            B4s示例
+          </a>
+        </li>
+        <li>
+          <a href="模型示例/sieve_data.xlsx" class="card-link">
+            <i class="fas fa-download"></i>
+            砂筛分示例
+          </a>
+        </li>
       </ul>
     </div>
   </div>
+  <script>
+    // 主题切换功能
+    const themeToggle = document.querySelector('.theme-toggle');
+    const icon = themeToggle.querySelector('i');
+    
+    // 检查本地存储中的主题设置
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateIcon(savedTheme);
+
+    // 监听系统主题变化
+    if (window.matchMedia) {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addListener((e) => {
+        const systemTheme = e.matches ? 'dark' : 'light';
+        // 如果用户没有手动设置主题，则跟随系统
+        if (!localStorage.getItem('theme')) {
+          document.documentElement.setAttribute('data-theme', systemTheme);
+          updateIcon(systemTheme);
+        }
+      });
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateIcon(newTheme);
+    });
+
+    function updateIcon(theme) {
+      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+  </script>
+  <footer>
+    <p>© 2024 Halunhaku. All rights reserved.</p>
+  </footer>
 </body>
 </html>
