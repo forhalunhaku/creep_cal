@@ -1,80 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B4</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="b4.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B4 混凝土徐变计算</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
 <body>
-<div id="container">
-    <div id="left-panel">
-        <div id="title-area">
-            <h2>输入参数</h2>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">
+        <span class="material-icons">architecture</span>
+        <span>混凝土徐变计算</span>
+      </a>
+      <div class="navbar-actions">
+        <button class="theme-toggle" aria-label="切换主题">
+          <span class="material-icons">dark_mode</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- 页面标题 -->
+      <header class="text-center mb-2xl">
+        <h1 class="text-3xl mb-md">B4 混凝土徐变计算</h1>
+        <p class="text-lg text-secondary">Model B4 混凝土徐变预测模型</p>
+      </header>
+
+      <!-- 计算区域 -->
+      <div class="calculator-layout">
+        <!-- 输入面板 -->
+        <section class="calculator-panel">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="text-xl">输入参数</h2>
+            </div>
+            <div class="card-body">
+              <div class="input-grid">
+                <div class="form-group">
+                  <label for="cementType" class="form-label">水泥类型</label>
+                  <select id="cementType" class="form-select">
+                    <option value="R">R</option>
+                    <option value="RS">RS</option>
+                    <option value="SL">SL</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="tPrime" class="form-label">加载龄期 (t')</label>
+                  <div class="input-group">
+                    <input type="number" id="tPrime" class="form-input" placeholder="输入天数">
+                    <span class="input-group-text">天</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="t0" class="form-label">干燥龄期 (t0)</label>
+                  <div class="input-group">
+                    <input type="number" id="t0" class="form-input" placeholder="输入天数">
+                    <span class="input-group-text">天</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="T" class="form-label">温度 (T)</label>
+                  <div class="input-group">
+                    <input type="number" id="T" class="form-input" placeholder="输入温度">
+                    <span class="input-group-text">℃</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="h" class="form-label">相对湿度 (h)</label>
+                  <div class="input-group">
+                    <input type="number" id="h" class="form-input" placeholder="0.5">
+                    <span class="input-group-text">%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="fc" class="form-label">抗压强度 (fc)</label>
+                  <div class="input-group">
+                    <input type="number" id="fc" class="form-input" placeholder="输入强度">
+                    <span class="input-group-text">MPa</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="vS" class="form-label">体表比 (V/S)</label>
+                  <div class="input-group">
+                    <input type="number" id="vS" class="form-input" placeholder="33">
+                    <span class="input-group-text">mm</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="c" class="form-label">水泥含量 (c)</label>
+                  <div class="input-group">
+                    <input type="number" id="c" class="form-input" placeholder="输入含量">
+                    <span class="input-group-text">kg/m³</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="wC" class="form-label">水灰比 (w/c)</label>
+                  <div class="input-group">
+                    <input type="number" id="wC" class="form-input" placeholder="0.4">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="aC" class="form-label">骨料水泥比 (a/c)</label>
+                  <div class="input-group">
+                    <input type="number" id="aC" class="form-input" placeholder="6">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="aggregateType" class="form-label">骨料类型</label>
+                  <select id="aggregateType" class="form-select">
+                    <option value="Diabase">玄武岩</option>
+                    <option value="Quartzite">石英岩</option>
+                    <option value="Limestone">石灰岩</option>
+                    <option value="Sandstone">砂岩</option>
+                    <option value="Granite">花岗岩</option>
+                    <option value="Quartz Diorite">石英闪长岩</option>
+                    <option value="No Information">未知</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="specimenShape" class="form-label">试件形状</label>
+                  <select id="specimenShape" class="form-select">
+                    <option value="infinite slab">无限板</option>
+                    <option value="infinite cylinder">无限圆柱</option>
+                    <option value="infinite square prism">无限方柱</option>
+                    <option value="sphere">球体</option>
+                    <option value="cube">立方体</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="button-group mt-xl">
+                <button type="button" id="calculateBtn" class="btn btn-primary">
+                  <span class="material-icons">calculate</span>
+                  开始计算
+                </button>
+                <button type="button" id="exportBtn" class="btn btn-secondary">
+                  <span class="material-icons">file_download</span>
+                  导出Excel
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 结果面板 -->
+        <section class="calculator-panel">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="text-xl">计算结果</h2>
+            </div>
+            <div class="card-body">
+              <div id="chart" class="chart-container"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <p>&copy; 2024 混凝土徐变计算工具</p>
         </div>
-        <div id="input-area">
-            <label for="cementType">Cement Type: 水泥类型</label>
-            <select id="cementType">
-                <option value="R">R</option>
-                <option value="RS">RS</option>
-                <option value="SL">SL</option>
-            </select>
-            <label for="tPrime">t': 加载龄期</label>
-            <input type="text" id="tPrime" placeholder="days">
-            <label for="t0">t0: 干燥龄期</label>
-            <input type="text" id="t0" placeholder="days">
-            <label for="T">T: 温度</label>
-            <input type="text" id="T" placeholder="℃">
-            <label for="h">h: 环境相对湿度</label>
-            <input type="text" id="h" placeholder="0.5">
-            <label for="fc">fc: 平均抗压强度</label>
-            <input type="text" id="fc" placeholder="MPa">
-            <label for="vS">V/S: 体表比</label>
-            <input type="text" id="vS" placeholder="33">
-            <label for="c">c: 水泥含量</label>
-            <input type="text" id="c" placeholder="Kg/m3">
-            <label for="wC">w/c: 水灰比</label>
-            <input type="text" id="wC" placeholder="0.4">
-            <label for="aC">a/c: 骨料水泥比</label>
-            <input type="text" id="aC" placeholder="6">
-            <label for="aggregateType">Aggregate Type: 骨料类型</label>
-            <select id="aggregateType">
-                <option value="Diabase">Diabase</option>
-                <option value="Quartzite">Quartzite</option>
-                <option value="Limestone">Limestone</option>
-                <option value="Sandstone">Sandstone</option>
-                <option value="Granite">Granite</option>
-                <option value="Quartz Diorite">Quartz Diorite</option>
-                <option value="No Information">No Information</option>
-            </select>
-            <label for="specimenShape">Specimen Shape: 试件形状</label>
-            <select id="specimenShape">
-                <option value="infinite slab">Infinite Slab</option>
-                <option value="infinite cylinder">Infinite Cylinder</option>
-                <option value="infinite square prism">Infinite Square Prism</option>
-                <option value="sphere">Sphere</option>
-                <option value="cube">Cube</option>
-            </select>
-        </div> 
-    </div>
-
-    <div id="middle-panel">
-        <button onclick="calculate()">Calculate</button>
-        <button onclick="exportToExcel()">Export to Excel</button>
-    </div>
-
-    <div id="right-panel">
-      <div id="title-area">
-          <h2>计算结果</h2>
-      </div>
-      <div id="chart-area">
-          <div id="chart"></div>
+        <div>
+          <a href="https://github.com/your-repo" target="_blank" rel="noopener">
+            <span class="material-icons">code</span>
+            查看源代码
+          </a>
+        </div>
       </div>
     </div>
-</div>
+  </footer>
+
+  <script src="b4.js"></script>
+  <script>
+    // 主题切换
+    const themeToggle = document.querySelector('.theme-toggle');
+    const themeIcon = themeToggle.querySelector('.material-icons');
+
+    function isDarkTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'dark';
+    }
+
+    function updateThemeIcon() {
+      themeIcon.textContent = isDarkTheme() ? 'light_mode' : 'dark_mode';
+    }
+
+    function toggleTheme() {
+      const newTheme = isDarkTheme() ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon();
+    }
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon();
+
+    themeToggle.addEventListener('click', toggleTheme);
+  </script>
 </body>
 </html>

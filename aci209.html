@@ -1,64 +1,166 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACI209 计算</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACI209 混凝土徐变计算</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <div id="container">
-        <div id="left-panel">
-            <div id="title-area">
-                <h2>输入参数</h2>
-            </div>
-            <div id="input-area">
-                <div class="input-group">
-                    <label for="t0">t0: 加载龄期</label>
-                    <input type="text" id="t0" placeholder="day">
-                </div>
-                
-                <div class="input-group">
-                    <label for="H">H: 环境相对湿度</label>
-                    <input type="text" id="H" placeholder="0.6">
-                </div>
-                
-                <div class="input-group">
-                    <label for="VS">V/S: 体表比</label>
-                    <input type="text" id="VS" placeholder="33">
-                </div>
-                
-                <div class="input-group">
-                    <label for="sphi">sphi: 砂率</label>
-                    <input type="text" id="sphi" placeholder="0.42">
-                </div>
-                
-                <div class="input-group">
-                    <label for="Cc">Cc: 水泥含量</label>
-                    <input type="text" id="Cc" placeholder="Kg/m^3">
-                </div>
-                
-                <div class="input-group">
-                    <label for="alpha">alpha: 空气含量</label>
-                    <input type="text" id="alpha" placeholder=">0.06,≤0.1">
-                </div>
-            </div>
-        </div>
-
-        <div id="middle-panel">
-            <button type="button" id="calculateBtn">Calculate</button>
-            <button type="button" id="exportBtn">Export to Excel</button>
-        </div>
-
-        <div id="right-panel">
-            <div id="title-area">
-                <h2>计算结果</h2>
-            </div>
-            <div id="chart"></div>
-        </div>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">
+        <span class="material-icons">architecture</span>
+        <span>混凝土徐变计算</span>
+      </a>
+      <div class="navbar-actions">
+        <button class="theme-toggle" aria-label="切换主题">
+          <span class="material-icons">dark_mode</span>
+        </button>
+      </div>
     </div>
+  </nav>
 
-    <script src="aci209.js"></script>
+  <main class="main-content">
+    <div class="container">
+      <!-- 页面标题 -->
+      <header class="text-center mb-2xl">
+        <h1 class="text-3xl mb-md">ACI209 混凝土徐变计算</h1>
+        <p class="text-lg text-secondary">美国混凝土学会推荐的徐变预测模型</p>
+      </header>
+
+      <!-- 计算区域 -->
+      <div class="calculator-layout">
+        <!-- 输入面板 -->
+        <section class="calculator-panel">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="text-xl">输入参数</h2>
+            </div>
+            <div class="card-body">
+              <div class="input-grid">
+                <div class="form-group">
+                  <label for="t0" class="form-label">加载龄期 (t0)</label>
+                  <div class="input-group">
+                    <input type="number" id="t0" class="form-input" placeholder="输入天数">
+                    <span class="input-group-text">天</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="H" class="form-label">环境相对湿度 (H)</label>
+                  <div class="input-group">
+                    <input type="number" id="H" class="form-input" placeholder="0.6">
+                    <span class="input-group-text">%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="VS" class="form-label">体表比 (V/S)</label>
+                  <div class="input-group">
+                    <input type="number" id="VS" class="form-input" placeholder="33">
+                    <span class="input-group-text">mm</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="sphi" class="form-label">砂率 (sphi)</label>
+                  <div class="input-group">
+                    <input type="number" id="sphi" class="form-input" placeholder="0.42">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Cc" class="form-label">水泥含量 (Cc)</label>
+                  <div class="input-group">
+                    <input type="number" id="Cc" class="form-input" placeholder="输入含量">
+                    <span class="input-group-text">kg/m³</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="alpha" class="form-label">空气含量 (alpha)</label>
+                  <div class="input-group">
+                    <input type="number" id="alpha" class="form-input" placeholder="0.06-0.1">
+                  </div>
+                </div>
+              </div>
+
+              <div class="button-group mt-xl">
+                <button type="button" id="calculateBtn" class="btn btn-primary">
+                  <span class="material-icons">calculate</span>
+                  开始计算
+                </button>
+                <button type="button" id="exportBtn" class="btn btn-secondary">
+                  <span class="material-icons">file_download</span>
+                  导出Excel
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 结果面板 -->
+        <section class="calculator-panel">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="text-xl">计算结果</h2>
+            </div>
+            <div class="card-body">
+              <div id="chart" class="chart-container"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <p>&copy; 2024 混凝土徐变计算工具</p>
+        </div>
+        <div>
+          <a href="https://github.com/your-repo" target="_blank" rel="noopener">
+            <span class="material-icons">code</span>
+            查看源代码
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="aci209.js"></script>
+  <script>
+    // 主题切换
+    const themeToggle = document.querySelector('.theme-toggle');
+    const themeIcon = themeToggle.querySelector('.material-icons');
+
+    function isDarkTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'dark';
+    }
+
+    function updateThemeIcon() {
+      themeIcon.textContent = isDarkTheme() ? 'light_mode' : 'dark_mode';
+    }
+
+    function toggleTheme() {
+      const newTheme = isDarkTheme() ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon();
+    }
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon();
+
+    themeToggle.addEventListener('click', toggleTheme);
+  </script>
 </body>
 </html>

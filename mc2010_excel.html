@@ -1,49 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mc2010_excel</title>
-    <link rel="stylesheet" href="excelstyles.css">
+    <title>MC2010 Excel模式 - 混凝土徐变计算</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/excel.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
-<body>
-    <div id="container">
-        <div id="left-panel">
-            <div class="button-container">
-                <input type="file" id="fileInput" accept=".xlsx,.xls">
-                <button class="button" onclick="document.getElementById('fileInput').click()">
-                    上传文件
-                </button>
-                <button class="button" id="calculateBtn" onclick="handleCalculate()">
-                    计算
-                </button>
-                <button class="button" id="exportBtn" onclick="handleExport()">
-                    导出
+<body class="excel-page">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <span class="material-icons">architecture</span>
+                <span>混凝土徐变计算</span>
+            </a>
+            <div class="navbar-actions">
+                <button class="theme-toggle" aria-label="切换主题">
+                    <span class="material-icons">dark_mode</span>
                 </button>
             </div>
         </div>
-      
-        <div id="right-panel">
-            <div id="title-area">
-                <h2>计算结果</h2>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <header class="text-center mb-2xl">
+                <h1 class="text-4xl mb-md">MC2010 Excel模式</h1>
+                <p class="text-lg text-secondary mb-xl">通过Excel批量计算混凝土徐变</p>
+            </header>
+
+            <div class="excel-container">
+                <div class="card excel-left-panel">
+                    <div class="card-body">
+                        <div class="button-container">
+                            <input type="file" id="fileInput" accept=".xlsx,.xls" style="display: none;">
+                            <button class="btn btn-primary btn-icon" onclick="document.getElementById('fileInput').click()">
+                                <span class="material-icons">upload_file</span>
+                                上传文件
+                            </button>
+                            <button class="btn btn-primary btn-icon" id="calculateBtn" onclick="handleCalculate()">
+                                <span class="material-icons">calculate</span>
+                                计算
+                            </button>
+                            <button class="btn btn-outline btn-icon" id="exportBtn" onclick="handleExport()">
+                                <span class="material-icons">download</span>
+                                导出
+                            </button>
+                        </div>
+                    </div>
+                </div>
+          
+                <div class="card excel-right-panel">
+                    <div class="card-header">
+                        <h2 class="text-xl">计算结果</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="chartContainer">
+                            <canvas id="chartCanvas"></canvas>
+                        </div>
+                        <div class="loading-overlay">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="chartContainer">
-                <canvas id="chartCanvas"></canvas>
-            </div>
-            <div class="loading-overlay">
-                <div class="loading-spinner"></div>
+
+            <div class="feedback-container">
+                <div class="alert" id="fileFeedback"></div>
+                <div class="alert" id="calculationFeedback"></div>
+                <div class="alert" id="exportFeedback"></div>
             </div>
         </div>
-    </div>
-    <div id="content">
-        <div class="feedback" id="fileFeedback"></div>
-        <div class="feedback" id="calculationFeedback"></div>
-        <div class="feedback" id="exportFeedback"></div>
-    </div>
-    
-    <!-- 在body结束标签前引入脚本 -->
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p> 2024 混凝土徐变计算工具</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="mc2010_excel.js"></script>
+    <script>
+        // 主题切换功能
+        function isDarkTheme() {
+            return document.documentElement.getAttribute('data-theme') === 'dark';
+        }
+
+        function updateThemeIcon() {
+            const themeIcon = document.querySelector('.theme-toggle .material-icons');
+            themeIcon.textContent = isDarkTheme() ? 'light_mode' : 'dark_mode';
+        }
+
+        function toggleTheme() {
+            const newTheme = isDarkTheme() ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+        }
+
+        // 初始化主题
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon();
+
+        // 添加主题切换事件监听
+        document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
+    </script>
 </body>
 </html>

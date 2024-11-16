@@ -2,350 +2,233 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Halunhaku - 工程计算工具</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <style>
-    :root {
-      /* 浅色模式变量 */
-      --bg-gradient-1: #4158D0;
-      --bg-gradient-2: #C850C0;
-      --bg-gradient-3: #FFCC70;
-      --card-bg: rgba(255, 255, 255, 0.1);
-      --text-primary: #ffffff;
-      --text-secondary: rgba(255, 255, 255, 0.8);
-      --accent-color: #00ff88;
-      --border-radius: 24px;
-      --transition: all 0.4s ease;
-    }
-
-    /* 深色模式变量 */
-    [data-theme="dark"] {
-      --bg-gradient-1: #1a1a2e;
-      --bg-gradient-2: #16213e;
-      --bg-gradient-3: #1a1a2e;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --text-primary: #e1e1e1;
-      --text-secondary: rgba(255, 255, 255, 0.7);
-      --accent-color: #4ecca3;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3));
-      color: var(--text-primary);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    nav {
-      width: 100%;
-      max-width: 1200px;
-      padding: 1rem 2rem;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: var(--border-radius);
-      margin-bottom: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(to right, #fff, var(--accent-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .theme-toggle {
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      padding: 1rem;
-    }
-
-    .section-title {
-      grid-column: 1 / -1;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin: 2rem 0;
-      text-align: center;
-      position: relative;
-      color: var(--text-primary);
-    }
-
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 4px;
-      background: var(--accent-color);
-      border-radius: 2px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border-radius: var(--border-radius);
-      padding: 2rem;
-      transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      border-color: var(--accent-color);
-    }
-
-    .card-title {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--accent-color);
-      text-align: center;
-    }
-
-    .card-list {
-      list-style: none;
-    }
-
-    .card-list li {
-      margin-bottom: 1rem;
-    }
-
-    .card-link {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      color: var(--text-primary);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .card-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateX(5px);
-    }
-
-    .card-link i {
-      margin-right: 1rem;
-      font-size: 1.2rem;
-      color: var(--accent-color);
-    }
-    .theme-toggle {
-      transition: transform 0.3s ease;
-    }
-
-    .theme-toggle:hover {
-      transform: rotate(45deg);
-    }
-
-    .theme-toggle i {
-      transition: all 0.3s ease;
-    }
-
-    /* 添加主题切换的过渡效果 */
-    body {
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    .card {
-      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    footer {
-      margin-top: 4rem;
-      padding: 2rem;
-      text-align: center;
-      color: var(--text-secondary);
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-      
-      .section-title {
-        font-size: 2rem;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>混凝土徐变计算工具</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
 </head>
 <body>
-  <nav>
-    <div class="logo">Halunhaku</div>
-    <button class="theme-toggle">
-      <i class="fas fa-moon"></i>
-    </button>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">
+        <span class="material-icons">architecture</span>
+        <span>混凝土徐变计算</span>
+      </a>
+      <div class="navbar-actions">
+        <button class="theme-toggle" aria-label="切换主题">
+          <span class="material-icons">dark_mode</span>
+        </button>
+      </div>
+    </div>
   </nav>
 
-  <div class="container">
-    <h2 class="section-title">徐变计算</h2>
-    
-    <div class="card">
-      <h3 class="card-title">单参数组计算</h3>
-      <ul class="card-list">
-        <li>
-          <a href="aci209.html" class="card-link">
-            <i class="fas fa-calculator"></i>
-            ACI209
-          </a>
-        </li>
-        <li>
-          <a href="mc2010.html" class="card-link">
-            <i class="fas fa-calculator"></i>
-            MC2010
-          </a>
-        </li>
-        <li>
-          <a href="b4.html" class="card-link">
-            <i class="fas fa-calculator"></i>
-            B4
-          </a>
-        </li>
-        <li>
-          <a href="b4s.html" class="card-link">
-            <i class="fas fa-calculator"></i>
-            B4s
-          </a>
-        </li>
-      </ul>
-    </div>
+  <main class="main-content">
+    <div class="container">
+      <!-- 头部区域 -->
+      <header class="text-center mb-2xl">
+        <h1 class="text-4xl mb-md">混凝土徐变计算工具</h1>
+        <p class="text-lg text-secondary mb-xl">专业的混凝土徐变预测与分析工具，支持多种国际标准模型</p>
+      </header>
 
-    <div class="card">
-      <h3 class="card-title">Excel导入计算</h3>
-      <ul class="card-list">
-        <li>
-          <a href="aci209_excel.html" class="card-link">
-            <i class="fas fa-file-excel"></i>
-            ACI209_EXCEL
-          </a>
-        </li>
-        <li>
-          <a href="mc2010_excel.html" class="card-link">
-            <i class="fas fa-file-excel"></i>
-            MC2010_EXCEL
-          </a>
-        </li>
-        <li>
-          <a href="b4_excel.html" class="card-link">
-            <i class="fas fa-file-excel"></i>
-            B4_EXCEL
-          </a>
-        </li>
-        <li>
-          <a href="b4s_excel.html" class="card-link">
-            <i class="fas fa-file-excel"></i>
-            B4s_EXCEL
-          </a>
-        </li>
-      </ul>
-    </div>
+      <!-- 模型选择区域 -->
+      <section class="mb-3xl">
+        <h2 class="text-2xl mb-lg">选择计算模型</h2>
+        <div class="grid grid-cols-2">
+          <!-- ACI209 模型 -->
+          <div class="card card-hover">
+            <div class="card-header">
+              <h3 class="text-xl">ACI209 模型</h3>
+            </div>
+            <div class="card-body">
+              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">architecture</span>
+              <p class="mb-lg">美国混凝土学会推荐的徐变预测模型，适用于普通混凝土结构</p>
+              <div class="flex gap-md">
+                <a href="aci209.html" class="btn btn-primary">
+                  <span class="material-icons">calculate</span>
+                  开始计算
+                </a>
+                <a href="aci209_excel.html" class="btn btn-outline">
+                  <span class="material-icons">table_chart</span>
+                  Excel模式
+                </a>
+              </div>
+            </div>
+          </div>
 
-    <h2 class="section-title">Excel模板下载</h2>
-    
-    <div class="card">
-      <h3 class="card-title">模板下载</h3>
-      <ul class="card-list">
-        <li>
-          <a href="模型示例/aci209示例.xlsx" class="card-link">
-            <i class="fas fa-download"></i>
-            ACI209示例
-          </a>
-        </li>
-        <li>
-          <a href="模型示例/mc2010示例.xlsx" class="card-link">
-            <i class="fas fa-download"></i>
-            MC2010示例
-          </a>
-        </li>
-        <li>
-          <a href="模型示例/B4示例.xlsx" class="card-link">
-            <i class="fas fa-download"></i>
-            B4示例
-          </a>
-        </li>
-        <li>
-          <a href="模型示例/B4s示例.xlsx" class="card-link">
-            <i class="fas fa-download"></i>
-            B4s示例
-          </a>
-        </li>
-        <li>
-          <a href="模型示例/sieve_data.xlsx" class="card-link">
-            <i class="fas fa-download"></i>
-            砂筛分示例
-          </a>
-        </li>
-      </ul>
+          <!-- B4 模型 -->
+          <div class="card card-hover">
+            <div class="card-header">
+              <h3 class="text-xl">B4 模型</h3>
+            </div>
+            <div class="card-body">
+              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">science</span>
+              <p class="mb-lg">最新的徐变预测模型，考虑更多影响因素，预测精度更高</p>
+              <div class="flex gap-md">
+                <a href="b4.html" class="btn btn-primary">
+                  <span class="material-icons">calculate</span>
+                  开始计算
+                </a>
+                <a href="b4_excel.html" class="btn btn-outline">
+                  <span class="material-icons">table_chart</span>
+                  Excel模式
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- B4s 模型 -->
+          <div class="card card-hover">
+            <div class="card-header">
+              <h3 class="text-xl">B4s 模型</h3>
+            </div>
+            <div class="card-body">
+              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">analytics</span>
+              <p class="mb-lg">B4模型的简化版本，在保持较高精度的同时，简化了计算过程</p>
+              <div class="flex gap-md">
+                <a href="b4s.html" class="btn btn-primary">
+                  <span class="material-icons">calculate</span>
+                  开始计算
+                </a>
+                <a href="b4s_excel.html" class="btn btn-outline">
+                  <span class="material-icons">table_chart</span>
+                  Excel模式
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- MC2010 模型 -->
+          <div class="card card-hover">
+            <div class="card-header">
+              <h3 class="text-xl">MC2010 模型</h3>
+            </div>
+            <div class="card-body">
+              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">construction</span>
+              <p class="mb-lg">国际混凝土联合会推荐的徐变预测模型，广泛应用于工程实践</p>
+              <div class="flex gap-md">
+                <a href="mc2010.html" class="btn btn-primary">
+                  <span class="material-icons">calculate</span>
+                  开始计算
+                </a>
+                <a href="mc2010_excel.html" class="btn btn-outline">
+                  <span class="material-icons">table_chart</span>
+                  Excel模式
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Excel模板下载区域 -->
+      <section class="mb-3xl">
+        <h2 class="text-2xl mb-lg">Excel模板下载</h2>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center gap-lg mb-lg">
+              <span class="material-icons icon-xl" style="color: var(--primary-500)">description</span>
+              <div>
+                <h3 class="text-xl mb-sm">计算模板</h3>
+                <p>下载Excel计算模板，按照示例填写数据后可直接导入进行批量计算</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-md">
+              <a href="模型示例/aci209示例.xlsx" class="btn btn-outline w-full">
+                <span class="material-icons">download</span>
+                ACI209示例
+              </a>
+              <a href="模型示例/mc2010示例.xlsx" class="btn btn-outline w-full">
+                <span class="material-icons">download</span>
+                MC2010示例
+              </a>
+              <a href="模型示例/B4示例.xlsx" class="btn btn-outline w-full">
+                <span class="material-icons">download</span>
+                B4示例
+              </a>
+              <a href="模型示例/B4s示例.xlsx" class="btn btn-outline w-full">
+                <span class="material-icons">download</span>
+                B4s示例
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 特性介绍区域 -->
+      <section class="mb-3xl">
+        <h2 class="text-2xl mb-lg">主要特性</h2>
+        <div class="grid grid-cols-3 gap-lg">
+          <div class="card">
+            <div class="card-body">
+              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">precision_manufacturing</span>
+              <h3 class="text-lg mb-sm">多模型支持</h3>
+              <p>支持ACI209、B4、B4s、MC2010等多种国际标准模型</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">upload_file</span>
+              <h3 class="text-lg mb-sm">批量计算</h3>
+              <p>支持Excel文件导入，轻松实现批量数据的计算</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">analytics</span>
+              <h3 class="text-lg mb-sm">可视化分析</h3>
+              <p>自动生成计算结果图表，直观展示徐变发展规律</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2024 混凝土徐变计算工具</p>
+        <a href="https://github.com/forhalunhaku/creep_cal" class="footer-link" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-github"></i>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    // 主题切换功能
+    // 获取主题切换按钮和图标
     const themeToggle = document.querySelector('.theme-toggle');
-    const icon = themeToggle.querySelector('i');
-    
-    // 检查本地存储中的主题设置
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateIcon(savedTheme);
+    const themeIcon = themeToggle.querySelector('.material-icons');
 
-    // 监听系统主题变化
-    if (window.matchMedia) {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      mediaQuery.addListener((e) => {
-        const systemTheme = e.matches ? 'dark' : 'light';
-        // 如果用户没有手动设置主题，则跟随系统
-        if (!localStorage.getItem('theme')) {
-          document.documentElement.setAttribute('data-theme', systemTheme);
-          updateIcon(systemTheme);
-        }
-      });
+    // 检查当前主题
+    function isDarkTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'dark';
     }
 
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      
+    // 更新主题图标
+    function updateThemeIcon() {
+      themeIcon.textContent = isDarkTheme() ? 'light_mode' : 'dark_mode';
+    }
+
+    // 切换主题
+    function toggleTheme() {
+      const newTheme = isDarkTheme() ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
-      updateIcon(newTheme);
-    });
-
-    function updateIcon(theme) {
-      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+      updateThemeIcon();
     }
+
+    // 初始化主题
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon();
+
+    // 添加点击事件
+    themeToggle.addEventListener('click', toggleTheme);
   </script>
-  <footer>
-    <p>© 2024 Halunhaku. All rights reserved.</p>
-  </footer>
 </body>
 </html>
