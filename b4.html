@@ -6,6 +6,7 @@
   <title>B4 混凝土徐变计算</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -14,14 +15,12 @@
 <body>
   <nav class="navbar">
     <div class="navbar-container">
-      <a href="/" class="navbar-brand">
+      <a href="index.html" class="navbar-brand">
         <span class="material-icons">architecture</span>
         <span>混凝土徐变计算</span>
       </a>
-      <div class="navbar-actions">
-        <button class="theme-toggle" aria-label="切换主题">
-          <span class="material-icons">dark_mode</span>
-        </button>
+      <div class="navbar-right">
+        <!-- 主题选择器将由JavaScript动态插入 -->
       </div>
     </div>
   </nav>
@@ -180,45 +179,17 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <div>
-          <p>&copy; 2024 混凝土徐变计算工具</p>
-        </div>
-        <div>
-          <a href="https://github.com/your-repo" target="_blank" rel="noopener">
-            <span class="material-icons">code</span>
-            查看源代码
-          </a>
-        </div>
+        <p>&copy; 2024 混凝土徐变计算工具</p>
+        <a href="https://github.com/forhalunhaku/creep_cal" class="footer-link" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-github"></i>
+          <span>GitHub</span>
+        </a>
       </div>
     </div>
   </footer>
 
+  <!-- 主题管理脚本 -->
+  <script src="assets/js/theme.js"></script>
   <script src="b4.js"></script>
-  <script>
-    // 主题切换
-    const themeToggle = document.querySelector('.theme-toggle');
-    const themeIcon = themeToggle.querySelector('.material-icons');
-
-    function isDarkTheme() {
-      return document.documentElement.getAttribute('data-theme') === 'dark';
-    }
-
-    function updateThemeIcon() {
-      themeIcon.textContent = isDarkTheme() ? 'light_mode' : 'dark_mode';
-    }
-
-    function toggleTheme() {
-      const newTheme = isDarkTheme() ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeIcon();
-    }
-
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon();
-
-    themeToggle.addEventListener('click', toggleTheme);
-  </script>
 </body>
 </html>

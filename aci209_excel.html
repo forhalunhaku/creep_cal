@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACI209 Excel模式 - 混凝土徐变计算</title>
+    <title>ACI209 混凝土徐变计算 - Excel模板</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/excel.css">
@@ -15,14 +16,12 @@
 <body class="excel-page">
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="/" class="navbar-brand">
+            <a href="index.html" class="navbar-brand">
                 <span class="material-icons">architecture</span>
                 <span>混凝土徐变计算</span>
             </a>
-            <div class="navbar-actions">
-                <button class="theme-toggle" aria-label="切换主题">
-                    <span class="material-icons">dark_mode</span>
-                </button>
+            <div class="navbar-right">
+                <!-- 将由JavaScript动态插入 -->
             </div>
         </div>
     </nav>
@@ -81,11 +80,16 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p> 2024 混凝土徐变计算工具</p>
+                <p>&copy; 2024 混凝土徐变计算工具</p>
+                <a href="https://github.com/forhalunhaku/creep_cal" class="footer-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
             </div>
         </div>
     </footer>
 
+    <script src="assets/js/theme.js"></script>
     <script src="aci209_excel.js"></script>
     <script>
         // 主题切换功能

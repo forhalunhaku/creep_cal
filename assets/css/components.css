@@ -459,6 +459,152 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.87)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 
+/* 主题选择器 */
+.theme-selector {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  gap: var(--space-sm);
+}
+
+.theme-toggle:hover {
+  background-color: var(--neutral-100);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background-color: var(--neutral-800);
+}
+
+.theme-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--space-xs);
+  background: var(--bg-paper);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-xs);
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.theme-menu.show {
+  display: block;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  font-size: var(--text-sm);
+}
+
+/* 浅色主题选项 */
+.theme-option[data-theme="light"] {
+  color: #333;
+}
+
+/* 在深色主题下调整浅色主题选项的颜色 */
+[data-theme="dark"] .theme-option[data-theme="light"] {
+  color: #fff;
+}
+
+/* 深色主题选项 */
+.theme-option[data-theme="dark"] {
+  color: #1a1a1a;
+}
+
+/* 在深色主题下调整深色主题选项的颜色 */
+[data-theme="dark"] .theme-option[data-theme="dark"] {
+  color: #fff;
+}
+
+/* 海洋主题选项 */
+.theme-option[data-theme="ocean"] {
+  color: #0277bd;
+}
+
+/* 森林主题选项 */
+.theme-option[data-theme="forest"] {
+  color: #2e7d32;
+}
+
+/* 日落主题选项 */
+.theme-option[data-theme="sunset"] {
+  color: #c62828;
+}
+
+/* 皇家主题选项 */
+.theme-option[data-theme="royal"] {
+  color: #6a1b9a;
+}
+
+.theme-option .theme-name {
+  color: currentColor;
+}
+
+.theme-option:hover {
+  background-color: var(--neutral-100);
+}
+
+[data-theme="dark"] .theme-option:hover {
+  background-color: var(--neutral-800);
+}
+
+.theme-option .material-icons {
+  font-size: var(--text-xl);
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.theme-option:hover .material-icons {
+  opacity: 1;
+}
+
+.theme-option .shortcut {
+  margin-left: auto;
+  color: currentColor;
+  opacity: 0.6;
+  font-size: var(--text-xs);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.theme-menu.show {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
   .navbar-container {

@@ -13,14 +13,42 @@
 <body>
   <nav class="navbar">
     <div class="navbar-container">
-      <a href="/" class="navbar-brand">
+      <a href="index.html" class="navbar-brand">
         <span class="material-icons">architecture</span>
         <span>混凝土徐变计算</span>
       </a>
       <div class="navbar-actions">
-        <button class="theme-toggle" aria-label="切换主题">
-          <span class="material-icons">dark_mode</span>
-        </button>
+        <div class="theme-selector">
+          <button class="theme-toggle" aria-label="切换主题">
+            <span class="material-icons">palette</span>
+          </button>
+          <div class="theme-menu">
+            <button class="theme-option" data-theme="light">
+              <span class="material-icons">light_mode</span>
+              <span>浅色</span>
+            </button>
+            <button class="theme-option" data-theme="dark">
+              <span class="material-icons">dark_mode</span>
+              <span>深色</span>
+            </button>
+            <button class="theme-option" data-theme="ocean">
+              <span class="material-icons">water</span>
+              <span>深蓝</span>
+            </button>
+            <button class="theme-option" data-theme="forest">
+              <span class="material-icons">park</span>
+              <span>自然</span>
+            </button>
+            <button class="theme-option" data-theme="sunset">
+              <span class="material-icons">wb_sunny</span>
+              <span>温暖</span>
+            </button>
+            <button class="theme-option" data-theme="royal">
+              <span class="material-icons">diamond</span>
+              <span>优雅</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -156,34 +184,6 @@
           </div>
         </div>
       </section>
-
-      <!-- 特性介绍区域 -->
-      <section class="mb-3xl">
-        <h2 class="text-2xl mb-lg">主要特性</h2>
-        <div class="grid grid-cols-3 gap-lg">
-          <div class="card">
-            <div class="card-body">
-              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">precision_manufacturing</span>
-              <h3 class="text-lg mb-sm">多模型支持</h3>
-              <p>支持ACI209、B4、B4s、MC2010等多种国际标准模型</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">upload_file</span>
-              <h3 class="text-lg mb-sm">批量计算</h3>
-              <p>支持Excel文件导入，轻松实现批量数据的计算</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <span class="material-icons icon-xl mb-md" style="color: var(--primary-500)">analytics</span>
-              <h3 class="text-lg mb-sm">可视化分析</h3>
-              <p>自动生成计算结果图表，直观展示徐变发展规律</p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   </main>
 
@@ -200,35 +200,51 @@
   </footer>
 
   <script>
-    // 获取主题切换按钮和图标
-    const themeToggle = document.querySelector('.theme-toggle');
-    const themeIcon = themeToggle.querySelector('.material-icons');
-
-    // 检查当前主题
+    // 主题切换相关函数
     function isDarkTheme() {
       return document.documentElement.getAttribute('data-theme') === 'dark';
     }
 
-    // 更新主题图标
     function updateThemeIcon() {
-      themeIcon.textContent = isDarkTheme() ? 'light_mode' : 'dark_mode';
+      const themeIcon = document.querySelector('.theme-toggle .material-icons');
+      themeIcon.textContent = 'palette';
     }
 
-    // 切换主题
-    function toggleTheme() {
-      const newTheme = isDarkTheme() ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeIcon();
-    }
+    // 主题菜单相关
+    const themeToggle = document.querySelector('.theme-toggle');
+    const themeMenu = document.querySelector('.theme-menu');
+    const themeOptions = document.querySelectorAll('.theme-option');
+
+    // 切换主题菜单显示
+    themeToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      themeMenu.classList.toggle('show');
+    });
+
+    // 点击其他地方关闭主题菜单
+    document.addEventListener('click', () => {
+      themeMenu.classList.remove('show');
+    });
+
+    // 阻止菜单点击事件冒泡
+    themeMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    // 主题切换
+    themeOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const theme = option.getAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        themeMenu.classList.remove('show');
+      });
+    });
 
     // 初始化主题
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon();
-
-    // 添加点击事件
-    themeToggle.addEventListener('click', toggleTheme);
   </script>
+  <script src="assets/js/theme.js"></script>
 </body>
 </html>
