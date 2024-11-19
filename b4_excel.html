@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/excel.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
 <body class="excel-page">
     <nav class="navbar">
@@ -60,8 +58,8 @@
                         <h2 class="text-xl">计算结果</h2>
                     </div>
                     <div class="card-body">
-                        <div id="chartContainer">
-                            <canvas id="chartCanvas"></canvas>
+                        <div id="chartContainer" style="width: 100%; height: 400px; position: relative;">
+                            <canvas id="chartCanvas" style="width: 100%; height: 100%;"></canvas>
                         </div>
                         <div class="loading-overlay">
                             <div class="loading-spinner"></div>
@@ -86,9 +84,15 @@
         </div>
     </footer>
 
-    <script src="b4_excel.js"></script>
+    <!-- 依赖库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- 应用代码 -->
+    <script src="./b4_excel.js"></script>
+    
+    <!-- 主题切换 -->
     <script>
-        // 主题切换功能
         function isDarkTheme() {
             return document.documentElement.getAttribute('data-theme') === 'dark';
         }
@@ -99,9 +103,9 @@
         }
 
         function toggleTheme() {
-            const newTheme = isDarkTheme() ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            const currentTheme = isDarkTheme() ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('theme', currentTheme);
             updateThemeIcon();
         }
 
@@ -110,7 +114,7 @@
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon();
 
-        // 添加主题切换事件监听
+        // 添加主题切换事件监听器
         document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
     </script>
 </body>
