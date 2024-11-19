@@ -16,13 +16,16 @@
 
 - 🎨 现代化界面
   - 响应式设计，支持各种设备
-  - 深色/浅色主题切换
+  - 智能深色/浅色主题系统
+    - 主题设置自动同步
+    - 主题切换动画
+    - 主题状态持久化
   - 实时数据可视化
 
 - 📊 数据可视化
-  - 使用Chart.js绘制徐变系数曲线
+  - 使用Plotly.js绘制徐变系数曲线
   - 清晰直观的数据展示
-  - 支持图表导出
+  - 支持图表交互和导出
 
 ## 使用方法
 
@@ -44,24 +47,28 @@
 
 - 前端框架：原生JavaScript
 - UI组件：自定义CSS组件
-- 图表库：Chart.js
+- 图表库：Plotly.js
 - Excel处理：XLSX.js
-- 样式：CSS变量实现的主题系统
+- 主题系统：CSS变量 + JavaScript
 
-## 本地运行
+## 使用方式
+
+### 在线使用
+
+访问 [https://forhalunhaku.github.io/creep_cal/](https://forhalunhaku.github.io/creep_cal/)
+
+### 本地运行
 
 1. 克隆仓库
 ```bash
 git clone https://github.com/forhalunhaku/creep_cal.git
 ```
 
-
-2. 在浏览器中访问https://forhalunhaku.github.io/creep_cal/
+2. 使用本地服务器运行（比如 VS Code 的 Live Server 插件）
 
 ## 贡献
 
 欢迎提交问题和改进建议！
-
 
 ## 联系方式
 
