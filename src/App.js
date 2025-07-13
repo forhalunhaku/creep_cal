@@ -44,7 +44,8 @@ function getInitialTheme() {
 
 function App() {
   const [activeTab, setActiveTab] = useState('aci209');
-  const [theme] = useState(getInitialTheme());
+  const [theme, setTheme] = useState(getInitialTheme());
+  const [showDocs, setShowDocs] = useState(false);
 
   // 监听系统主题变化
   useEffect(() => {
@@ -70,7 +71,16 @@ function App() {
     }
   }, [theme]);
 
+  // 主题切换函数
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+  };
 
+  // 获取当前主题图标
+  const getThemeIcon = () => {
+    return theme === 'light' ? '🌙' : '🌞';
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -88,6 +98,24 @@ function App() {
 
   return (
     <div className="App" style={{ position: 'relative' }}>
+      {/* 头部按钮区域 */}
+      <div className="header-controls">
+        <button
+          onClick={toggleTheme}
+          className="theme-icon-btn"
+          title={`切换到${theme === 'light' ? '深色' : '浅色'}模式`}
+        >
+          <span className="theme-icon">{getThemeIcon()}</span>
+        </button>
+        <button
+          onClick={() => setShowDocs(!showDocs)}
+          className="theme-icon-btn"
+          title="查看模型说明文档"
+        >
+          <span className="theme-icon">📚</span>
+        </button>
+      </div>
+
       <h1>混凝土徐变多模型计算平台</h1>
 
       <div className="tab-bar">
@@ -101,6 +129,49 @@ function App() {
           </button>
         ))}
       </div>
+
+      {/* 文档说明弹窗 */}
+      {showDocs && (
+        <div className="docs-overlay" onClick={() => setShowDocs(false)}>
+          <div className="docs-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="docs-header">
+              <h3>📚 模型说明文档</h3>
+              <button onClick={() => setShowDocs(false)} className="close-btn">✕</button>
+            </div>
+            <div className="docs-content">
+              <div className="docs-links">
+                <a href="/模型说明/aci209.md" target="_blank" rel="noopener noreferrer">
+                  📄 ACI209 模型说明
+                </a>
+                <a href="/模型说明/mc2010.md" target="_blank" rel="noopener noreferrer">
+                  📄 MC2010 模型说明
+                </a>
+                <a href="/模型说明/b4.md" target="_blank" rel="noopener noreferrer">
+                  📄 B4 模型说明
+                </a>
+                <a href="/模型说明/b4s.md" target="_blank" rel="noopener noreferrer">
+                  📄 B4S 模型说明
+                </a>
+              </div>
+              <div className="docs-examples">
+                <h4>📊 示例数据下载</h4>
+                <a href="/模型示例/aci209示例.xlsx" download>
+                  📥 ACI209 示例数据
+                </a>
+                <a href="/模型示例/mc2010示例.xlsx" download>
+                  📥 MC2010 示例数据
+                </a>
+                <a href="/模型示例/B4示例.xlsx" download>
+                  📥 B4 示例数据
+                </a>
+                <a href="/模型示例/B4s示例.xlsx" download>
+                  📥 B4S 示例数据
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="main-card">
         <ErrorBoundary>

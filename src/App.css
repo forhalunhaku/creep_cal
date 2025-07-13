@@ -389,7 +389,133 @@ input[type="file"] {
   background: #22304a;
 }
 
+/* 头部控制按钮 */
+.header-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 12px;
+  z-index: 1000;
+}
+
+/* 文档弹窗样式 */
+.docs-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+}
+
+.docs-modal {
+  background: var(--color-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-heavy);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.docs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.docs-header h3 {
+  margin: 0;
+  color: var(--color-section-title);
+  font-size: 1.25rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--color-text);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: var(--color-tab-hover);
+}
+
+.docs-content {
+  padding: 20px 24px;
+}
+
+.docs-links, .docs-examples {
+  margin-bottom: 24px;
+}
+
+.docs-links a, .docs-examples a {
+  display: block;
+  padding: 12px 16px;
+  margin: 8px 0;
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--border-radius-small);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: var(--transition);
+}
+
+.docs-links a:hover, .docs-examples a:hover {
+  background: var(--color-tab-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-light);
+}
+
+.docs-examples h4 {
+  color: var(--color-section-title);
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+}
+
 @media (max-width: 700px) {
+  /* 移动端头部按钮优化 */
+  .header-controls {
+    top: 10px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .theme-icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .theme-icon {
+    font-size: 20px;
+  }
+
+  /* 移动端文档弹窗优化 */
+  .docs-modal {
+    width: 95%;
+    max-height: 85vh;
+  }
+
+  .docs-header {
+    padding: 16px 20px 12px;
+  }
+
+  .docs-content {
+    padding: 16px 20px;
+  }
+
   .main-card {
     padding: 8px 0 8px 0;
     margin: 12px 2px 12px 2px;
