@@ -44,3 +44,6 @@ $RECYCLE.BIN/
 rust-engine/target/
 target/
 Cargo.lock
+
+# Keep WASM files for deployment
+!src/wasm-pkg/
