@@ -1,0 +1,15 @@
+{
+  "name": "creep-calculator-engine",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "creep_calculator_engine_bg.wasm",
+    "creep_calculator_engine.js",
+    "creep_calculator_engine.d.ts"
+  ],
+  "main": "creep_calculator_engine.js",
+  "types": "creep_calculator_engine.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
