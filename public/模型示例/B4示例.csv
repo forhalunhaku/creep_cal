@@ -1,0 +1,10 @@
+cementType,t,tPrime,t0,T,h,fc,vS,c,wC,aC,specimenShape,aggregateType
+R,112,28,28,20,50,27.6,19.05,219.3,0.6,7,infinite square prism,No Information
+RS,80,7,7,21,60,42.5,25,220,0.4,5,infinite cylinder,No Information
+SL,300,14,14,22,70,64.9,19.05,440,0.25,3,infinite slab,No Information
+R,220,3,3,23,99,27.6,33,220,0.6,7,infinite square prism,No Information
+RS,50,28,28,24,60,42.5,25,220,0.4,5,infinite cylinder,No Information
+SL,30,7,7,20,90,64.9,19.05,440,0.25,3,infinite slab,No Information
+R,299,14,14,21,50,27.6,33,220,0.6,7,infinite square prism,No Information
+RS,99,3,3,22,99,42.5,25,220,0.4,5,infinite cylinder,No Information
+SL,86,28,28,23,60,64.9,19.05,440,0.25,3,infinite slab,No Information

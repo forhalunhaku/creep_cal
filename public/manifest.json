@@ -1,0 +1,21 @@
+{
+  "short_name": "徐变平台",
+  "name": "混凝土徐变多模型平台",
+  "description": "集成ACI209、MC2010、B4、B4S等主流混凝土徐变模型，支持批量导入导出、可视化、深色模式。",
+  "icons": [
+    {
+      "src": "logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1976d2",
+  "background_color": "#f4f6fa"
+}

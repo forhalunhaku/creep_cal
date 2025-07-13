@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="混凝土徐变多模型平台，集成ACI209、MC2010、B4、B4S等主流模型，支持批量导入导出、可视化、深色模式，适用于科研与工程设计。"
+    />
+    <meta name="keywords" content="混凝土,徐变,ACI209,MC2010,B4,B4S,工程计算,批量导入,科研工具,结构设计,土木工程" />
+    <meta name="author" content="halunhaku" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>混凝土徐变多模型平台</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <div class="fab-group">
+      <button id="theme-fab" class="theme-fab" title="主题切换" aria-label="主题切换" onclick="window.toggleTheme && window.toggleTheme()">
+        <span style="font-size:22px;">🖥️</span>
+      </button>
+      <button id="resource-fab" class="resource-fab" title="资料与示例下载" aria-label="资料与示例下载" onclick="document.getElementById('resource-card').style.display='block'">
+        <span style="font-size:22px;">📚</span>
+      </button>
+    </div>
+    <div id="resource-card" class="resource-card" style="display:none;">
+      <button class="resource-close" onclick="document.getElementById('resource-card').style.display='none'">×</button>
+      <section style="margin-bottom:18px;">
+        <h2 class="resource-title">📚 模型说明文档</h2>
+        <ul class="resource-list">
+          <li><a href="/模型说明/aci209.md" download>ACI209模型说明（Markdown）</a></li>
+          <li><a href="/模型说明/mc2010.md" download>MC2010模型说明（Markdown）</a></li>
+          <li><a href="/模型说明/b4.md" download>B4模型说明（Markdown）</a></li>
+          <li><a href="/模型说明/b4s.md" download>B4S模型说明（Markdown）</a></li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="resource-title">🗂️ 模型示例数据下载</h2>
+        <ul class="resource-list">
+          <li><a href="/模型示例/aci209示例.xlsx" download>ACI209示例.xlsx</a> | <a href="/模型示例/aci209示例.csv" download>CSV</a></li>
+          <li><a href="/模型示例/mc2010示例.xlsx" download>MC2010示例.xlsx</a> | <a href="/模型示例/mc2010示例.csv" download>CSV</a></li>
+          <li><a href="/模型示例/B4示例.xlsx" download>B4示例.xlsx</a> | <a href="/模型示例/B4示例.csv" download>CSV</a></li>
+          <li><a href="/模型示例/B4s示例.xlsx" download>B4S示例.xlsx</a> | <a href="/模型示例/B4s示例.csv" download>CSV</a></li>
+        </ul>
+      </section>
+    </div>
+    <style>
+      .fab-group {
+        display: none;
+      }
+      @media (min-width: 900px) {
+        .fab-group {
+          display: flex;
+          position: fixed;
+          top: 32px;
+          right: 32px;
+          gap: 14px;
+          z-index: 120;
+        }
+        .theme-fab, .resource-fab {
+          width: 56px;
+          height: 56px;
+          border: none;
+          outline: none;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.95);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          backdrop-filter: blur(10px);
+          border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .theme-fab:hover, .resource-fab:hover {
+          background: rgba(52, 152, 219, 1);
+          color: white;
+          box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+          transform: scale(1.1) rotate(180deg);
+        }
+
+        [data-theme='dark'] .theme-fab,
+        [data-theme='dark'] .resource-fab {
+          background: rgba(44, 62, 80, 0.95);
+          color: #ecf0f1;
+        }
+
+        [data-theme='dark'] .theme-fab:hover,
+        [data-theme='dark'] .resource-fab:hover {
+          background: rgba(93, 173, 226, 1);
+          color: white;
+        }
+        .resource-card {
+          display: none;
+          position: fixed;
+          top: 88px;
+          right: 32px;
+          width: 320px;
+          background: #fff;
+          border-radius: 16px;
+          box-shadow: 0 6px 32px rgba(25,118,210,0.13);
+          padding: 22px 22px 16px 22px;
+          z-index: 130;
+          font-size: 1rem;
+          animation: slideDown 0.25s;
+        }
+        .resource-title {
+          color: #1976d2;
+          font-size: 1.08rem;
+          margin: 0 0 8px 0;
+          font-weight: 700;
+        }
+        .resource-list {
+          margin: 0 0 8px 0;
+          padding: 0 0 0 16px;
+          line-height: 2;
+        }
+        .resource-list li {
+          margin-bottom: 2px;
+        }
+        .resource-list a {
+          color: #1976d2;
+          text-decoration: underline;
+          transition: color 0.2s;
+        }
+        .resource-list a:hover {
+          color: #1565c0;
+        }
+        .resource-close {
+          position: absolute;
+          top: 8px;
+          right: 12px;
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          color: #888;
+          cursor: pointer;
+        }
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-24px); }
+          to { opacity: 1; transform: none; }
+        }
+      }
+    </style>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+    <footer style="text-align:center;color:#888;font-size:0.98rem;margin:32px 0 12px 0;">
+      © 2025 halunhaku 保留所有权利
+      <!-- 如有备案号可加：<a href="https://beian.miit.gov.cn/" target="_blank" style="color:#888;text-decoration:none;">粤ICP备xxxxxxx号</a> -->
+    </footer>
+    <script>
+    (function() {
+      // 主题切换逻辑
+      const THEME_ORDER = ['system', 'light', 'dark'];
+      function getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      function getTheme() {
+        const saved = localStorage.getItem('theme-mode');
+        if (THEME_ORDER.includes(saved)) return saved;
+        return 'system';
+      }
+      function setTheme(theme) {
+        localStorage.setItem('theme-mode', theme);
+        if (theme === 'system') {
+          document.body.setAttribute('data-theme', getSystemTheme());
+        } else {
+          document.body.setAttribute('data-theme', theme);
+        }
+        // 切换按钮图标
+        const icon = document.querySelector('#theme-fab span');
+        if (icon) {
+          icon.textContent = theme === 'light' ? '🌞' : (theme === 'dark' ? '🌙' : '🖥️');
+        }
+      }
+      window.toggleTheme = function() {
+        const cur = getTheme();
+        const idx = THEME_ORDER.indexOf(cur);
+        const next = THEME_ORDER[(idx + 1) % THEME_ORDER.length];
+        setTheme(next);
+      };
+      // 初始化
+      setTheme(getTheme());
+      // 跟随系统变化
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+        if (getTheme() === 'system') setTheme('system');
+      });
+    })();
+    </script>
+  </body>
+</html>

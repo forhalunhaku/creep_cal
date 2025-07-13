@@ -1,0 +1,46 @@
+# Node
+node_modules/
+
+# Build output
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Others
+coverage/
+*.local
+*.sublime*
+
+# Mac系统文件
+.AppleDouble
+.LSOverride
+
+# Windows系统文件
+Desktop.ini
+$RECYCLE.BIN/
+
+# 备份文件
+*.bak
+*.tmp
+
+# Rust
+/rust-engine/target/
+rust-engine/target/
+target/
+Cargo.lock
