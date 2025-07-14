@@ -98,28 +98,10 @@ function App() {
 
   return (
     <div className="App" style={{ position: 'relative' }}>
-      {/* PC端固定按钮 */}
-      <div className="header-controls">
-        <button
-          onClick={toggleTheme}
-          className="theme-icon-btn"
-          title={`切换到${theme === 'light' ? '深色' : '浅色'}模式`}
-        >
-          <span className="theme-icon">{getThemeIcon()}</span>
-        </button>
-        <button
-          onClick={() => setShowDocs(!showDocs)}
-          className="theme-icon-btn"
-          title="查看模型说明文档"
-        >
-          <span className="theme-icon">📚</span>
-        </button>
-      </div>
-
       <h1>混凝土徐变多模型计算平台</h1>
 
-      {/* 移动端相对定位按钮 */}
-      <div className="header-controls-mobile">
+      {/* 统一头部控制按钮 - 所有设备都在标题下方 */}
+      <div className="header-controls">
         <button
           onClick={toggleTheme}
           className="theme-icon-btn"

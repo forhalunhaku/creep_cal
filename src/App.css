@@ -368,13 +368,13 @@ input[type="file"] {
 }
 
 .theme-icon-btn {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border: none;
   outline: none;
   border-radius: 50%;
   background: rgba(25, 118, 210, 0.10);
-  box-shadow: 0 2px 8px var(--color-card-shadow);
+  box-shadow: 0 4px 12px var(--color-card-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -397,42 +397,13 @@ input[type="file"] {
   background: #22304a;
 }
 
-/* 头部控制按钮 - PC端固定定位 */
+/* 统一头部控制按钮 - 所有设备都在标题下方 */
 .header-controls {
-  position: fixed;
-  top: 20px;
-  right: 20px;
   display: flex;
-  gap: 12px;
-  z-index: 1000;
-}
-
-/* PC端强制隐藏移动端按钮 */
-@media (min-width: 1025px) {
-  .header-controls-mobile {
-    display: none !important;
-  }
-}
-
-/* 移动端按钮容器 - 默认隐藏 */
-.header-controls-mobile {
-  display: none;
-}
-
-/* 平板和小屏幕设备 */
-@media (max-width: 1024px) {
-  .header-controls {
-    display: none !important;
-  }
-
-  .header-controls-mobile {
-    display: flex !important;
-    position: relative;
-    justify-content: center;
-    margin: 16px auto 8px;
-    gap: 16px;
-    max-width: 200px;
-  }
+  justify-content: center;
+  margin: 20px auto 16px;
+  gap: 16px;
+  max-width: 200px;
 }
 
 /* 文档弹窗样式 */
@@ -523,15 +494,18 @@ input[type="file"] {
 
 @media (max-width: 700px) {
   /* 移动端按钮样式优化 */
+  .header-controls {
+    margin: 16px auto 12px;
+    gap: 12px;
+  }
 
   .theme-icon-btn {
     width: 44px;
     height: 44px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
   .theme-icon {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   /* 移动端文档弹窗优化 */
