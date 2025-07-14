@@ -407,9 +407,32 @@ input[type="file"] {
   z-index: 1000;
 }
 
+/* PC端强制隐藏移动端按钮 */
+@media (min-width: 1025px) {
+  .header-controls-mobile {
+    display: none !important;
+  }
+}
+
 /* 移动端按钮容器 - 默认隐藏 */
 .header-controls-mobile {
   display: none;
+}
+
+/* 平板和小屏幕设备 */
+@media (max-width: 1024px) {
+  .header-controls {
+    display: none !important;
+  }
+
+  .header-controls-mobile {
+    display: flex !important;
+    position: relative;
+    justify-content: center;
+    margin: 16px auto 8px;
+    gap: 16px;
+    max-width: 200px;
+  }
 }
 
 /* 文档弹窗样式 */
@@ -499,19 +522,7 @@ input[type="file"] {
 }
 
 @media (max-width: 700px) {
-  /* 移动端隐藏固定按钮，显示相对定位按钮 */
-  .header-controls {
-    display: none;
-  }
-
-  .header-controls-mobile {
-    display: flex;
-    position: relative;
-    justify-content: center;
-    margin: 16px auto 8px;
-    gap: 16px;
-    max-width: 200px;
-  }
+  /* 移动端按钮样式优化 */
 
   .theme-icon-btn {
     width: 44px;
