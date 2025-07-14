@@ -366,10 +366,9 @@ function B4sCalculator() {
                 </LineChart>
               </ResponsiveContainer>
               {results.length > 1000 && (
-                <div style={{
+                <div className="text-secondary" style={{
                   textAlign: 'center',
                   fontSize: '0.9rem',
-                  color: '#666',
                   marginTop: '8px',
                   fontStyle: 'italic'
                 }}>
@@ -426,23 +425,20 @@ function B4sCalculator() {
                 </tbody>
               </table>
               {batchResults.length > 100 && (
-                <p style={{ textAlign: 'center', color: '#666', marginTop: 16 }}>
+                <p className="text-secondary" style={{ textAlign: 'center', marginTop: 16 }}>
                   显示前100条结果，共{batchResults.length}条
                 </p>
               )}
 
-              <div style={{
+              <div className="info-box" style={{
                 marginTop: 16,
                 padding: 16,
-                backgroundColor: '#f5f5f5',
                 borderRadius: 8,
                 fontSize: '14px'
               }}>
-                <h4 style={{ margin: '0 0 8px 0', color: '#1976d2' }}>📊 B4S 批量计算结果</h4>
-                <div style={{
+                <h4 className="info-text" style={{ margin: '0 0 8px 0' }}>📊 B4S 批量计算结果</h4>
+                <div className="highlight-box-blue" style={{
                   padding: '8px 12px',
-                  backgroundColor: '#e3f2fd',
-                  borderLeft: '4px solid #1976d2',
                   marginBottom: '12px',
                   borderRadius: '4px'
                 }}>
@@ -453,8 +449,8 @@ function B4sCalculator() {
                   <li><strong>J</strong>: 徐变函数，单位 1/GPa</li>
                   <li><strong>εSH</strong>: 收缩应变，无量纲</li>
                   <li><strong>εAU</strong>: 自生收缩应变，无量纲</li>
-                  <li style={{ color: '#1976d2' }}>💡 支持导出为 CSV 格式进行进一步分析</li>
-                  <li style={{ color: '#666' }}>📋 基于 Bažant-Baweja B4S 简化模型</li>
+                  <li className="info-text">💡 支持导出为 CSV 格式进行进一步分析</li>
+                  <li className="text-secondary">📋 基于 Bažant-Baweja B4S 简化模型</li>
                 </ul>
               </div>
             </div>
