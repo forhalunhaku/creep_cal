@@ -538,10 +538,9 @@ function RustAci209Calculator() {
               </LineChart>
             </ResponsiveContainer>
             {results.length > 1000 && (
-              <div style={{
+              <div className="text-secondary" style={{
                 textAlign: 'center',
                 fontSize: '0.9rem',
-                color: '#666',
                 marginTop: '8px',
                 fontStyle: 'italic'
               }}>
@@ -552,7 +551,7 @@ function RustAci209Calculator() {
         )}
 
         {!isCalculated && (
-          <div style={{ color: '#888', marginBottom: 12 }}>请先输入参数并点击"🚀 Rust 高速计算"</div>
+          <div className="text-muted" style={{ marginBottom: 12 }}>请先输入参数并点击"🚀 Rust 高速计算"</div>
         )}
 
         <hr className="divider" />
@@ -594,19 +593,18 @@ function RustAci209Calculator() {
               </tbody>
             </table>
             {batchResults.length > 100 && (
-              <p style={{ textAlign: 'center', color: '#666', marginTop: 16 }}>
+              <p className="text-secondary" style={{ textAlign: 'center', marginTop: 16 }}>
                 显示前100条结果，共{batchResults.length}条
               </p>
             )}
 
-            <div style={{
+            <div className="info-box" style={{
               marginTop: 16,
               padding: 16,
-              backgroundColor: '#f5f5f5',
               borderRadius: 8,
               fontSize: '14px'
             }}>
-              <h4 style={{ margin: '0 0 8px 0', color: '#1976d2' }}>📊 ACI209 批量计算结果</h4>
+              <h4 className="info-text" style={{ margin: '0 0 8px 0' }}>📊 ACI209 批量计算结果</h4>
               <div style={{
                 padding: '8px 12px',
                 backgroundColor: '#e8f5e8',
@@ -619,8 +617,8 @@ function RustAci209Calculator() {
               </div>
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 <li><strong>φ</strong>: 徐变系数，无量纲</li>
-                <li style={{ color: '#1976d2' }}>💡 支持导出为 CSV 格式进行进一步分析</li>
-                <li style={{ color: '#666' }}>📋 公式：φ = βt₀ × βRH × βVS × βs × βCc × βα × βc</li>
+                <li className="info-text">💡 支持导出为 CSV 格式进行进一步分析</li>
+                <li className="text-secondary">📋 公式：φ = βt₀ × βRH × βVS × βs × βCc × βα × βc</li>
               </ul>
             </div>
           </div>

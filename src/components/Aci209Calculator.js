@@ -189,10 +189,10 @@ function Aci209Calculator() {
               </LineChart>
             </ResponsiveContainer>
             {results.length > 1000 && (
-              <div style={{
+              <div className="text-secondary" style={{
                 textAlign: 'center',
                 fontSize: '0.9rem',
-                color: '#666',
+
                 marginTop: '8px',
                 fontStyle: 'italic'
               }}>

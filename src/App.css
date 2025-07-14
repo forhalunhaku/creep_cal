@@ -397,7 +397,7 @@ input[type="file"] {
   background: #22304a;
 }
 
-/* 头部控制按钮 */
+/* 头部控制按钮 - PC端固定定位 */
 .header-controls {
   position: fixed;
   top: 20px;
@@ -405,6 +405,11 @@ input[type="file"] {
   display: flex;
   gap: 12px;
   z-index: 1000;
+}
+
+/* 移动端按钮容器 - 默认隐藏 */
+.header-controls-mobile {
+  display: none;
 }
 
 /* 文档弹窗样式 */
@@ -494,11 +499,14 @@ input[type="file"] {
 }
 
 @media (max-width: 700px) {
-  /* 移动端头部按钮优化 - 改为相对定位避免遮挡 */
+  /* 移动端隐藏固定按钮，显示相对定位按钮 */
   .header-controls {
+    display: none;
+  }
+
+  .header-controls-mobile {
+    display: flex;
     position: relative;
-    top: auto;
-    right: auto;
     justify-content: center;
     margin: 16px auto 8px;
     gap: 16px;
