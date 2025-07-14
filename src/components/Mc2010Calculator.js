@@ -289,10 +289,8 @@ function Mc2010Calculator() {
               fontSize: '14px'
             }}>
               <h4 style={{ margin: '0 0 8px 0', color: '#1976d2' }}>📊 MC2010 批量计算结果</h4>
-              <div style={{
+              <div className="highlight-box-blue" style={{
                 padding: '8px 12px',
-                backgroundColor: '#e3f2fd',
-                borderLeft: '4px solid #1976d2',
                 marginBottom: '12px',
                 borderRadius: '4px'
               }}>

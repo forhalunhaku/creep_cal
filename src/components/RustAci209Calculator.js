@@ -605,10 +605,8 @@ function RustAci209Calculator() {
               fontSize: '14px'
             }}>
               <h4 className="info-text" style={{ margin: '0 0 8px 0' }}>📊 ACI209 批量计算结果</h4>
-              <div style={{
+              <div className="highlight-box" style={{
                 padding: '8px 12px',
-                backgroundColor: '#e8f5e8',
-                borderLeft: '4px solid #4caf50',
                 marginBottom: '12px',
                 borderRadius: '4px'
               }}>

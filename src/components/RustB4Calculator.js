@@ -744,18 +744,15 @@ function RustB4Calculator() {
               </p>
             )}
 
-            <div style={{
+            <div className="info-box" style={{
               marginTop: 16,
               padding: 16,
-              backgroundColor: '#f5f5f5',
               borderRadius: 8,
               fontSize: '14px'
             }}>
-              <h4 style={{ margin: '0 0 8px 0', color: '#1976d2' }}>📊 B4 批量计算结果</h4>
-              <div style={{
+              <h4 className="info-text" style={{ margin: '0 0 8px 0' }}>📊 B4 批量计算结果</h4>
+              <div className="highlight-box" style={{
                 padding: '8px 12px',
-                backgroundColor: '#e8f5e8',
-                borderLeft: '4px solid #4caf50',
                 marginBottom: '12px',
                 borderRadius: '4px'
               }}>
@@ -766,7 +763,7 @@ function RustB4Calculator() {
                 <li><strong>J</strong>: 徐变函数（柔度），单位：1/MPa</li>
                 <li><strong>εSH</strong>: 收缩应变，无量纲</li>
                 <li><strong>εAU</strong>: 自生收缩应变，无量纲</li>
-                <li style={{ color: '#1976d2' }}>💡 支持导出为 CSV 格式进行进一步分析</li>
+                <li className="info-text">💡 支持导出为 CSV 格式进行进一步分析</li>
               </ul>
             </div>
           </div>

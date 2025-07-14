@@ -201,7 +201,7 @@ function Aci209Calculator() {
             )}
           </div>
         ) : (
-          <div style={{ color: '#888', marginBottom: 12 }}>请先输入参数并点击“计算徐变系数”</div>
+          <div className="text-muted" style={{ marginBottom: 12 }}>请先输入参数并点击“计算徐变系数”</div>
         )}
         <hr className="divider" />
         <h3 className="section-title" style={{ marginTop: 40 }}>批量导入/批量计算</h3>

@@ -756,3 +756,29 @@ h2 {
 .info-text {
   color: var(--color-info-text) !important;
 }
+
+/* 高亮信息框样式 */
+.highlight-box {
+  background: #e8f5e8 !important;
+  color: #2e7d32 !important;
+  border-left: 4px solid #4caf50 !important;
+}
+
+[data-theme='dark'] .highlight-box {
+  background: rgba(76, 175, 80, 0.15) !important;
+  color: #81c784 !important;
+  border-left: 4px solid #66bb6a !important;
+}
+
+/* JavaScript版本的蓝色高亮框 */
+.highlight-box-blue {
+  background: #e3f2fd !important;
+  color: #1976d2 !important;
+  border-left: 4px solid #1976d2 !important;
+}
+
+[data-theme='dark'] .highlight-box-blue {
+  background: rgba(25, 118, 210, 0.15) !important;
+  color: #64b5f6 !important;
+  border-left: 4px solid #42a5f5 !important;
+}
