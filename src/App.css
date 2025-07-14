@@ -22,6 +22,10 @@
   --color-table-row-alt: rgba(52, 152, 219, 0.05);
   --color-table-row-hover: rgba(52, 152, 219, 0.1);
   --color-section-title: #2980b9;
+  --color-text-secondary: #666666;
+  --color-text-muted: #888888;
+  --color-info-bg: #f5f5f5;
+  --color-info-text: #1976d2;
 
   /* 新增变量 */
   --border-radius: 16px;
@@ -54,6 +58,10 @@
   --color-table-row-alt: rgba(93, 173, 226, 0.05);
   --color-table-row-hover: rgba(93, 173, 226, 0.1);
   --color-section-title: #85c1e9;
+  --color-text-secondary: #b0bec5;
+  --color-text-muted: #90a4ae;
+  --color-info-bg: rgba(44, 62, 80, 0.6);
+  --color-info-text: #81c784;
 }
 
 [data-theme='dark'] h1 {
@@ -486,20 +494,25 @@ input[type="file"] {
 }
 
 @media (max-width: 700px) {
-  /* 移动端头部按钮优化 */
+  /* 移动端头部按钮优化 - 改为相对定位避免遮挡 */
   .header-controls {
-    top: 10px;
-    right: 10px;
-    gap: 8px;
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-content: center;
+    margin: 16px auto 8px;
+    gap: 16px;
+    max-width: 200px;
   }
 
   .theme-icon-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
   .theme-icon {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   /* 移动端文档弹窗优化 */
@@ -731,4 +744,22 @@ h2 {
 
 .loading-pulse {
   animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* 通用文字样式 */
+.text-secondary {
+  color: var(--color-text-secondary) !important;
+}
+
+.text-muted {
+  color: var(--color-text-muted) !important;
+}
+
+.info-box {
+  background: var(--color-info-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.info-text {
+  color: var(--color-info-text) !important;
 }
