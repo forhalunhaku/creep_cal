@@ -9,6 +9,7 @@ import RustAci209Calculator from './components/RustAci209Calculator';
 import RustMc2010Calculator from './components/RustMc2010Calculator';
 import RustB4Calculator from './components/RustB4Calculator';
 import RustB4sCalculator from './components/RustB4sCalculator';
+import MarkdownViewer from './components/MarkdownViewer';
 
 const TABS = [
   { key: 'aci209', label: 'ACI209' },
@@ -46,6 +47,35 @@ function App() {
   const [activeTab, setActiveTab] = useState('aci209');
   const [theme, setTheme] = useState(getInitialTheme());
   const [showDocs, setShowDocs] = useState(false);
+  const [activeDoc, setActiveDoc] = useState(null);
+  const [docContent, setDocContent] = useState('');
+  const [docLoading, setDocLoading] = useState(false);
+
+  const openDoc = async (docName, docPath) => {
+    setActiveDoc(docName);
+    setDocLoading(true);
+    try {
+      const response = await fetch(docPath);
+      const text = await response.text();
+      setDocContent(text);
+    } catch (error) {
+      console.error('Failed to load doc:', error);
+      setDocContent('# Error\nFailed to load documentation.');
+    } finally {
+      setDocLoading(false);
+    }
+  };
+
+  const closeDoc = () => {
+    setShowDocs(false);
+    setActiveDoc(null);
+    setDocContent('');
+  };
+
+  const backToDocList = () => {
+    setActiveDoc(null);
+    setDocContent('');
+  };
 
   // 监听系统主题变化
   useEffect(() => {
@@ -110,7 +140,7 @@ function App() {
           <span className="theme-icon">{getThemeIcon()}</span>
         </button>
         <button
-          onClick={() => setShowDocs(!showDocs)}
+          onClick={() => setShowDocs(true)}
           className="theme-icon-btn"
           title="查看模型说明文档"
         >
@@ -132,42 +162,57 @@ function App() {
 
       {/* 文档说明弹窗 */}
       {showDocs && (
-        <div className="docs-overlay" onClick={() => setShowDocs(false)}>
+        <div className="docs-overlay" onClick={closeDoc}>
           <div className="docs-modal" onClick={(e) => e.stopPropagation()}>
             <div className="docs-header">
-              <h3>📚 模型说明文档</h3>
-              <button onClick={() => setShowDocs(false)} className="close-btn">✕</button>
+              <h3>{activeDoc ? `📚 ${activeDoc} 说明` : '📚 模型说明文档'}</h3>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {activeDoc && (
+                  <button onClick={backToDocList} className="close-btn" title="返回列表">⬅️</button>
+                )}
+                <button onClick={closeDoc} className="close-btn" title="关闭">✕</button>
+              </div>
             </div>
             <div className="docs-content">
-              <div className="docs-links">
-                <a href="/模型说明/aci209.md" target="_blank" rel="noopener noreferrer">
-                  📄 ACI209 模型说明
-                </a>
-                <a href="/模型说明/mc2010.md" target="_blank" rel="noopener noreferrer">
-                  📄 MC2010 模型说明
-                </a>
-                <a href="/模型说明/b4.md" target="_blank" rel="noopener noreferrer">
-                  📄 B4 模型说明
-                </a>
-                <a href="/模型说明/b4s.md" target="_blank" rel="noopener noreferrer">
-                  📄 B4S 模型说明
-                </a>
-              </div>
-              <div className="docs-examples">
-                <h4>📊 示例数据下载</h4>
-                <a href="/模型示例/aci209示例.xlsx" download>
-                  📥 ACI209 示例数据
-                </a>
-                <a href="/模型示例/mc2010示例.xlsx" download>
-                  📥 MC2010 示例数据
-                </a>
-                <a href="/模型示例/B4示例.xlsx" download>
-                  📥 B4 示例数据
-                </a>
-                <a href="/模型示例/B4s示例.xlsx" download>
-                  📥 B4S 示例数据
-                </a>
-              </div>
+              {activeDoc ? (
+                docLoading ? (
+                  <div className="loading-spinner" style={{ textAlign: 'center', padding: '40px' }}>🌀 加载中...</div>
+                ) : (
+                  <MarkdownViewer content={docContent} />
+                )
+              ) : (
+                <>
+                  <div className="docs-links">
+                    <button onClick={() => openDoc('ACI209', '/模型说明/aci209.md')} className="doc-link-btn">
+                      📄 ACI209 模型说明
+                    </button>
+                    <button onClick={() => openDoc('MC2010', '/模型说明/mc2010.md')} className="doc-link-btn">
+                      📄 MC2010 模型说明
+                    </button>
+                    <button onClick={() => openDoc('B4', '/模型说明/b4.md')} className="doc-link-btn">
+                      📄 B4 模型说明
+                    </button>
+                    <button onClick={() => openDoc('B4S', '/模型说明/b4s.md')} className="doc-link-btn">
+                      📄 B4S 模型说明
+                    </button>
+                  </div>
+                  <div className="docs-examples">
+                    <h4>📊 示例数据下载</h4>
+                    <a href="/模型示例/aci209示例.xlsx" download>
+                      📥 ACI209 示例数据
+                    </a>
+                    <a href="/模型示例/mc2010示例.xlsx" download>
+                      📥 MC2010 示例数据
+                    </a>
+                    <a href="/模型示例/B4示例.xlsx" download>
+                      📥 B4 示例数据
+                    </a>
+                    <a href="/模型示例/B4s示例.xlsx" download>
+                      📥 B4S 示例数据
+                    </a>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

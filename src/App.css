@@ -779,6 +779,109 @@ h2 {
 
 [data-theme='dark'] .highlight-box-blue {
   background: rgba(25, 118, 210, 0.15) !important;
-  color: #64b5f6 !important;
   border-left: 4px solid #42a5f5 !important;
 }
+
+/* Markdown Content Styles */
+.markdown-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--color-text);
+  padding: 16px;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text);
+}
+
+.markdown-content h1 { font-size: 2em; border-bottom: 1px solid var(--color-divider); padding-bottom: 0.3em; }
+.markdown-content h2 { font-size: 1.5em; border-bottom: 1px solid var(--color-divider); padding-bottom: 0.3em; }
+.markdown-content h3 { font-size: 1.25em; }
+
+.markdown-content p {
+  margin-bottom: 16px;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 2em;
+  margin-bottom: 16px;
+}
+
+.markdown-content blockquote {
+  padding: 0 1em;
+  color: var(--color-text-secondary);
+  border-left: 4px solid var(--color-divider);
+  margin: 0 0 16px 0;
+  background: var(--color-bg-secondary);
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  border: 1px solid var(--color-divider);
+}
+
+.markdown-content th,
+.markdown-content td {
+  padding: 8px 12px;
+  border: 1px solid var(--color-divider);
+}
+
+.markdown-content th {
+  font-weight: 600;
+  background-color: var(--color-table-th);
+  color: var(--color-table-th-text);
+}
+
+.markdown-content tr:nth-child(2n) {
+  background-color: var(--color-table-row-alt);
+}
+
+.markdown-content img {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.markdown-content code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: var(--color-input-bg);
+  border-radius: 6px;
+  border: 1px solid var(--color-input-border);
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+}
+
+.markdown-content pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: var(--color-input-bg);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  border: 1px solid var(--color-input-border);
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+}
+
+/* MathJax/KaTeX adjustments */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1em 0;
+}
+
