@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
-import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file/browser';
 import {
   ScatterChart, Scatter, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
@@ -49,6 +49,7 @@ export default function BatchCalculator() {
   const [batchResults, setBatchResults] = useState([]);
   const [batchHeaders, setBatchHeaders] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [batchError, setBatchError] = useState('');
 
   // Visualization state
   const [xKey, setXKey]           = useState('');
@@ -57,36 +58,61 @@ export default function BatchCalculator() {
 
   const model = MODELS.find(m => m.id === activeModel);
 
-  const handleBatchFile = (e) => {
+  const handleBatchFile = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     setIsProcessing(true);
+    setBatchError('');
     const name = file.name.toLowerCase();
     if (name.endsWith('.csv')) {
       Papa.parse(file, {
         header: true, skipEmptyLines: true,
         complete: (r) => processData(r.data),
+        error: (error) => {
+          setBatchError(`Could not parse CSV: ${error.message}`);
+          setIsProcessing(false);
+        },
       });
-    } else if (name.endsWith('.xlsx') || name.endsWith('.xls')) {
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        const wb = XLSX.read(new Uint8Array(evt.target.result), { type: 'array' });
-        processData(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' }));
-      };
-      reader.readAsArrayBuffer(file);
+    } else if (name.endsWith('.xlsx')) {
+      try {
+        const rows = await readXlsxFile(file);
+        const [headerRow, ...dataRows] = rows;
+        const headers = (headerRow || []).map((value) => String(value ?? '').trim());
+        if (!headers.some(Boolean)) {
+          setBatchError('Excel file needs a header row.');
+          setIsProcessing(false);
+          return;
+        }
+        const records = dataRows
+          .filter((row) => row.some((value) => value !== null && value !== undefined && value !== ''))
+          .map((row) => Object.fromEntries(headers.map((header, index) => [header || `column_${index + 1}`, row[index] ?? ''])));
+        processData(records);
+      } catch (error) {
+        setBatchError(`Could not parse XLSX: ${error.message}`);
+        setIsProcessing(false);
+      }
+    } else if (name.endsWith('.xls')) {
+      setBatchError('Legacy .xls files are not supported. Please save the file as .xlsx or CSV.');
+      setIsProcessing(false);
     } else {
-      alert('Unsupported format. Use CSV or XLSX.'); setIsProcessing(false);
+      setBatchError('Unsupported format. Use CSV or XLSX.');
+      setIsProcessing(false);
     }
   };
 
   const processData = (data) => {
-    if (!data?.length) { alert('File is empty.'); setIsProcessing(false); return; }
+    if (!data?.length) {
+      setBatchError('File is empty. Please upload a CSV or Excel file with column headers.');
+      setIsProcessing(false);
+      return;
+    }
     const inputHeaders = Object.keys(data[0]);
     setBatchHeaders(inputHeaders);
 
     setTimeout(() => {
       const results = data.map(row => ({ ...row, ...computeRow(activeModel, row) }));
       setBatchResults(results);
+      setBatchError('');
       // Default axis selection
       const firstResult = model.resultKeys[0];
       setYKey(firstResult);
@@ -126,21 +152,21 @@ export default function BatchCalculator() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in relative z-10">
       <header className="mb-12">
-        <h1 className="font-headline text-5xl font-bold tracking-tight text-on-background mb-4">
-          Data Pipeline <span className="text-primary italic">Matrix</span>
+        <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-background mb-4">
+          Data pipeline <span className="text-primary">matrix</span>
         </h1>
-        <p className="text-on-surface-variant text-lg">
-          High-throughput multi-dimensional tensor processing engine. Import datasets for mass analysis with shrinkage output.
+        <p className="text-on-surface-variant text-base md:text-lg max-w-[65ch] leading-relaxed">
+          Import CSV or Excel datasets, compute model outputs in batch, then inspect and export the resulting table.
         </p>
       </header>
 
       {/* Config panel */}
-      <div className="glass-card p-8 rounded-xl border border-outline-variant/20 shadow-xl relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 overflow-hidden pointer-events-none"></div>
-        <h3 className="font-headline text-xl uppercase tracking-widest text-primary mb-6">Pipeline Configuration</h3>
+      <div className="glass-card p-5 md:p-8 rounded-lg border border-outline-variant/30 relative overflow-hidden">
+        <div className="absolute right-[-8rem] top-[-8rem] h-64 w-72 rotate-12 bg-primary/8 blur-3xl pointer-events-none"></div>
+        <h3 className="font-headline text-xl font-semibold tracking-tight text-primary mb-6">Pipeline configuration</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div>
-            <label className="block text-xs font-label uppercase text-outline tracking-wider mb-2">Target Algorithm</label>
+            <label className="block text-xs font-label uppercase text-outline tracking-[0.16em] mb-2">Target algorithm</label>
             <CustomSelect
               name="activeModel"
               value={activeModel}
@@ -149,35 +175,40 @@ export default function BatchCalculator() {
             />
           </div>
           <div>
-            <label className="block text-xs font-label uppercase text-outline tracking-wider mb-2">Required Tensors (Columns)</label>
-            <div className="w-full bg-surface-container border border-outline-variant/20 text-on-surface-variant rounded-lg px-4 py-3 font-mono text-xs break-all leading-relaxed">
+            <label className="block text-xs font-label uppercase text-outline tracking-[0.16em] mb-2">Required columns</label>
+            <div className="w-full bg-surface-container border border-outline-variant/20 text-on-surface-variant rounded-md px-4 py-3 font-mono text-xs break-all leading-relaxed">
               {model.req}
             </div>
           </div>
         </div>
         <div className="flex flex-wrap gap-4 items-center border-t border-outline-variant/20 pt-8 mt-4">
-          <label className="px-6 py-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/50 cursor-pointer transition-all active:scale-95 flex items-center gap-2">
-            <span className="material-symbols-outlined text-cyan-400">upload_file</span>
-            <span className="font-label tracking-widest text-sm text-on-surface">{isProcessing ? 'PROCESSING...' : 'UPLOAD SET (.CSV / .XLSX)'}</span>
-            <input type="file" className="hidden" accept=".csv,.xlsx,.xls" onChange={handleBatchFile} disabled={isProcessing} />
+          <label className="px-6 py-3 rounded-md bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/50 cursor-pointer transition-all active:scale-[0.98] flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary" aria-hidden="true">upload_file</span>
+            <span className="font-label tracking-[0.14em] text-sm text-on-surface">{isProcessing ? 'PROCESSING...' : 'UPLOAD SET (.CSV / .XLSX)'}</span>
+            <input type="file" className="hidden" accept=".csv,.xlsx" onChange={handleBatchFile} disabled={isProcessing} />
           </label>
-          <button onClick={downloadTemplate} className="px-6 py-3 rounded-lg text-primary hover:bg-primary/10 border border-primary/20 transition-all active:scale-95 flex items-center gap-2">
-            <span className="material-symbols-outlined text-sm">download</span>
-            <span className="font-label tracking-widest text-sm uppercase">Extract Template</span>
+          <button onClick={downloadTemplate} className="px-6 py-3 rounded-md text-primary hover:bg-primary/10 border border-primary/20 transition-all active:scale-[0.98] flex items-center gap-2">
+            <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
+            <span className="font-label tracking-[0.14em] text-sm uppercase">Extract template</span>
           </button>
         </div>
+        {batchError && (
+          <div className="mt-5 rounded-md border border-error/30 bg-error/10 px-4 py-3 text-sm text-on-error-container">
+            {batchError}
+          </div>
+        )}
       </div>
 
       {/* Results */}
       {batchResults.length > 0 && (
         <>
           {/* Table */}
-          <div className="glass-card rounded-xl border border-outline-variant/20 shadow-xl overflow-hidden animate-fade-in-up">
+          <div className="glass-card rounded-lg border border-outline-variant/30 overflow-hidden animate-fade-in-up">
             <div className="bg-surface-container p-4 border-b border-outline-variant/20 flex justify-between items-center flex-wrap gap-3">
               <h3 className="font-headline text-lg uppercase tracking-widest text-on-background">
                 Output Matrix <span className="text-outline text-sm ml-2">({batchResults.length} records)</span>
               </h3>
-              <button onClick={exportCSV} className="px-5 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 hover:text-white border border-cyan-500/30 transition-all font-label tracking-widest text-xs uppercase">
+              <button onClick={exportCSV} className="px-5 py-2 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/30 transition-all font-label tracking-[0.14em] text-xs uppercase active:scale-[0.98]">
                 EXPORT CSV
               </button>
             </div>
@@ -217,7 +248,7 @@ export default function BatchCalculator() {
           </div>
 
           {/* Visualization */}
-          <div className="glass-card rounded-xl border border-outline-variant/20 p-8 shadow-xl">
+          <div className="glass-card rounded-lg border border-outline-variant/30 p-5 md:p-8">
             <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
               <h3 className="font-headline text-xl uppercase tracking-widest text-on-background">
                 Result <span className="text-primary italic">Visualizer</span>
@@ -259,8 +290,8 @@ export default function BatchCalculator() {
 
             {chartData.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-48 text-neutral-600 gap-3">
-                <span className="material-symbols-outlined text-5xl">scatter_plot</span>
-                <p className="font-label text-xs uppercase tracking-widest">Select numeric X column to visualize</p>
+                <span className="material-symbols-outlined text-5xl" aria-hidden="true">scatter_plot</span>
+                <p className="font-label text-xs uppercase tracking-[0.16em]">Select numeric X column to visualize</p>
               </div>
             ) : (
               <div style={{ width: '100%', height: 380 }}>
@@ -277,7 +308,7 @@ export default function BatchCalculator() {
                         contentStyle={{ backgroundColor: '#131319', border: '1px solid #25252d', borderRadius: '8px', color: '#f9f5fd' }}
                         formatter={(v, n) => [v?.toFixed(5), n]}
                       />
-                      <Scatter data={chartData} fill="#8ff5ff" fillOpacity={0.7} />
+                      <Scatter data={chartData} fill="#6ee7d8" fillOpacity={0.7} />
                     </ScatterChart>
                   ) : (
                     <LineChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 30 }}>
@@ -290,7 +321,7 @@ export default function BatchCalculator() {
                         contentStyle={{ backgroundColor: '#131319', border: '1px solid #25252d', borderRadius: '8px', color: '#f9f5fd' }}
                         formatter={(v) => [v?.toFixed(5), yKey]}
                       />
-                      <Line type="monotone" dataKey="y" stroke="#8ff5ff" strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="y" stroke="#6ee7d8" strokeWidth={2} dot={false} />
                     </LineChart>
                   )}
                 </ResponsiveContainer>

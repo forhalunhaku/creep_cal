@@ -1,22 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CalculatorWrapper from './ui/CalculatorWrapper';
-
-let wasmModule = null;
-let wasmInitialized = false;
-
-const initWasm = async () => {
-  if (!wasmInitialized) {
-    try {
-      const wasm = await import('../wasm-pkg/creep_calculator_engine.js');
-      await wasm.default();
-      wasmModule = wasm;
-      wasmInitialized = true;
-    } catch (error) {
-      console.error('❌ Rust WebAssembly 模块加载失败:', error);
-    }
-  }
-  return wasmModule;
-};
+import { appendFeedLog, loadCreepEngine } from '../wasm/creepEngine';
 
 const PARAMS_CONFIG = [
   { name: 'fcm', label: 'Concrete Strength', min: 10, max: 100, unit: 'MPa' },
@@ -43,22 +27,31 @@ export default function RustMc2010Calculator() {
   const [params, setParams] = useState({ fcm: 40, RH: 70, t0: 28, Ac: 1000, u: 400, T: 20, Cs: '42.5R' });
   const [results, setResults] = useState([]);
   const [wasmReady, setWasmReady] = useState(false);
+  const [wasmModule, setWasmModule] = useState(null);
   const [feedLogs, setFeedLogs] = useState([{ time: new Date().toLocaleTimeString(), message: 'System initialized. Awaiting input...', type: 'info' }]);
   
   useEffect(() => {
+    let cancelled = false;
     addLog('Loading Rust fib MC 2010 WASM Module...', 'info');
-    initWasm().then((module) => {
+    loadCreepEngine().then((module) => {
+      if (cancelled) return;
       if (module) {
+        setWasmModule(module);
         setWasmReady(true);
         addLog('Kernel v2.4 (MC2010-Rust) initialized successfully.', 'success');
       } else {
         addLog('WASM initialization failed', 'error');
       }
+    }).catch((error) => {
+      if (!cancelled) addLog(`WASM initialization failed: ${error.message}`, 'error');
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const addLog = (msg, type='info') => {
-    setFeedLogs(prev => [...prev.slice(-9), { time: new Date().toLocaleTimeString(), message: msg, type }]);
+    appendFeedLog(setFeedLogs, msg, type);
   };
 
   const handleParamChange = (e) => {
@@ -106,7 +99,7 @@ export default function RustMc2010Calculator() {
       concreteClass={`fcm: ${params.fcm} MPa`}
       crossSectionInfo={`h_e: ${currentHEff} mm`}
       chartData={results}
-      chartLines={[{ dataKey: "phi", stroke: "#e7c5ff", name: "Creep Coefficient φ" }]}
+      chartLines={[{ dataKey: "phi", stroke: "#d6a642", name: "Creep Coefficient φ" }]}
     />
   );
 }

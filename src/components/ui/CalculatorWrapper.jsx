@@ -63,13 +63,13 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
   const data   = chartData.filter((_, i) => i % 10 === 0);
 
   return (
-    <div className="glass-card rounded-lg p-8 border border-outline-variant/20">
+    <div className="glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-        <h3 className="font-headline text-xl uppercase tracking-wider text-on-background">System Analytics Trace</h3>
+        <h3 className="font-headline text-xl font-semibold tracking-tight text-on-background">System analytics trace</h3>
         <button
           onClick={() => setLogX(v => !v)}
           className={`px-3 py-1.5 rounded text-[10px] font-label uppercase tracking-widest border transition-all ${
-            logX ? 'text-primary border-primary/40 bg-primary/10' : 'text-neutral-500 border-outline-variant/20 hover:bg-white/5'
+            logX ? 'text-primary border-primary/40 bg-primary/10' : 'text-outline border-outline-variant/30 hover:bg-white/5 hover:text-on-surface'
           }`}
         >
           Log X-Axis
@@ -103,7 +103,7 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
               <Line key={idx} type="monotone" dataKey={line.dataKey} stroke={line.stroke}
                 strokeWidth={2} dot={false} name={line.name} />
             )) : (
-              <Line type="monotone" dataKey="phi" stroke="#8ff5ff" strokeWidth={2} dot={false} name="Creep Coefficient φ" />
+              <Line type="monotone" dataKey="phi" stroke="#6ee7d8" strokeWidth={2} dot={false} name="Creep Coefficient φ" />
             )}
           </LineChart>
         </ResponsiveContainer>
@@ -131,42 +131,44 @@ export default function CalculatorWrapper({
   resultLabel   // Override the gauge title (default: 'Creep Coefficient φ')
 }) {
   const hasResults = chartData && chartData.length > 0;
+  const numericResult = parseFloat(phiResult);
+  const hasNumericResult = Number.isFinite(numericResult);
 
   return (
     <>
       <header className="mb-12 flex justify-between items-end">
         <div className="max-w-2xl">
-          <h1 className="font-headline text-5xl font-bold tracking-tight text-on-background mb-4">
-            {modelName} <span className="text-primary italic">Analysis</span>
+          <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-background mb-4 text-balance">
+            {modelName} <span className="text-primary">analysis</span>
           </h1>
-          <p className="text-on-surface-variant text-lg leading-relaxed">
+          <p className="text-on-surface-variant text-base md:text-lg leading-relaxed max-w-[65ch]">
             {modelDescription}
           </p>
         </div>
         {/* Export buttons — single result always shown when phi computed, CSV only when chart exists */}
         <div className="flex gap-2 flex-wrap">
-          {phiResult && !isNaN(parseFloat(phiResult)) && (
+          {hasNumericResult && (
             <button
               onClick={() => exportSingleResult(modelName, params, phiResult)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500/10 to-teal-500/10 text-emerald-300 hover:text-white border border-emerald-500/20 hover:border-emerald-400/50 transition-all active:scale-95 font-label tracking-widest text-xs uppercase"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-emerald-500/10 text-emerald-300 hover:text-white border border-emerald-500/20 hover:border-emerald-400/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase"
             >
-              <span className="material-symbols-outlined text-sm">download</span>
+              <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
               Export Result
             </button>
           )}
           {hasResults && (
             <button
               onClick={() => exportToCSV(modelName, params, chartData, chartLines)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500/10 to-purple-500/10 text-cyan-300 hover:text-white border border-cyan-500/20 hover:border-cyan-400/50 transition-all active:scale-95 font-label tracking-widest text-xs uppercase"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/20 hover:border-primary/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase"
             >
-              <span className="material-symbols-outlined text-sm">table_chart</span>
+              <span className="material-symbols-outlined text-sm" aria-hidden="true">table_chart</span>
               Export Time Series
             </button>
           )}
         </div>
       </header>
 
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-12 gap-6 lg:gap-8">
         <div className="col-span-12 lg:col-span-8 space-y-8">
           <DynamicParameters 
             paramsConfig={paramsConfig} 

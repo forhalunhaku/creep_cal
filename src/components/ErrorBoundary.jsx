@@ -36,7 +36,7 @@ class ErrorBoundary extends React.Component {
             fontSize: '4rem',
             marginBottom: '20px'
           }}>
-            😵
+            ERROR
           </div>
           <h2 style={{
             color: 'var(--color-primary)',
@@ -74,7 +74,7 @@ class ErrorBoundary extends React.Component {
               onMouseOver={(e) => e.target.style.background = 'var(--color-btn-hover-bg)'}
               onMouseOut={(e) => e.target.style.background = 'var(--color-btn-bg)'}
             >
-              🔄 刷新页面
+              刷新页面
             </button>
             
             <button
@@ -99,12 +99,12 @@ class ErrorBoundary extends React.Component {
                 e.target.style.color = 'var(--color-primary)';
               }}
             >
-              🔧 重试
+              重试
             </button>
           </div>
 
           {/* 开发环境下显示错误详情 */}
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+          {import.meta.env.DEV && this.state.error && (
             <details style={{
               marginTop: '32px',
               textAlign: 'left',
@@ -119,7 +119,7 @@ class ErrorBoundary extends React.Component {
                 color: '#d32f2f',
                 marginBottom: '8px'
               }}>
-                🐛 错误详情 (开发模式)
+                错误详情 (开发模式)
               </summary>
               <pre style={{
                 fontSize: '0.85rem',

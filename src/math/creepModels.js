@@ -10,9 +10,9 @@
  * @param {number} t0   Age at loading (days)
  * @param {number} H    Relative humidity (%)
  * @param {number} VS   Volume-to-surface ratio (mm)
- * @param {number} sPhi Slump (0–1 normalized)
+ * @param {number} sPhi Sand ratio (0–1 normalized)
  * @param {number} Cc   Cement content (kg/m³)
- * @param {number} alpha Creep parameter α
+ * @param {number} alpha Air content
  * @param {number} t    Time since start (days), loop variable
  * @returns {number} φ(t, t₀) — creep coefficient
  */

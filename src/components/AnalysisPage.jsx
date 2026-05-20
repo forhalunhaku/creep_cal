@@ -59,8 +59,8 @@ function mergeSeriesArray(seriesArray) {
 }
 
 const MODEL_COLORS = {
-  aci209: '#8ff5ff',
-  mc2010: '#c47fff',
+  aci209: '#6ee7d8',
+  mc2010: '#d6a642',
 };
 const MODEL_LABELS = { aci209: 'ACI 209R-92 (φ)', mc2010: 'fib MC 2010 (φ)' };
 
@@ -76,9 +76,9 @@ const PARAM_FIELDS = [
   { key: 't0', label: 'Age at Loading (days) — ACI', min:1, max:365, step:1, type:'number', models:['aci209'] },
   { key: 'H', label: 'Relative Humidity % — ACI', min:0, max:100, step:1, type:'number', models:['aci209'] },
   { key: 'VS', label: 'V/S Ratio mm — ACI', min:10, max:500, step:5, type:'number', models:['aci209'] },
-  { key: 'sphi', label: 'Slump — ACI', min:0, max:1, step:0.01, type:'number', models:['aci209'] },
+  { key: 'sphi', label: 'Sand Ratio — ACI', min:0, max:1, step:0.01, type:'number', models:['aci209'] },
   { key: 'Cc', label: 'Cement Content kg/m³ — ACI', min:100, max:600, step:10, type:'number', models:['aci209'] },
-  { key: 'alpha', label: 'Creep Parameter α — ACI', min:0, max:1, step:0.01, type:'number', models:['aci209'] },
+  { key: 'alpha', label: 'Air Content — ACI', min:0, max:1, step:0.01, type:'number', models:['aci209'] },
   { key: 't0_mc', label: 'Age at Loading (days) — MC2010', min:1, max:365, step:1, type:'number', models:['mc2010'] },
   { key: 'fcm', label: 'Mean Strength MPa — MC2010', min:10, max:100, step:1, type:'number', models:['mc2010'] },
   { key: 'RH', label: 'Relative Humidity % — MC2010', min:0, max:100, step:1, type:'number', models:['mc2010'] },
@@ -124,10 +124,10 @@ export default function AnalysisPage() {
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in relative z-10">
       <header className="mb-10">
-        <h1 className="font-headline text-5xl font-bold tracking-tight text-on-background mb-4">
-          Model <span className="text-primary italic">Comparator</span>
+        <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-background mb-4">
+          Model <span className="text-primary">comparator</span>
         </h1>
-        <p className="text-on-surface-variant text-lg">
+        <p className="text-on-surface-variant text-base md:text-lg max-w-[65ch] leading-relaxed">
           Overlay multiple prediction model outputs on a single chart for direct visual comparison.
         </p>
       </header>
@@ -136,24 +136,24 @@ export default function AnalysisPage() {
         {/* Left: Config Panel */}
         <div className="col-span-12 xl:col-span-4 space-y-6">
           {/* Model Selector */}
-          <div className="glass-card rounded-xl p-6 border border-outline-variant/20">
+          <div className="glass-card rounded-lg p-6 border border-outline-variant/20">
             <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-4">Active Models</h3>
             <div className="space-y-2">
               {[
-                { id: 'aci209', label: 'ACI 209R-92', color: 'text-cyan-300 border-cyan-500/30 bg-cyan-500/10' },
-                { id: 'mc2010', label: 'fib MC 2010', color: 'text-purple-300 border-purple-500/30 bg-purple-500/10' },
+                { id: 'aci209', label: 'ACI 209R-92', color: 'text-primary border-primary/30 bg-primary/10' },
+                { id: 'mc2010', label: 'fib MC 2010', color: 'text-secondary border-secondary/30 bg-secondary/10' },
               ].map(m => {
                 const active = selectedModels.includes(m.id);
                 return (
                   <button
                     key={m.id}
                     onClick={() => toggleModel(m.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-sm font-label uppercase tracking-widest ${
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-md border transition-all text-sm font-label uppercase tracking-widest ${
                       active ? m.color : 'text-neutral-500 border-outline-variant/20 hover:bg-white/5'
                     }`}
                   >
-                    <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${active ? 'border-current' : 'border-neutral-600'}`}>
-                      {active && <div className="w-1.5 h-1.5 rounded-full bg-current"></div>}
+                    <div className={`w-3 h-3 rounded-sm border-2 flex items-center justify-center ${active ? 'border-current' : 'border-neutral-600'}`}>
+                      {active && <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>}
                     </div>
                     {m.label}
                     <span className="ml-auto" style={{ color: MODEL_COLORS[m.id], fontSize: 18 }}>—</span>
@@ -175,7 +175,7 @@ export default function AnalysisPage() {
           </div>
 
           {/* Parameters */}
-          <div className="glass-card rounded-xl p-6 border border-outline-variant/20">
+          <div className="glass-card rounded-lg p-6 border border-outline-variant/20">
             <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-4">Parameters</h3>
             <div className="space-y-4 max-h-[400px] overflow-y-auto pr-1">
               {visibleFields.map(f => (
@@ -185,7 +185,7 @@ export default function AnalysisPage() {
                     <select
                       value={params[f.key]}
                       onChange={e => setParams(p => ({...p, [f.key]: e.target.value}))}
-                      className="w-full bg-surface-container-high text-on-surface rounded-lg px-3 py-2 text-sm border border-outline-variant/20 focus:ring-1 focus:ring-primary focus:outline-none"
+                      className="w-full bg-surface-container-high text-on-surface rounded-md px-3 py-2 text-sm border border-outline-variant/20 focus:ring-1 focus:ring-primary focus:outline-none"
                     >
                       {f.options.map(o => <option key={o}>{o}</option>)}
                     </select>
@@ -208,15 +208,15 @@ export default function AnalysisPage() {
           <button
             onClick={handleRun}
             disabled={selectedModels.length === 0}
-            className="w-full py-4 kinetic-gradient text-on-primary-fixed font-bold text-sm tracking-widest rounded-xl hover:shadow-[0_0_20px_rgba(143,245,255,0.3)] transition-all active:scale-95 disabled:opacity-40"
+            className="w-full py-4 kinetic-gradient text-on-primary-fixed font-bold text-sm tracking-widest rounded-md hover:brightness-110 transition-all active:scale-[0.98] disabled:opacity-40"
           >
-            ⚡ RUN COMPARISON
+            RUN COMPARISON
           </button>
         </div>
 
         {/* Right: Chart */}
         <div className="col-span-12 xl:col-span-8 space-y-6">
-          <div className="glass-card rounded-xl p-8 border border-outline-variant/20 min-h-[500px] flex flex-col">
+          <div className="glass-card rounded-lg p-8 border border-outline-variant/20 min-h-[500px] flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-headline text-xl uppercase tracking-wider text-on-background">
                 Creep Coefficient φ(t, t₀)
@@ -224,9 +224,9 @@ export default function AnalysisPage() {
               {hasRun && (
                 <button
                   onClick={handleExport}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500/10 to-purple-500/10 text-cyan-300 hover:text-white border border-cyan-500/20 transition-all active:scale-95 font-label text-xs uppercase"
+                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/20 transition-all active:scale-[0.98] font-label text-xs uppercase"
                 >
-                  <span className="material-symbols-outlined text-sm">download</span>
+                  <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
                   Export CSV
                 </button>
               )}
@@ -234,7 +234,7 @@ export default function AnalysisPage() {
 
             {!hasRun ? (
               <div className="flex-1 flex flex-col items-center justify-center text-neutral-600 gap-4">
-                <span className="material-symbols-outlined text-6xl">analytics</span>
+                <span className="material-symbols-outlined text-6xl" aria-hidden="true">analytics</span>
                 <p className="font-label text-sm uppercase tracking-widest">Configure parameters and run comparison</p>
               </div>
             ) : (
@@ -276,14 +276,14 @@ export default function AnalysisPage() {
                 const final = vals[vals.length - 1];
                 const peak = Math.max(...vals);
                 return (
-                  <div key={id} className="glass-card rounded-xl p-5 border border-outline-variant/20">
+                  <div key={id} className="glass-card rounded-lg p-5 border border-outline-variant/20">
                     <div className="text-[10px] font-label uppercase tracking-widest mb-2" style={{color: MODEL_COLORS[id]}}>{MODEL_LABELS[id]}</div>
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-surface-container-low rounded-lg p-3">
+                      <div className="bg-surface-container-low rounded-md p-3">
                         <div className="text-[10px] text-neutral-500 mb-1">φ at t={tMax}d</div>
                         <div className="text-xl font-headline text-primary">{final?.toFixed(3)}</div>
                       </div>
-                      <div className="bg-surface-container-low rounded-lg p-3">
+                      <div className="bg-surface-container-low rounded-md p-3">
                         <div className="text-[10px] text-neutral-500 mb-1">Peak φ</div>
                         <div className="text-xl font-headline text-secondary">{peak?.toFixed(3)}</div>
                       </div>

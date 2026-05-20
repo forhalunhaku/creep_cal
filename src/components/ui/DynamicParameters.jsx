@@ -32,7 +32,7 @@ function EditableValue({ value, min, max, colorClass, onChange, name, step }) {
         onChange={e => setDraft(e.target.value)}
         onBlur={commitEdit}
         onKeyDown={e => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') setEditing(false); }}
-        className={`${colorClass} font-headline text-lg bg-transparent border-b border-current outline-none w-20 text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`}
+        className={`${colorClass} font-mono text-lg bg-transparent border-b border-current outline-none w-24 text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`}
       />
     );
   }
@@ -109,10 +109,10 @@ export function ParameterSlider({ label, value, min, max, unit, name, colorClass
 export default function DynamicParameters({ paramsConfig, params, onParamChange, onCalculate, calculateReady, buttonText }) {
   return (
     <section className="col-span-12 lg:col-span-8 space-y-8">
-      <div className="glass-card rounded-lg p-8 border border-outline-variant/20">
+      <div className="glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
         <div className="flex items-center gap-3 mb-8">
-          <span className="material-symbols-outlined text-primary">tune</span>
-          <h2 className="font-headline text-xl uppercase tracking-wider">Dynamic Parameters</h2>
+          <span className="material-symbols-outlined text-primary" aria-hidden="true">tune</span>
+          <h2 className="font-headline text-xl font-semibold tracking-tight">Dynamic parameters</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
@@ -120,10 +120,10 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
             const colors = [
               "text-primary", 
               "text-secondary", 
-              "text-tertiary-dim", 
+              "text-on-surface", 
               "text-primary-fixed-dim",
               "text-tertiary",
-              "text-secondary-fixed"
+              "text-outline"
             ];
             const colorClass = colors[idx % colors.length];
             return (
@@ -131,7 +131,7 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
                 key={config.name}
                 label={config.label}
                 name={config.name}
-                value={params[config.name] || config.min}
+                value={params[config.name] ?? config.min}
                 min={config.min}
                 max={config.max}
                 unit={config.unit}
@@ -147,9 +147,9 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
           <button 
             onClick={onCalculate}
             disabled={!calculateReady}
-            className={`w-full ${calculateReady ? 'kinetic-gradient hover:shadow-[0_0_50px_rgba(196,127,255,0.3)] hover:scale-[1.01]' : 'bg-surface-container-high opacity-70'} text-on-primary-fixed py-5 rounded-full font-headline font-bold text-lg tracking-[0.2em] shadow-[0_0_40px_rgba(143,245,255,0.15)] transition-all active:scale-95 flex items-center justify-center gap-4`}
+            className={`w-full ${calculateReady ? 'kinetic-gradient hover:brightness-110 hover:-translate-y-0.5' : 'bg-surface-container-high opacity-70'} text-on-primary-fixed py-5 rounded-md font-headline font-bold text-base md:text-lg tracking-[0.16em] shadow-[0_18px_40px_rgba(2,14,16,0.28)] transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-4 disabled:cursor-not-allowed`}
           >
-            <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>bolt</span>
+            <span className="material-symbols-outlined" aria-hidden="true" style={{fontVariationSettings: "'FILL' 1"}}>bolt</span>
             {buttonText || 'INITIATE CALCULATION'}
           </button>
         </div>

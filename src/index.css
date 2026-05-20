@@ -4,8 +4,18 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-on-background font-body selection:bg-primary selection:text-on-primary-fixed overflow-x-hidden;
+    font-variant-numeric: tabular-nums;
+  }
+
+  *:focus-visible {
+    outline: 2px solid #6ee7d8;
+    outline-offset: 3px;
   }
 }
 
@@ -16,18 +26,44 @@
   }
   
   .glass-card {
-    background: rgba(31, 31, 38, 0.6);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: rgba(16, 22, 26, 0.76);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.055),
+      0 24px 70px rgba(1, 8, 10, 0.32);
   }
   
   .kinetic-gradient {
-    background: linear-gradient(135deg, #8ff5ff 0%, #c47fff 100%);
+    background: linear-gradient(135deg, #6ee7d8 0%, #d6a642 100%);
   }
   
   .bg-grid {
-    background-image: radial-gradient(circle at 2px 2px, rgba(143, 245, 255, 0.05) 1px, transparent 0);
-    background-size: 40px 40px;
+    background-image:
+      linear-gradient(rgba(110, 231, 216, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110, 231, 216, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .noise-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    opacity: 0.11;
+    z-index: 1;
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.10) 0 1px, transparent 1px),
+      radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px);
+    background-size: 19px 19px, 23px 23px;
+    mix-blend-mode: overlay;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
 
@@ -35,7 +71,7 @@
 @layer components {
   input[type=range] {
     -webkit-appearance: none;
-    background: #25252d;
+    background: #263137;
     height: 4px;
     border-radius: 2px;
   }
@@ -44,8 +80,29 @@
     height: 16px;
     width: 16px;
     border-radius: 50%;
-    background: #8ff5ff;
+    background: #6ee7d8;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(143, 245, 255, 0.5);
+    border: 2px solid #0b0f12;
+    box-shadow: 0 0 0 1px rgba(110, 231, 216, 0.38);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

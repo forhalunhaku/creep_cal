@@ -69,9 +69,9 @@ export default function Dashboard({
           © 2025 halunhaku ALL RIGHTS RESERVED.
         </div>
         <div className="flex gap-8">
-          <span className="text-neutral-600 hover:text-purple-400 transition-colors text-[10px] uppercase font-['Manrope'] tracking-tighter cursor-pointer">Technical Specifications</span>
-          <span className="text-neutral-600 hover:text-purple-400 transition-colors text-[10px] uppercase font-['Manrope'] tracking-tighter cursor-pointer">Validation Reports</span>
-          <span className="text-neutral-600 hover:text-purple-400 transition-colors text-[10px] uppercase font-['Manrope'] tracking-tighter cursor-pointer">API Reference</span>
+          <span className="text-neutral-600 hover:text-primary transition-colors text-[10px] uppercase font-['Manrope'] tracking-tighter cursor-pointer">Technical Specifications</span>
+          <span className="text-neutral-600 hover:text-primary transition-colors text-[10px] uppercase font-['Manrope'] tracking-tighter cursor-pointer">Validation Reports</span>
+          <span className="text-neutral-600 hover:text-primary transition-colors text-[10px] uppercase font-['Manrope'] tracking-tighter cursor-pointer">API Reference</span>
         </div>
       </footer>
     </div>

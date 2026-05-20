@@ -14,8 +14,8 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
   return (
     <aside className="col-span-12 lg:col-span-4 space-y-8">
       {/* Circular Gauge */}
-      <div className="glass-card rounded-lg p-8 border border-primary/20 relative overflow-hidden group">
-        <div className="absolute -right-12 -top-12 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+      <div className="glass-card rounded-lg p-5 md:p-8 border border-primary/20 relative overflow-hidden group">
+        <div className="absolute -right-16 -top-20 h-44 w-52 rotate-12 bg-primary/8 blur-3xl group-hover:bg-primary/12 transition-colors"></div>
         <div className="text-center">
           <div className="text-xs font-label text-on-surface-variant uppercase tracking-widest mb-8">{resultLabel || 'Creep Coefficient φ(t,t₀)'}</div>
           
@@ -37,8 +37,8 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
               ></circle>
               <defs>
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style={{stopColor: "#8ff5ff"}}></stop>
-                  <stop offset="100%" style={{stopColor: "#c47fff"}}></stop>
+                  <stop offset="0%" style={{stopColor: "#6ee7d8"}}></stop>
+                  <stop offset="100%" style={{stopColor: "#d6a642"}}></stop>
                 </linearGradient>
               </defs>
             </svg>
@@ -51,11 +51,11 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
           </div>
           
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-3 bg-surface-container-low rounded-xl">
+            <div className="p-3 bg-surface-container-low rounded-md">
               <div className="text-[10px] text-neutral-500 mb-1">Status</div>
               <div className="text-sm font-headline">{isNaN(phiValue) ? 'PENDING' : 'COMPUTED'}</div>
             </div>
-            <div className="p-3 bg-surface-container-low rounded-xl">
+            <div className="p-3 bg-surface-container-low rounded-md">
               <div className="text-[10px] text-neutral-500 mb-1">T max</div>
               <div className="text-sm font-headline text-tertiary">10000d</div>
             </div>
@@ -68,7 +68,7 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
         <div className="glass-card rounded-lg p-6 border border-emerald-500/20 space-y-3">
           <div className="text-xs font-label text-emerald-400 uppercase tracking-widest mb-4">Shrinkage Results</div>
           {extraResults.map((item, i) => (
-            <div key={i} className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+            <div key={i} className="flex items-center justify-between p-3 bg-surface-container-low rounded-md">
               <div>
                 <div className="text-[10px] text-neutral-500 font-label uppercase tracking-wider">{item.label}</div>
               </div>
@@ -84,10 +84,10 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
       <div className="glass-card rounded-lg border border-outline-variant/10 flex flex-col h-[400px]">
         <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-sm text-primary">terminal</span>
+            <span className="material-symbols-outlined text-sm text-primary" aria-hidden="true">terminal</span>
             <span className="text-xs font-label uppercase tracking-widest">System Feed</span>
           </div>
-          <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#8ff5ff] animate-pulse"></div>
+          <div className="h-2 w-2 rounded-sm bg-primary"></div>
         </div>
         <div className="p-6 space-y-4 overflow-y-auto text-[11px] font-body flex-1 flex flex-col justify-end">
           {feedLogs.map((log, index) => (
@@ -103,4 +103,3 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
     </aside>
   );
 }
-

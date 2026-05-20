@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
- * CustomSelect – matches the pill-trigger + dark-card design reference.
+ * CustomSelect: dark compact trigger with a portal-rendered menu.
  * Props:
  *   name, value, onChange, options: [{ value, label }] | [string]
  *   label (optional) – not rendered here, callers handle the label
@@ -67,13 +67,10 @@ export default function CustomSelect({ name, value, onChange, options }) {
 
   // Assign a deterministic accent colour per option (cycles through palette)
   const palette = [
-    'text-cyan-300 bg-cyan-500/15',
-    'text-purple-300 bg-purple-500/15',
-    'text-emerald-300 bg-emerald-500/15',
-    'text-amber-300 bg-amber-500/15',
-    'text-rose-300 bg-rose-500/15',
-    'text-sky-300 bg-sky-500/15',
-    'text-pink-300 bg-pink-500/15',
+    'text-primary bg-primary/12',
+    'text-secondary bg-secondary/14',
+    'text-emerald-300 bg-emerald-500/12',
+    'text-on-surface bg-white/8',
   ];
 
   return (
@@ -84,17 +81,18 @@ export default function CustomSelect({ name, value, onChange, options }) {
         onClick={() => setOpen(v => !v)}
         className={`
           w-full flex items-center justify-between
-          px-5 py-3 rounded-full text-sm font-body
+          px-5 py-3 rounded-md text-sm font-body
           bg-surface-container-high text-on-surface
           border transition-all duration-200
           ${open
-            ? 'border-primary shadow-[0_0_0_1px_#8ff5ff40] ring-1 ring-primary/30'
-            : 'border-outline-variant/30 hover:border-primary/50 hover:shadow-[0_0_0_1px_#8ff5ff20]'
+            ? 'border-primary ring-1 ring-primary/30'
+            : 'border-outline-variant/30 hover:border-primary/50'
           }
         `}
       >
         <span className="truncate">{selected?.label}</span>
         <span
+          aria-hidden="true"
           className={`material-symbols-outlined text-[18px] text-primary ml-2 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         >
           expand_more
@@ -104,7 +102,7 @@ export default function CustomSelect({ name, value, onChange, options }) {
       {/* ── Dropdown list (PORTAL) ─────────────────────────────── */}
       {open && typeof document !== 'undefined' && createPortal(
         <div 
-          className="custom-select-portal absolute z-[9999] bg-[#111118] border border-primary/30 rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.6),0_0_0_1px_#8ff5ff18] overflow-hidden"
+          className="custom-select-portal absolute z-[9999] bg-surface-container border border-primary/30 rounded-lg shadow-[0_18px_50px_rgba(1,8,10,0.55)] overflow-hidden"
           style={{ top: coords.top, left: coords.left, width: coords.width }}
         >
           {opts.map((opt, idx) => {
@@ -139,7 +137,7 @@ export default function CustomSelect({ name, value, onChange, options }) {
 
                 {/* Checkmark / selected indicator */}
                 {isSelected && (
-                  <span className="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+                  <span className="material-symbols-outlined text-[16px] text-primary" aria-hidden="true">check_circle</span>
                 )}
               </button>
             );

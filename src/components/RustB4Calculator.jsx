@@ -1,22 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CalculatorWrapper from './ui/CalculatorWrapper';
-
-let wasmModule = null;
-let wasmInitialized = false;
-
-const initWasm = async () => {
-  if (!wasmInitialized) {
-    try {
-      const wasm = await import('../wasm-pkg/creep_calculator_engine.js');
-      await wasm.default();
-      wasmModule = wasm;
-      wasmInitialized = true;
-    } catch (error) {
-      console.error('❌ Rust WebAssembly 模块加载失败:', error);
-    }
-  }
-  return wasmModule;
-};
+import { appendFeedLog, loadCreepEngine } from '../wasm/creepEngine';
 
 const PARAMS_CONFIG = [
   { name: 't0', label: 'Age at Loading', min: 1, max: 365, unit: 'Days' },
@@ -70,22 +54,31 @@ export default function RustB4Calculator() {
   });
   const [results, setResults] = useState([]);
   const [wasmReady, setWasmReady] = useState(false);
+  const [wasmModule, setWasmModule] = useState(null);
   const [feedLogs, setFeedLogs] = useState([{ time: new Date().toLocaleTimeString(), message: 'System initialized. Awaiting input...', type: 'info' }]);
   
   useEffect(() => {
+    let cancelled = false;
     addLog('Loading Rust B4 Model WASM Module...', 'info');
-    initWasm().then((module) => {
+    loadCreepEngine().then((module) => {
+      if (cancelled) return;
       if (module) {
+        setWasmModule(module);
         setWasmReady(true);
         addLog('Kernel v2.4 (B4-Rust) initialized successfully.', 'success');
       } else {
         addLog('WASM initialization failed', 'error');
       }
+    }).catch((error) => {
+      if (!cancelled) addLog(`WASM initialization failed: ${error.message}`, 'error');
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const addLog = (msg, type='info') => {
-    setFeedLogs(prev => [...prev.slice(-9), { time: new Date().toLocaleTimeString(), message: msg, type }]);
+    appendFeedLog(setFeedLogs, msg, type);
   };
 
   const handleParamChange = (e) => {
@@ -146,9 +139,9 @@ export default function RustB4Calculator() {
       crossSectionInfo={`${params.aggregateType}`}
       chartData={results}
       chartLines={[
-        { dataKey: "j", stroke: "#ff85e4", name: "Compliance J (×10⁻⁶ GPa⁻¹)" },
-        { dataKey: "epsilon_sh", stroke: "#8ff5ff", name: "Drying Shrinkage εsh (με)" },
-        { dataKey: "epsilon_au", stroke: "#c47fff", name: "Autogenous Shrinkage εau (με)" }
+        { dataKey: "j", stroke: "#d6a642", name: "Compliance J (×10⁻⁶ GPa⁻¹)" },
+        { dataKey: "epsilon_sh", stroke: "#6ee7d8", name: "Drying Shrinkage εsh (με)" },
+        { dataKey: "epsilon_au", stroke: "#8fc7b8", name: "Autogenous Shrinkage εau (με)" }
       ]}
       resultLabel="Compliance J(t,t′) · 1/GPa"
       extraResults={[

@@ -5,9 +5,9 @@ const PARAMS_CONFIG = [
   { name: 't0', label: 'Age at Loading', min: 1, max: 365, unit: 'Days' },
   { name: 'H', label: 'Relative Humidity', min: 0, max: 100, unit: '%' },
   { name: 'VS', label: 'Volume-Surface Ratio', min: 0, max: 1000, unit: 'mm' },
-  { name: 'sPhi', label: 'Slump', min: 0, max: 1, unit: '' },
+  { name: 'sPhi', label: 'Sand Ratio', min: 0, max: 1, unit: '' },
   { name: 'Cc', label: 'Cement Content', min: 0, max: 1000, unit: 'kg/m³' },
-  { name: 'alpha', label: 'Creep Parameter α', min: 0, max: 1, unit: '' }
+  { name: 'alpha', label: 'Air Content', min: 0, max: 1, unit: '' }
 ];
 
 export default function Aci209Calculator() {
@@ -67,7 +67,7 @@ export default function Aci209Calculator() {
       concreteClass="C35/45 Equivalency"
       crossSectionInfo={`V/S: ${params.VS} mm`}
       chartData={results}
-      chartLines={[{ dataKey: "phi", stroke: "#8ff5ff", name: "Creep Coefficient φ" }]}
+      chartLines={[{ dataKey: "phi", stroke: "#6ee7d8", name: "Creep Coefficient φ" }]}
     />
   );
 }

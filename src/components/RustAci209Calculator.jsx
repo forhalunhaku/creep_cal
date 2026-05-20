@@ -1,58 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import CalculatorWrapper from './ui/CalculatorWrapper';
-
-let wasmModule = null;
-let wasmInitialized = false;
-
-const WASM_TIMEOUT_MS = 5000;
-
-const initWasm = async () => {
-  if (!wasmInitialized) {
-    try {
-      const wasmPromise = import('../wasm-pkg/creep_calculator_engine.js');
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error(`WASM load timed out after ${WASM_TIMEOUT_MS}ms`)), WASM_TIMEOUT_MS)
-      );
-      const wasm = await Promise.race([wasmPromise, timeoutPromise]);
-      await wasm.default();
-      wasmModule = wasm;
-      wasmInitialized = true;
-    } catch (error) {
-      console.error('❌ Rust WebAssembly 模块加载失败:', error.message);
-    }
-  }
-  return wasmModule;
-};
+import { appendFeedLog, loadCreepEngine } from '../wasm/creepEngine';
 
 const PARAMS_CONFIG = [
   { name: 't0', label: 'Age at Loading', min: 1, max: 365, unit: 'Days' },
   { name: 'H', label: 'Relative Humidity', min: 0, max: 100, unit: '%' },
   { name: 'VS', label: 'Volume-Surface Ratio', min: 0, max: 1000, unit: 'mm' },
-  { name: 'sPhi', label: 'Slump', min: 0, max: 1, unit: '' },
+  { name: 'sPhi', label: 'Sand Ratio', min: 0, max: 1, unit: '' },
   { name: 'Cc', label: 'Cement Content', min: 0, max: 1000, unit: 'kg/m³' },
-  { name: 'alpha', label: 'Creep Parameter α', min: 0, max: 1, unit: '' }
+  { name: 'alpha', label: 'Air Content', min: 0, max: 1, unit: '' }
 ];
 
 export default function RustAci209Calculator() {
   const [params, setParams] = useState({ t0: 28, H: 70, VS: 100, sPhi: 0.5, Cc: 350, alpha: 0.08 });
   const [results, setResults] = useState([]);
   const [wasmReady, setWasmReady] = useState(false);
+  const [wasmModule, setWasmModule] = useState(null);
   const [feedLogs, setFeedLogs] = useState([{ time: new Date().toLocaleTimeString(), message: 'System initialized. Awaiting input...', type: 'info' }]);
   
   useEffect(() => {
+    let cancelled = false;
     addLog('Loading Rust ACI209 WASM Module...', 'info');
-    initWasm().then((module) => {
+    loadCreepEngine().then((module) => {
+      if (cancelled) return;
       if (module) {
+        setWasmModule(module);
         setWasmReady(true);
         addLog('Kernel v2.4 (ACI209-Rust) initialized successfully.', 'success');
       } else {
         addLog('WASM initialization failed', 'error');
       }
+    }).catch((error) => {
+      if (!cancelled) addLog(`WASM initialization failed: ${error.message}`, 'error');
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const addLog = (msg, type='info') => {
-    setFeedLogs(prev => [...prev.slice(-9), { time: new Date().toLocaleTimeString(), message: msg, type }]);
+    appendFeedLog(setFeedLogs, msg, type);
   };
 
   const handleParamChange = (e) => {
@@ -95,7 +82,7 @@ export default function RustAci209Calculator() {
       concreteClass="C35/45 Equivalency"
       crossSectionInfo={`V/S: ${params.VS} mm`}
       chartData={results}
-      chartLines={[{ dataKey: "phi", stroke: "#8ff5ff", name: "Creep Coefficient φ" }]}
+      chartLines={[{ dataKey: "phi", stroke: "#6ee7d8", name: "Creep Coefficient φ" }]}
     />
   );
 }
