@@ -232,7 +232,7 @@ export default function BatchCalculator() {
               <h3 className="font-headline text-lg tracking-tight text-on-background">
                 Output matrix <span className="text-outline text-sm ml-2">({batchResults.length} records)</span>
               </h3>
-              <button onClick={exportCSV} className="px-5 py-2 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/30 transition-all font-label tracking-[0.14em] text-xs uppercase active:scale-[0.98]">
+              <button onClick={exportCSV} className="px-5 py-2 rounded-md bg-primary/10 text-primary hover:bg-primary/15 border border-primary/30 transition-all font-label tracking-[0.14em] text-xs uppercase active:scale-[0.98]">
                 Export CSV
               </button>
             </div>
@@ -282,7 +282,7 @@ export default function BatchCalculator() {
                 {['scatter', 'line'].map(t => (
                   <button key={t} onClick={() => setChartType(t)}
                     className={`px-3 py-1.5 rounded text-[10px] font-label uppercase tracking-widest border transition-all ${
-                      chartType === t ? 'text-primary border-primary/40 bg-primary/10' : 'text-neutral-500 border-outline-variant/20 hover:bg-white/5'
+                      chartType === t ? 'text-primary border-primary/40 bg-primary/10' : 'text-neutral-500 border-outline-variant/20 hover:bg-surface-container-high hover:text-on-surface'
                     }`}>
                     {t}
                   </button>
@@ -321,20 +321,21 @@ export default function BatchCalculator() {
               <div className="chart-stage" style={{ width: '100%', height: 380 }}>
                 <ResponsiveContainer width="100%" height={380}>
                   {chartType === 'scatter' ? (
-                    <ScatterChart margin={{ top: 10, right: 20, left: 10, bottom: 30 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#25252d" />
-                      <XAxis dataKey="x" name={xKey} stroke="#76747b" tick={{ fill: '#76747b' }}
-                        label={{ value: xKey, position: 'insideBottomRight', offset: -5, fill: '#76747b', fontSize: 11 }} type="number" />
-                      <YAxis dataKey="y" name={yKey} stroke="#76747b" tick={{ fill: '#76747b' }}
-                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: '#76747b', fontSize: 11 }} />
+                    <ScatterChart margin={{ top: 10, right: 18, left: 12, bottom: 30 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d2d2d7" />
+                      <XAxis dataKey="x" name={xKey} stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }}
+                        tickCount={6} minTickGap={28}
+                        label={{ value: xKey, position: 'insideBottomRight', offset: -8, fill: '#6e6e73', fontSize: 10 }} type="number" />
+                      <YAxis dataKey="y" name={yKey} stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }} width={48}
+                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: '#6e6e73', fontSize: 10 }} />
                       <Tooltip
                         cursor={{ strokeDasharray: '3 3' }}
-                        contentStyle={{ backgroundColor: '#131319', border: '1px solid #25252d', borderRadius: '8px', color: '#f9f5fd' }}
+                        contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #d2d2d7', borderRadius: '8px', color: '#1d1d1f' }}
                         formatter={(v, n) => [v?.toFixed(5), n]}
                       />
                       <Scatter
                         data={chartData}
-                        fill="#6ee7d8"
+                        fill="#0071e3"
                         fillOpacity={0.7}
                         isAnimationActive="auto"
                         animationDuration={900}
@@ -342,23 +343,24 @@ export default function BatchCalculator() {
                       />
                     </ScatterChart>
                   ) : (
-                    <LineChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 30 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#25252d" />
-                      <XAxis dataKey="x" stroke="#76747b" tick={{ fill: '#76747b' }}
-                        label={{ value: xKey, position: 'insideBottomRight', offset: -5, fill: '#76747b', fontSize: 11 }} />
-                      <YAxis stroke="#76747b" tick={{ fill: '#76747b' }}
-                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: '#76747b', fontSize: 11 }} />
+                    <LineChart data={chartData} margin={{ top: 10, right: 18, left: 12, bottom: 30 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d2d2d7" />
+                      <XAxis dataKey="x" stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }}
+                        tickCount={6} minTickGap={28}
+                        label={{ value: xKey, position: 'insideBottomRight', offset: -8, fill: '#6e6e73', fontSize: 10 }} />
+                      <YAxis stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }} width={48}
+                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: '#6e6e73', fontSize: 10 }} />
                       <Tooltip
-                        contentStyle={{ backgroundColor: '#131319', border: '1px solid #25252d', borderRadius: '8px', color: '#f9f5fd' }}
+                        contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #d2d2d7', borderRadius: '8px', color: '#1d1d1f' }}
                         formatter={(v) => [v?.toFixed(5), yKey]}
                       />
                       <Line
                         type="monotone"
                         dataKey="y"
-                        stroke="#6ee7d8"
+                        stroke="#0071e3"
                         strokeWidth={2}
                         dot={false}
-                        activeDot={{ r: 5, stroke: '#6ee7d8', strokeWidth: 2, fill: '#0b0f12' }}
+                        activeDot={{ r: 5, stroke: '#0071e3', strokeWidth: 2, fill: '#ffffff' }}
                         isAnimationActive="auto"
                         animationDuration={1200}
                         animationEasing="ease-out"

@@ -34,7 +34,7 @@ export default function SingleCalculationDashboard() {
       {/* Top Controller Bar */}
       <div className="mb-8 glass-card rounded-lg p-3 md:p-4 flex flex-col xl:flex-row gap-4 justify-between items-stretch xl:items-center border border-outline-variant/30 relative overflow-hidden">
         {/* Decorative background glow */}
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(110,231,216,0.08),transparent_42%,rgba(214,166,66,0.06))] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,113,227,0.08),transparent_42%,rgba(52,199,89,0.05))] pointer-events-none"></div>
 
         {/* Algorithm Selection Segmented Control */}
         <div className="relative z-10 flex w-full overflow-x-auto p-1 bg-surface-container-highest rounded-md border border-outline-variant/30 xl:w-auto">
@@ -51,7 +51,7 @@ export default function SingleCalculationDashboard() {
               className={`stagger-pop control-tab px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all flex-1 xl:flex-none whitespace-nowrap active:scale-[0.98] ${
                 algorithm === algo.id 
                   ? 'is-active bg-primary/14 text-primary border border-primary/25'
-                  : 'text-outline hover:text-on-surface hover:bg-white/5 border border-transparent'
+                  : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
               }`}
             >
               {algo.label}
@@ -67,7 +67,7 @@ export default function SingleCalculationDashboard() {
             className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
               engine === 'rust'
                 ? 'is-active bg-primary/14 text-primary border border-primary/25'
-                : 'text-outline hover:text-on-surface hover:bg-white/5 border border-transparent'
+                : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
             }`}
           >
             <span className="material-symbols-outlined text-sm" aria-hidden="true">memory</span>
@@ -79,7 +79,7 @@ export default function SingleCalculationDashboard() {
             className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
               engine === 'js'
                 ? 'is-active bg-secondary/14 text-secondary border border-secondary/25'
-                : 'text-outline hover:text-on-surface hover:bg-white/5 border border-transparent'
+                : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
             }`}
           >
             <span className="material-symbols-outlined text-sm text-[16px] leading-none" aria-hidden="true">javascript</span>

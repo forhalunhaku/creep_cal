@@ -58,7 +58,7 @@ export function useCalculationMotion() {
         scale: [0.965, 1],
         boxShadow: [
           '0 24px 70px rgba(1, 8, 10, 0.32)',
-          '0 30px 90px rgba(110, 231, 216, 0.18)',
+          '0 30px 90px rgba(0, 113, 227, 0.18)',
           '0 24px 70px rgba(1, 8, 10, 0.32)',
         ],
         duration: 620,

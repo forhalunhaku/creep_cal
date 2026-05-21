@@ -152,7 +152,7 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
             onClick={onCalculate}
             disabled={!calculateReady}
             aria-busy={!calculateReady}
-            className={`calculate-trigger w-full ${calculateReady ? 'kinetic-gradient hover:brightness-110 hover:-translate-y-0.5' : 'bg-surface-container-high opacity-70'} text-on-primary-fixed py-5 rounded-md font-headline font-bold text-base md:text-lg tracking-[0.16em] shadow-[0_18px_40px_rgba(2,14,16,0.28)] transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-4 disabled:cursor-not-allowed`}
+            className={`calculate-trigger w-full ${calculateReady ? 'kinetic-gradient hover:brightness-105 hover:-translate-y-0.5 shadow-[0_14px_30px_rgba(0,113,227,0.22)]' : 'bg-surface-container-high text-outline opacity-70 shadow-none'} text-on-primary py-4.5 md:py-5 rounded-md font-headline font-semibold text-sm md:text-base tracking-[0.14em] transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-3 disabled:cursor-not-allowed`}
           >
             <span className="material-symbols-outlined" aria-hidden="true" style={{fontVariationSettings: "'FILL' 1"}}>bolt</span>
             {buttonText || 'INITIATE CALCULATION'}

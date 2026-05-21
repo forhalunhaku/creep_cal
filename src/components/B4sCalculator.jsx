@@ -183,8 +183,8 @@ export default function B4sCalculator() {
       crossSectionInfo={`${params.aggregate_type}`}
       chartData={resultsData}
       chartLines={[
-        { dataKey: "j", stroke: "#d6a642", name: "Compliance J (×10⁻⁶ GPa⁻¹)" },
-        { dataKey: "epsilon_sh", stroke: "#6ee7d8", name: "Drying Shrinkage εsh (με)" },
+        { dataKey: "j", stroke: "#34c759", name: "Compliance J (×10⁻⁶ GPa⁻¹)" },
+        { dataKey: "epsilon_sh", stroke: "#0071e3", name: "Drying Shrinkage εsh (με)" },
         { dataKey: "epsilon_au", stroke: "#8fc7b8", name: "Autogenous Shrinkage εau (με)" }
       ]}
       resultLabel="Compliance J(t,t′) · 1/GPa"

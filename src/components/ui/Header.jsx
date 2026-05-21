@@ -10,7 +10,7 @@ export default function Header() {
         <span className="font-headline text-xl font-extrabold tracking-tight text-on-background md:text-2xl">CREEP LAB</span>
         <div className="hidden h-5 w-px bg-outline-variant md:block"></div>
         <div className="flex items-center gap-2 text-[10px] font-label uppercase tracking-[0.22em] text-primary md:text-xs">
-          <span className="h-2 w-2 rounded-sm bg-primary shadow-[0_0_0_4px_rgba(110,231,216,0.08)]" aria-hidden="true"></span>
+          <span className="h-2 w-2 rounded-sm bg-primary shadow-[0_0_0_4px_rgba(0,113,227,0.08)]" aria-hidden="true"></span>
           <span className="hidden sm:inline">Local compute ready</span>
         </div>
       </div>

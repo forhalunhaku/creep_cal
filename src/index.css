@@ -14,7 +14,7 @@
   }
 
   *:focus-visible {
-    outline: 2px solid #6ee7d8;
+    outline: 2px solid #0071e3;
     outline-offset: 3px;
   }
 }
@@ -26,22 +26,22 @@
   }
   
   .glass-card {
-    background: rgba(16, 22, 26, 0.76);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(24px) saturate(1.35);
+    -webkit-backdrop-filter: blur(24px) saturate(1.35);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.055),
-      0 24px 70px rgba(1, 8, 10, 0.32);
+      inset 0 1px 0 rgba(255, 255, 255, 0.78),
+      0 18px 48px rgba(29, 29, 31, 0.08);
   }
   
   .kinetic-gradient {
-    background: linear-gradient(135deg, #6ee7d8 0%, #d6a642 100%);
+    background: linear-gradient(180deg, #0a84ff 0%, #0071e3 100%);
   }
   
   .bg-grid {
     background-image:
-      linear-gradient(rgba(110, 231, 216, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(110, 231, 216, 0.045) 1px, transparent 1px);
+      linear-gradient(rgba(29, 29, 31, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29, 29, 31, 0.035) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 
@@ -49,13 +49,13 @@
     pointer-events: none;
     position: fixed;
     inset: 0;
-    opacity: 0.11;
+    opacity: 0.08;
     z-index: 1;
     background-image:
-      radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.10) 0 1px, transparent 1px),
-      radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px);
+      radial-gradient(circle at 25% 25%, rgba(29, 29, 31, 0.09) 0 1px, transparent 1px),
+      radial-gradient(circle at 75% 70%, rgba(29, 29, 31, 0.07) 0 1px, transparent 1px);
     background-size: 19px 19px, 23px 23px;
-    mix-blend-mode: overlay;
+    mix-blend-mode: multiply;
   }
 
   .animate-fade-in {
@@ -81,7 +81,10 @@
 
   .motion-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(110, 231, 216, 0.32);
+    border-color: rgba(0, 113, 227, 0.28);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.82),
+      0 22px 54px rgba(29, 29, 31, 0.10);
   }
 
   .control-tab {
@@ -94,7 +97,7 @@
     position: absolute;
     inset: auto 16% 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(110, 231, 216, 0.78), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 113, 227, 0.72), transparent);
     opacity: 0;
     transform: scaleX(0.2);
     transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -116,10 +119,10 @@
     width: 6px;
     height: 6px;
     border-radius: 9999px;
-    background: rgba(110, 231, 216, 0.58);
+    background: rgba(0, 113, 227, 0.56);
     animation: dot-breathe 2600ms ease-in-out infinite;
     animation-delay: calc(var(--dot-index) * 42ms);
-    box-shadow: 0 0 18px rgba(110, 231, 216, 0.18);
+    box-shadow: 0 0 18px rgba(0, 113, 227, 0.16);
   }
 
   .gauge-pulse::before {
@@ -127,13 +130,13 @@
     position: absolute;
     inset: 18px;
     border-radius: 9999px;
-    border: 1px solid rgba(110, 231, 216, 0.12);
+    border: 1px solid rgba(0, 113, 227, 0.14);
     animation: gauge-ring 2400ms ease-in-out infinite;
   }
 
   .status-beacon {
     animation: beacon 1600ms ease-in-out infinite;
-    box-shadow: 0 0 0 0 rgba(110, 231, 216, 0.34);
+    box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.30);
   }
 
   .metric-tile {
@@ -156,15 +159,37 @@
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, transparent 0%, rgba(110, 231, 216, 0.08) 48%, transparent 72%),
-      radial-gradient(circle at 18% 22%, rgba(110, 231, 216, 0.10), transparent 28%);
+      linear-gradient(90deg, transparent 0%, rgba(0, 113, 227, 0.08) 48%, transparent 72%),
+      radial-gradient(circle at 18% 22%, rgba(0, 113, 227, 0.10), transparent 28%);
     transform: translateX(-105%);
     animation: chart-scan 1900ms cubic-bezier(0.16, 1, 0.3, 1) 160ms both;
-    mix-blend-mode: screen;
+    mix-blend-mode: multiply;
   }
 
   .chart-stage .recharts-wrapper {
     animation: chart-rise 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .chart-stage .recharts-text {
+    font-family: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+
+  .chart-stage .recharts-cartesian-axis-tick-value {
+    fill: #6e6e73;
+    font-size: 11px;
+  }
+
+  .chart-stage .recharts-label {
+    fill: #6e6e73;
+    font-size: 10px;
+  }
+
+  .chart-stage .recharts-legend-item-text {
+    color: #0071e3 !important;
+    font-family: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    font-size: 12px;
   }
 
   .chart-stage .recharts-cartesian-grid line {
@@ -178,11 +203,22 @@
   }
 
   .chart-stage .recharts-line-curve {
-    filter: drop-shadow(0 0 8px rgba(110, 231, 216, 0.10));
+    filter: drop-shadow(0 0 8px rgba(0, 113, 227, 0.10));
   }
 
   .chart-stage .recharts-reference-line-line {
     animation: reference-pulse 1800ms ease-in-out infinite;
+  }
+
+  .formula-render .katex-display {
+    margin: 0;
+    text-align: left;
+  }
+
+  .formula-render .katex {
+    color: #1d1d1f;
+    font-size: 1.05rem;
+    line-height: 1.6;
   }
 
   .chart-stage .recharts-scatter-symbol {
@@ -198,11 +234,11 @@
     height: 10px;
     border-radius: 9999px;
     pointer-events: none;
-    background: #6ee7d8;
+    background: #0071e3;
     box-shadow:
-      0 0 0 5px rgba(110, 231, 216, 0.12),
-      0 0 24px rgba(110, 231, 216, 0.56),
-      0 0 54px rgba(214, 166, 66, 0.22);
+      0 0 0 5px rgba(0, 113, 227, 0.12),
+      0 0 24px rgba(0, 113, 227, 0.34),
+      0 0 54px rgba(52, 199, 89, 0.18);
     transform: translate(-50%, -50%);
   }
 
@@ -210,7 +246,7 @@
     content: "";
     position: absolute;
     inset: -14px -34px -14px 4px;
-    background: linear-gradient(90deg, rgba(110, 231, 216, 0.24), transparent);
+    background: linear-gradient(90deg, rgba(0, 113, 227, 0.24), transparent);
     filter: blur(8px);
     transform: translateX(-50%);
   }
@@ -220,7 +256,7 @@
 @layer components {
   input[type=range] {
     -webkit-appearance: none;
-    background: #263137;
+    background: #d2d2d7;
     height: 4px;
     border-radius: 2px;
   }
@@ -229,10 +265,12 @@
     height: 16px;
     width: 16px;
     border-radius: 50%;
-    background: #6ee7d8;
+    background: #0071e3;
     cursor: pointer;
-    border: 2px solid #0b0f12;
-    box-shadow: 0 0 0 1px rgba(110, 231, 216, 0.38);
+    border: 2px solid #ffffff;
+    box-shadow:
+      0 2px 8px rgba(29, 29, 31, 0.16),
+      0 0 0 1px rgba(0, 113, 227, 0.28);
   }
 }
 
@@ -291,10 +329,10 @@
 
 @keyframes beacon {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(110, 231, 216, 0.34);
+    box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.30);
   }
   50% {
-    box-shadow: 0 0 0 7px rgba(110, 231, 216, 0);
+    box-shadow: 0 0 0 7px rgba(0, 113, 227, 0);
   }
 }
 

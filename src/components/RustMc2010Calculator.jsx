@@ -99,7 +99,7 @@ export default function RustMc2010Calculator() {
       concreteClass={`fcm: ${params.fcm} MPa`}
       crossSectionInfo={`h_e: ${currentHEff} mm`}
       chartData={results}
-      chartLines={[{ dataKey: "phi", stroke: "#d6a642", name: "Creep Coefficient φ" }]}
+      chartLines={[{ dataKey: "phi", stroke: "#34c759", name: "Creep Coefficient φ" }]}
     />
   );
 }

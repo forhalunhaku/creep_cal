@@ -22,7 +22,7 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
           
           <div className="gauge-pulse relative w-48 h-48 mx-auto flex items-center justify-center mb-8">
             <svg className="w-full h-full -rotate-90">
-              <circle cx="96" cy="96" r="88" fill="none" stroke="#25252d" strokeWidth="8"></circle>
+              <circle cx="96" cy="96" r="88" fill="none" stroke="#d2d2d7" strokeWidth="8"></circle>
               {/* Actual value curve */}
               <circle 
                 cx="96" 
@@ -38,8 +38,8 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
               ></circle>
               <defs>
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style={{stopColor: "#6ee7d8"}}></stop>
-                  <stop offset="100%" style={{stopColor: "#d6a642"}}></stop>
+                  <stop offset="0%" style={{stopColor: "#0071e3"}}></stop>
+                  <stop offset="100%" style={{stopColor: "#34c759"}}></stop>
                 </linearGradient>
               </defs>
             </svg>
@@ -68,14 +68,14 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
 
       {/* Extra Results (e.g., shrinkage strains for B4/B4S) */}
       {extraResults && extraResults.length > 0 && (
-        <div className="motion-card glass-card rounded-lg p-6 border border-emerald-500/20 space-y-3">
-          <div className="text-xs font-label text-emerald-400 uppercase tracking-widest mb-4">Shrinkage results</div>
+        <div className="motion-card glass-card rounded-lg p-6 border border-primary/20 space-y-3">
+          <div className="text-xs font-label text-primary uppercase tracking-widest mb-4">Shrinkage results</div>
           {extraResults.map((item, i) => (
             <div key={i} className="flex items-center justify-between p-3 bg-surface-container-low rounded-md">
               <div>
                 <div className="text-[10px] text-neutral-500 font-label uppercase tracking-wider">{item.label}</div>
               </div>
-              <span className="text-emerald-300 font-headline text-lg font-bold">
+              <span className="text-primary font-headline text-lg font-bold">
                 {isNaN(parseFloat(item.value)) ? '--' : parseFloat(item.value).toExponential(3)}
               </span>
             </div>

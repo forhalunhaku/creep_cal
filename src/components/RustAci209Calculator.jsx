@@ -82,7 +82,7 @@ export default function RustAci209Calculator() {
       concreteClass="C35/45 Equivalency"
       crossSectionInfo={`V/S: ${params.VS} mm`}
       chartData={results}
-      chartLines={[{ dataKey: "phi", stroke: "#6ee7d8", name: "Creep Coefficient φ" }]}
+      chartLines={[{ dataKey: "phi", stroke: "#0071e3", name: "Creep Coefficient φ" }]}
     />
   );
 }

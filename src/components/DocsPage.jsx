@@ -1,4 +1,21 @@
 import React from 'react';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
+function FormulaExpression({ expr }) {
+  const html = React.useMemo(() => katex.renderToString(expr, {
+    displayMode: true,
+    throwOnError: false,
+    strict: false,
+  }), [expr]);
+
+  return (
+    <div
+      className="formula-render flex-1 overflow-x-auto rounded-md border border-outline-variant/10 bg-surface-container px-4 py-3 text-on-surface"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
 
 const MODELS = [
   {
@@ -22,15 +39,15 @@ const MODELS = [
     output: 'φ(t, t₀) — Creep Coefficient (dimensionless)',
     reference: 'ACI Committee 209 (1992). Prediction of Creep, Shrinkage, and Temperature Effects in Concrete Structures. ACI 209R-92.',
     formulas: [
-      { label: 'Creep Coefficient', expr: 'φ(t, t₀) = β_c(t−t₀) · φ_∞' },
-      { label: 'Time Function', expr: 'β_c = (t−t₀)^0.6 / [10 + (t−t₀)^0.6]' },
-      { label: 'Ultimate Creep', expr: 'φ_∞ = 2.35 · β_t₀ · β_RH · β_VS · β_sφ · β_Cc · β_α' },
-      { label: 'Age Factor', expr: 'β_t₀ = 1.25 · t₀^(−0.118)' },
-      { label: 'Humidity Factor', expr: 'β_RH = 1.27 − 0.0067 · H' },
-      { label: 'V/S Factor', expr: 'β_VS = 2 · [1 + 1.13 · e^(−0.0213·VS)] / 3' },
-      { label: 'Sand Ratio Factor', expr: 'β_sφ = 0.88 + 0.244 · sφ' },
-      { label: 'Cement Factor', expr: 'β_Cc = 0.75 + 0.00061 · Cc' },
-      { label: 'Air Content Factor', expr: 'β_α = 0.46 + 9 · α' },
+      { label: 'Creep Coefficient', expr: String.raw`\phi(t,t_0)=\beta_c(t-t_0)\cdot\phi_{\infty}` },
+      { label: 'Time Function', expr: String.raw`\beta_c(t-t_0)=\frac{(t-t_0)^{0.6}}{10+(t-t_0)^{0.6}}` },
+      { label: 'Ultimate Creep', expr: String.raw`\phi_{\infty}=2.35\cdot\beta_{t_0}\cdot\beta_{RH}\cdot\beta_{VS}\cdot\beta_{s\phi}\cdot\beta_{Cc}\cdot\beta_{\alpha}` },
+      { label: 'Age Factor', expr: String.raw`\beta_{t_0}=1.25\cdot t_0^{-0.118}` },
+      { label: 'Humidity Factor', expr: String.raw`\beta_{RH}=1.27-0.0067H` },
+      { label: 'V/S Factor', expr: String.raw`\beta_{VS}=\frac{2\left[1+1.13e^{-0.0213VS}\right]}{3}` },
+      { label: 'Sand Ratio Factor', expr: String.raw`\beta_{s\phi}=0.88+0.244s\phi` },
+      { label: 'Cement Factor', expr: String.raw`\beta_{Cc}=0.75+0.00061Cc` },
+      { label: 'Air Content Factor', expr: String.raw`\beta_{\alpha}=0.46+9\alpha` },
     ],
   },
   {
@@ -55,14 +72,14 @@ const MODELS = [
     output: 'φ(t, t₀) = φ_bc + φ_dc — combined creep coefficient',
     reference: 'fib (2013). fib Model Code for Concrete Structures 2010. Wilhelm Ernst & Sohn.',
     formulas: [
-      { label: 'Total Creep', expr: 'φ(t, t₀) = φ_bc(t, t₀) + φ_dc(t, t₀)' },
-      { label: 'Adjusted Loading Age', expr: 't₀,T = t₀ · exp[13.65 − 4000/(273+T)]' },
-      { label: 'Cement Class Adjustment', expr: 't₀,adj = t₀,T · [9/(2+t₀,T^1.2)+1]^a' },
-      { label: 'Notional Size', expr: 'h = 2 · A_c / u' },
-      { label: 'Size Limit', expr: 'β_h = min(1.5h + 250√(35/f_cm), 1500√(35/f_cm))' },
-      { label: 'Basic Creep', expr: 'φ_bc = 1.8/f_cm^0.7 · ln[(30/t₀,adj + 0.035)^2 · (t−t₀) + 1]' },
-      { label: 'Drying Exponent', expr: 'γ(t₀)=1/[2.3 + 3.5/√t₀,adj]' },
-      { label: 'Drying Creep', expr: 'φ_dc = 412/f_cm^1.4 · (1−RH/100)/(0.1h/100)^(1/3) · 1/(0.1+t₀,adj^0.2) · [(t−t₀)/(β_h+t−t₀)]^γ' },
+      { label: 'Total Creep', expr: String.raw`\phi(t,t_0)=\phi_{bc}(t,t_0)+\phi_{dc}(t,t_0)` },
+      { label: 'Adjusted Loading Age', expr: String.raw`t_{0,T}=t_0\cdot\exp\left(13.65-\frac{4000}{273+T}\right)` },
+      { label: 'Cement Class Adjustment', expr: String.raw`t_{0,adj}=t_{0,T}\cdot\left[\frac{9}{2+t_{0,T}^{1.2}}+1\right]^a` },
+      { label: 'Notional Size', expr: String.raw`h=\frac{2A_c}{u}` },
+      { label: 'Size Limit', expr: String.raw`\beta_h=\min\left(1.5h+250\sqrt{\frac{35}{f_{cm}}},\ 1500\sqrt{\frac{35}{f_{cm}}}\right)` },
+      { label: 'Basic Creep', expr: String.raw`\phi_{bc}=\frac{1.8}{f_{cm}^{0.7}}\cdot\ln\left[\left(\frac{30}{t_{0,adj}}+0.035\right)^2(t-t_0)+1\right]` },
+      { label: 'Drying Exponent', expr: String.raw`\gamma(t_0)=\frac{1}{2.3+\frac{3.5}{\sqrt{t_{0,adj}}}}` },
+      { label: 'Drying Creep', expr: String.raw`\phi_{dc}=\frac{412}{f_{cm}^{1.4}}\cdot\frac{1-RH/100}{(0.1h/100)^{1/3}}\cdot\frac{1}{0.1+t_{0,adj}^{0.2}}\cdot\left(\frac{t-t_0}{\beta_h+t-t_0}\right)^{\gamma}` },
     ],
   },
   {
@@ -70,9 +87,9 @@ const MODELS = [
     name: 'B4 Model',
     category: 'Multi-Decade Comprehensive',
     engine: ['JS', 'RUST'],
-    color: 'bg-emerald-500/12',
-    border: 'border-emerald-500/30',
-    textColor: 'text-emerald-300',
+    color: 'bg-green-500/12',
+    border: 'border-green-500/30',
+    textColor: 'text-green-700',
     description: 'The B4 implementation in this app returns compliance J(t,t′) and drying shrinkage εsh. It uses equivalent time from temperature, D=2V/S, material coefficients from cement and aggregate type, and composition inputs c, w/c, and a/c.',
     params: [
       { name: 't0', description: 'Drying start age (days)' },
@@ -92,13 +109,13 @@ const MODELS = [
     output: 'J(t, t\') — Compliance function (1/GPa), total creep + elastic deformation per unit stress',
     reference: 'Bažant Z.P., Hubler M.H., Yu Q. (2011). Pervasiveness of Excessive Segmental Bridge Deflections: Wake-Up Call for Creep. ACI Struct. J.',
     formulas: [
-      { label: 'Temperature Scaling', expr: 'β_T = exp[4000·(1/293 − 1/(T+273))]' },
-      { label: 'Equivalent Time', expr: "t̂′ = t₀β_T + (t′−t₀)β_T; t̂ = t̂′ + (t−t′)β_T" },
-      { label: 'Shrinkage Half-Time', expr: 'τ_SH = τ₀ · k_sτa · (k_s · 2V/S)^2' },
-      { label: 'Shrinkage', expr: 'εsh = εsh∞ · k_h · tanh√[max(0,(t−t₀)β_T)/τ_SH]' },
-      { label: 'Basic Creep', expr: "C₀ = q₂Q + q₃ln[1+max(0,t̂−t̂′)^0.1] + q₄ln[max(1,t̂/t̂′)]" },
-      { label: 'Drying Creep', expr: 'C_d = q₅√max(0, exp(−p5H·H) − exp(−p5H·Hc))' },
-      { label: 'Compliance Function', expr: "J(t,t′) = q₁ + β_T · C₀ + C_d" },
+      { label: 'Temperature Scaling', expr: String.raw`\beta_T=\exp\left[4000\left(\frac{1}{293}-\frac{1}{T+273}\right)\right]` },
+      { label: 'Equivalent Time', expr: String.raw`\hat{t}'=t_0\beta_T+(t'-t_0)\beta_T,\qquad \hat{t}=\hat{t}'+(t-t')\beta_T` },
+      { label: 'Shrinkage Half-Time', expr: String.raw`\tau_{SH}=\tau_0\cdot k_{s\tau a}\cdot\left(k_s\cdot\frac{2V}{S}\right)^2` },
+      { label: 'Shrinkage', expr: String.raw`\varepsilon_{sh}=\varepsilon_{sh\infty}\cdot k_h\cdot\tanh\sqrt{\frac{\max\left(0,(t-t_0)\beta_T\right)}{\tau_{SH}}}` },
+      { label: 'Basic Creep', expr: String.raw`C_0=q_2Q+q_3\ln\left[1+\max(0,\hat{t}-\hat{t}')^{0.1}\right]+q_4\ln\left[\max\left(1,\frac{\hat{t}}{\hat{t}'}\right)\right]` },
+      { label: 'Drying Creep', expr: String.raw`C_d=q_5\sqrt{\max\left(0,\exp(-p_{5H}H)-\exp(-p_{5H}H_c)\right)}` },
+      { label: 'Compliance Function', expr: String.raw`J(t,t')=q_1+\beta_T\cdot C_0+C_d` },
     ],
   },
   {
@@ -125,14 +142,14 @@ const MODELS = [
     output: 'J(t, t\') — Compliance function (1/GPa)',
     reference: 'Bažant Z.P., Baweja S. (2000). Creep and Shrinkage Prediction Model for Analysis and Design of Concrete Structures: Model B3. RILEM Recommendation.',
     formulas: [
-      { label: 'Temperature Scaling', expr: 'β_T = exp[4000·(1/293 − 1/(T+273))]' },
-      { label: 'Strength-Based τ₀', expr: "τ₀ = τ_s,cem · (fc/40)^sτf" },
-      { label: 'Shrinkage Half-Time', expr: 'τ_SH = τ₀ · k_sτa · (k_s · 2V/S)^2' },
-      { label: 'Strength-Based q₂', expr: 'q₂ = s₂ · (fc/40)^s2f / 1000' },
-      { label: 'Strength-Based q₃', expr: 'q₃ = s₃ · q₂ · (fc/40)^s3f' },
-      { label: 'Strength-Based q₄', expr: 'q₄ = s₄ · (fc/40)^s4f / 1000' },
-      { label: 'Shrinkage', expr: 'εsh = εsh∞ · k_h · tanh√[max(0,(t−t₀)β_T)/τ_SH]' },
-      { label: 'Compliance Function', expr: "J(t,t′) = q₁ + β_T · C₀ + C_d" },
+      { label: 'Temperature Scaling', expr: String.raw`\beta_T=\exp\left[4000\left(\frac{1}{293}-\frac{1}{T+273}\right)\right]` },
+      { label: 'Strength-Based τ₀', expr: String.raw`\tau_0=\tau_{s,cem}\cdot\left(\frac{f_c}{40}\right)^{s_{\tau f}}` },
+      { label: 'Shrinkage Half-Time', expr: String.raw`\tau_{SH}=\tau_0\cdot k_{s\tau a}\cdot\left(k_s\cdot\frac{2V}{S}\right)^2` },
+      { label: 'Strength-Based q₂', expr: String.raw`q_2=\frac{s_2\left(f_c/40\right)^{s_{2f}}}{1000}` },
+      { label: 'Strength-Based q₃', expr: String.raw`q_3=s_3\cdot q_2\cdot\left(\frac{f_c}{40}\right)^{s_{3f}}` },
+      { label: 'Strength-Based q₄', expr: String.raw`q_4=\frac{s_4\left(f_c/40\right)^{s_{4f}}}{1000}` },
+      { label: 'Shrinkage', expr: String.raw`\varepsilon_{sh}=\varepsilon_{sh\infty}\cdot k_h\cdot\tanh\sqrt{\frac{\max\left(0,(t-t_0)\beta_T\right)}{\tau_{SH}}}` },
+      { label: 'Compliance Function', expr: String.raw`J(t,t')=q_1+\beta_T\cdot C_0+C_d` },
     ],
   },
 ];
@@ -162,7 +179,7 @@ export default function DocsPage() {
             className={`px-5 py-2.5 rounded-lg font-label uppercase tracking-widest text-xs transition-all active:scale-95 border ${
               selected === m.id
                 ? `${m.color} ${m.textColor} ${m.border}`
-                : 'text-neutral-500 hover:text-neutral-300 border-outline-variant/30 hover:bg-white/5'
+                : 'text-neutral-500 hover:text-on-surface border-outline-variant/30 hover:bg-surface-container-high'
             }`}
           >
             {m.name}
@@ -248,9 +265,9 @@ export default function DocsPage() {
             <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-6">Core Calculation Formulas</h3>
             <div className="space-y-3">
               {model.formulas.map((f, i) => (
-                <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-2 p-4 rounded-md bg-surface-container-low border border-outline-variant/10">
+                <div key={i} className="flex flex-col gap-3 p-4 rounded-md bg-surface-container-low border border-outline-variant/10">
                   <span className={`text-[10px] font-label uppercase tracking-widest shrink-0 sm:w-52 ${model.textColor}`}>{f.label}</span>
-                  <code className="flex-1 font-mono text-sm text-on-surface-variant bg-surface-container px-3 py-1.5 rounded-sm border border-outline-variant/10 break-all">{f.expr}</code>
+                  <FormulaExpression expr={f.expr} />
                 </div>
               ))}
             </div>

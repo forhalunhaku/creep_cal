@@ -59,8 +59,8 @@ function mergeSeriesArray(seriesArray) {
 }
 
 const MODEL_COLORS = {
-  aci209: '#6ee7d8',
-  mc2010: '#d6a642',
+  aci209: '#0071e3',
+  mc2010: '#34c759',
 };
 const MODEL_LABELS = { aci209: 'ACI 209R-92 (φ)', mc2010: 'fib MC 2010 (φ)' };
 
@@ -149,7 +149,7 @@ export default function AnalysisPage() {
                     key={m.id}
                     onClick={() => toggleModel(m.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-md border transition-all text-sm font-label uppercase tracking-widest ${
-                      active ? m.color : 'text-neutral-500 border-outline-variant/20 hover:bg-white/5'
+                      active ? m.color : 'text-neutral-500 border-outline-variant/20 hover:bg-surface-container-high hover:text-on-surface'
                     }`}
                   >
                     <div className={`w-3 h-3 rounded-sm border-2 flex items-center justify-center ${active ? 'border-current' : 'border-neutral-600'}`}>
@@ -224,7 +224,7 @@ export default function AnalysisPage() {
               {hasRun && (
                 <button
                   onClick={handleExport}
-                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/20 transition-all active:scale-[0.98] font-label text-xs uppercase"
+                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary/10 text-primary hover:bg-primary/15 border border-primary/20 transition-all active:scale-[0.98] font-label text-xs uppercase"
                 >
                   <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
                   Export CSV
@@ -240,16 +240,16 @@ export default function AnalysisPage() {
             ) : (
               <div style={{ width: '100%', height: 420 }}>
                 <ResponsiveContainer width="100%" height={420}>
-                  <LineChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 25 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#25252d" />
-                    <XAxis dataKey="t" stroke="#76747b" tick={{fill:'#76747b'}} label={{value:'Time (days)', position:'insideBottomRight', offset:-10, fill:'#76747b', fontSize:11}} />
-                    <YAxis stroke="#76747b" tick={{fill:'#76747b'}} label={{value:'φ(t,t₀)', angle:-90, position:'insideLeft', fill:'#76747b', fontSize:11}} />
+                  <LineChart data={chartData} margin={{ top: 8, right: 18, left: 12, bottom: 30 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#d2d2d7" />
+                    <XAxis dataKey="t" stroke="#6e6e73" tick={{fill:'#6e6e73', fontSize:11}} tickCount={6} minTickGap={28} label={{value:'Time (days)', position:'insideBottomRight', offset:-12, fill:'#6e6e73', fontSize:10}} />
+                    <YAxis stroke="#6e6e73" tick={{fill:'#6e6e73', fontSize:11}} width={48} label={{value:'φ(t,t₀)', angle:-90, position:'insideLeft', fill:'#6e6e73', fontSize:10}} />
                     <Tooltip
-                      contentStyle={{backgroundColor:'#131319', border:'1px solid #25252d', borderRadius:'8px', color:'#f9f5fd'}}
+                      contentStyle={{backgroundColor:'#ffffff', border:'1px solid #d2d2d7', borderRadius:'8px', color:'#1d1d1f'}}
                       formatter={(v, name) => [v?.toFixed(4), MODEL_LABELS[name] || name]}
                       labelFormatter={l => `t = ${l} days`}
                     />
-                    <Legend formatter={k => MODEL_LABELS[k] || k} />
+                    <Legend iconSize={8} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} formatter={k => MODEL_LABELS[k] || k} />
                     {selectedModels.map(id => (
                       <Line
                         key={id}

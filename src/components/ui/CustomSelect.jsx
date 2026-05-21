@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
- * CustomSelect: dark compact trigger with a portal-rendered menu.
+ * CustomSelect: compact trigger with a portal-rendered menu.
  * Props:
  *   name, value, onChange, options: [{ value, label }] | [string]
  *   label (optional) – not rendered here, callers handle the label
@@ -69,8 +69,8 @@ export default function CustomSelect({ name, value, onChange, options }) {
   const palette = [
     'text-primary bg-primary/12',
     'text-secondary bg-secondary/14',
-    'text-emerald-300 bg-emerald-500/12',
-    'text-on-surface bg-white/8',
+    'text-green-700 bg-green-500/12',
+    'text-on-surface bg-surface-container-high',
   ];
 
   return (
@@ -104,7 +104,7 @@ export default function CustomSelect({ name, value, onChange, options }) {
       {/* ── Dropdown list (PORTAL) ─────────────────────────────── */}
       {open && typeof document !== 'undefined' && createPortal(
         <div 
-          className="custom-select-portal absolute z-50 bg-surface-container border border-primary/30 rounded-lg shadow-[0_18px_50px_rgba(1,8,10,0.55)] overflow-hidden"
+          className="custom-select-portal absolute z-50 bg-surface-container border border-primary/25 rounded-lg shadow-[0_18px_50px_rgba(29,29,31,0.14)] overflow-hidden"
           style={{ top: coords.top, left: coords.left, width: coords.width }}
           role="listbox"
         >
@@ -125,7 +125,7 @@ export default function CustomSelect({ name, value, onChange, options }) {
                   transition-colors duration-150
                   ${isSelected
                     ? 'bg-primary/20 text-primary'
-                    : 'text-on-surface hover:bg-white/5'
+                    : 'text-on-surface hover:bg-surface-container-high'
                   }
                 `}
               >

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DynamicParameters from './DynamicParameters';
 import ResultsSidebar from './ResultsSidebar';
-import BentoCards from './BentoCards';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { useCalculationMotion } from '../../hooks/useCalculationMotion';
 
@@ -62,6 +61,20 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
   const yLabel = chartLines?.[0]?.name || 'Value';
   const t0ref  = t0 != null ? parseFloat(t0) : null;
   const data   = chartData.filter((_, i) => i % 10 === 0);
+  const renderT0Label = ({ viewBox }) => {
+    if (!viewBox) return null;
+    return (
+      <text
+        x={viewBox.x + 7}
+        y={viewBox.y + 18}
+        fill="#bf7a12"
+        fontSize={10}
+        fontFamily="Manrope, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+      >
+        {`t₀=${t0ref}d`}
+      </text>
+    );
+  };
 
   return (
     <div className="motion-card glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
@@ -70,7 +83,7 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
         <button
           onClick={() => setLogX(v => !v)}
           className={`px-3 py-1.5 rounded text-[10px] font-label uppercase tracking-widest border transition-all ${
-            logX ? 'text-primary border-primary/40 bg-primary/10' : 'text-outline border-outline-variant/30 hover:bg-white/5 hover:text-on-surface'
+            logX ? 'text-primary border-primary/40 bg-primary/10' : 'text-outline border-outline-variant/30 hover:bg-surface-container-high hover:text-on-surface'
           }`}
         >
           Log X-Axis
@@ -78,33 +91,35 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
       </div>
       <div className="chart-stage h-80">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 5, right: 20, left: 15, bottom: 25 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#25252d" />
+          <LineChart data={data} margin={{ top: 8, right: 18, left: 12, bottom: 30 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#d2d2d7" />
             <XAxis
-              dataKey="t" stroke="#76747b" tick={{ fill: '#76747b' }}
+              dataKey="t" stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }}
               scale={logX ? 'log' : 'linear'}
               domain={logX ? ['auto', 'auto'] : undefined}
               allowDataOverflow={logX}
-              label={{ value: 'Time (days)', position: 'insideBottomRight', offset: -10, fill: '#76747b', fontSize: 11 }}
+              tickCount={6}
+              minTickGap={28}
+              label={{ value: 'Time (days)', position: 'insideBottomRight', offset: -12, fill: '#6e6e73', fontSize: 10 }}
             />
-            <YAxis stroke="#76747b" tick={{ fill: '#76747b' }}
-              label={{ value: yLabel, angle: -90, position: 'insideLeft', offset: 5, fill: '#76747b', fontSize: 10 }}
+            <YAxis stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }} width={48}
+              label={{ value: yLabel, angle: -90, position: 'insideLeft', offset: 0, fill: '#6e6e73', fontSize: 10 }}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: '#131319', border: '1px solid #25252d', borderRadius: '8px', color: '#f9f5fd' }}
+              contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #d2d2d7', borderRadius: '8px', color: '#1d1d1f' }}
               formatter={(v, name) => [typeof v === 'number' ? v.toFixed(5) : v, name]}
               labelFormatter={l => `t = ${l} days`}
             />
-            <Legend />
+            <Legend iconSize={8} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
             {t0ref != null && !isNaN(t0ref) && (
               <ReferenceLine x={t0ref} stroke="#f59e0b" strokeDasharray="4 4"
-                label={{ value: `t₀=${t0ref}d`, fill: '#f59e0b', fontSize: 10, position: 'top' }} />
+                label={renderT0Label} />
             )}
             {chartLines ? chartLines.map((line, idx) => (
               <Line key={idx} type="monotone" dataKey={line.dataKey} stroke={line.stroke}
                 strokeWidth={2}
                 dot={false}
-                activeDot={{ r: 5, stroke: line.stroke, strokeWidth: 2, fill: '#0b0f12' }}
+                activeDot={{ r: 5, stroke: line.stroke, strokeWidth: 2, fill: '#ffffff' }}
                 name={line.name}
                 isAnimationActive="auto"
                 animationBegin={idx * 120}
@@ -114,10 +129,10 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
               <Line
                 type="monotone"
                 dataKey="phi"
-                stroke="#6ee7d8"
+                stroke="#0071e3"
                 strokeWidth={2}
                 dot={false}
-                activeDot={{ r: 5, stroke: '#6ee7d8', strokeWidth: 2, fill: '#0b0f12' }}
+                activeDot={{ r: 5, stroke: '#0071e3', strokeWidth: 2, fill: '#ffffff' }}
                 name="Creep Coefficient φ"
                 isAnimationActive="auto"
                 animationDuration={1300}
@@ -142,8 +157,6 @@ export default function CalculatorWrapper({
   buttonText,
   phiResult,
   feedLogs,
-  concreteClass,
-  crossSectionInfo,
   chartData,
   chartLines, // Array of { dataKey, stroke, name }
   extraResults, // Array of { label, value } for secondary metrics (e.g. εsh)
@@ -178,7 +191,7 @@ export default function CalculatorWrapper({
           {hasNumericResult && (
             <button
               onClick={() => exportSingleResult(modelName, params, phiResult)}
-              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-emerald-500/10 text-emerald-300 hover:text-white border border-emerald-500/20 hover:border-emerald-400/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
+              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-secondary/10 text-on-surface hover:bg-secondary/15 border border-outline-variant/40 hover:border-outline transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
             >
               <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
               Export Result
@@ -187,7 +200,7 @@ export default function CalculatorWrapper({
           {hasResults && (
             <button
               onClick={() => exportToCSV(modelName, params, chartData, chartLines)}
-              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/20 hover:border-primary/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
+              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary/15 border border-primary/20 hover:border-primary/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
             >
               <span className="material-symbols-outlined text-sm" aria-hidden="true">table_chart</span>
               Export Time Series
@@ -214,11 +227,6 @@ export default function CalculatorWrapper({
               t0={params?.t0}
             />
           )}
-
-          <BentoCards 
-            concreteClass={concreteClass} 
-            crossSectionInfo={crossSectionInfo} 
-          />
         </div>
         
         <ResultsSidebar phi={phiResult} feedLogs={feedLogs} extraResults={extraResults} resultLabel={resultLabel} />
