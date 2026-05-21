@@ -16,6 +16,23 @@ const MODELS = [
   { id: 'b4s',    name: 'B4S Model',    resultKeys: ['result_J', 'result_epsilonSH'], labels: ['J (1/GPa)', 'εsh (Shrinkage)'], req: 't0, tPrime, T, h, fc, vS, cementType, specimenShape, aggregateType, t' },
 ];
 
+const SAMPLE_DATA = {
+  aci209: [35, 90, 180, 365, 730, 1460, 3650, 7300, 10000].map(t => ({
+    t0: 28, H: 70, VS: 100, sphi: 0.5, Cc: 350, alpha: 0.08, t
+  })),
+  mc2010: [35, 90, 180, 365, 730, 1460, 3650, 7300, 10000].map(t => ({
+    fcm: 38, RH: 70, t0: 28, Ac: 90000, u: 1200, T: 20, Cs: '42.5R', t
+  })),
+  b4: [35, 90, 180, 365, 730, 1460, 3650, 7300, 10000].map(t => ({
+    t0: 7, tPrime: 28, T: 20, h: 0.7, fc: 40, vS: 100, c: 350, wC: 0.42,
+    aC: 5.8, cementType: 'R', aggregateType: 'Quartzite', specimenShape: '2', t
+  })),
+  b4s: [35, 90, 180, 365, 730, 1460, 3650, 7300, 10000].map(t => ({
+    t0: 7, tPrime: 28, T: 20, h: 0.7, fc: 40, vS: 100,
+    cementType: 'R', specimenShape: '2', aggregateType: 'Quartzite', t
+  })),
+};
+
 // ─── Computation per row ─────────────────────────────────────────────────────
 function computeRow(modelId, row) {
   if (modelId === 'aci209') {
@@ -100,7 +117,7 @@ export default function BatchCalculator() {
     }
   };
 
-  const processData = (data) => {
+  const processData = (data, preferredXKey = 't') => {
     if (!data?.length) {
       setBatchError('File is empty. Please upload a CSV or Excel file with column headers.');
       setIsProcessing(false);
@@ -116,9 +133,15 @@ export default function BatchCalculator() {
       // Default axis selection
       const firstResult = model.resultKeys[0];
       setYKey(firstResult);
-      setXKey(inputHeaders[0] || '');
+      setXKey(inputHeaders.includes(preferredXKey) ? preferredXKey : (inputHeaders[0] || ''));
       setIsProcessing(false);
     }, 100);
+  };
+
+  const loadSampleDataset = () => {
+    setIsProcessing(true);
+    setBatchError('');
+    processData(SAMPLE_DATA[activeModel], 't');
   };
 
   const exportCSV = () => {
@@ -170,7 +193,14 @@ export default function BatchCalculator() {
             <CustomSelect
               name="activeModel"
               value={activeModel}
-              onChange={(e) => { setActiveModel(e.target.value); setBatchResults([]); }}
+              onChange={(e) => {
+                setActiveModel(e.target.value);
+                setBatchResults([]);
+                setBatchHeaders([]);
+                setBatchError('');
+                setXKey('');
+                setYKey(MODELS.find(m => m.id === e.target.value)?.resultKeys[0] || '');
+              }}
               options={MODELS.map(m => ({ value: m.id, label: m.name }))}
             />
           </div>
@@ -191,6 +221,10 @@ export default function BatchCalculator() {
             <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
             <span className="font-label tracking-[0.14em] text-sm uppercase">Download template</span>
           </button>
+          <button onClick={loadSampleDataset} disabled={isProcessing} className="px-6 py-3 rounded-md bg-primary/10 text-primary hover:bg-primary/15 border border-primary/25 transition-all active:scale-[0.98] flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-60">
+            <span className="material-symbols-outlined text-sm" aria-hidden="true">auto_graph</span>
+            <span className="font-label tracking-[0.14em] text-sm uppercase">Load sample dataset</span>
+          </button>
         </div>
         {batchError && (
           <div className="mt-5 rounded-md border border-error/30 bg-error/10 px-4 py-3 text-sm text-on-error-container">
@@ -207,7 +241,7 @@ export default function BatchCalculator() {
               <div className="text-[10px] font-label uppercase tracking-[0.18em] text-primary mb-2">Ready for dataset</div>
               <h3 className="font-headline text-2xl font-semibold tracking-tight text-on-background">Upload a table to generate the output matrix</h3>
               <p className="mt-3 max-w-[62ch] text-sm leading-relaxed text-on-surface-variant">
-                Use the template if you want the exact column names for the selected model. Results and visualization controls will appear here after import.
+                Use the template for exact column names, or load the sample dataset to preview the computed table and chart immediately.
               </p>
             </div>
             <div className="grid min-w-52 grid-cols-2 gap-3 text-center">

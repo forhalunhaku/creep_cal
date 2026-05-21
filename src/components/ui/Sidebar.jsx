@@ -4,7 +4,7 @@ export default function Sidebar({ activeMode, onModeChange, onOpenDocs }) {
   const itemBase = "flex items-center gap-3 transition-all duration-300 active:scale-[0.98] font-label uppercase tracking-[0.16em] text-[10px] md:text-xs";
 
   return (
-    <nav className="fixed inset-x-0 top-16 z-30 border-b border-outline-variant/40 bg-surface-container-low/95 p-2 backdrop-blur-2xl md:inset-y-0 md:left-0 md:right-auto md:top-0 md:w-72 md:border-b-0 md:border-r md:bg-surface-container-low/78 md:px-4 md:py-8">
+    <nav className="fixed inset-x-0 top-14 z-30 border-b border-outline-variant/40 bg-surface-container-low/95 p-1.5 backdrop-blur-2xl md:inset-y-0 md:left-0 md:right-auto md:top-0 md:w-72 md:border-b-0 md:border-r md:bg-surface-container-low/78 md:px-4 md:py-8">
       <div className="hidden px-4 md:mb-6 md:mt-20 md:block">
         <div className="font-headline text-xs font-black uppercase tracking-[0.24em] text-primary">Engineering core</div>
         <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-outline">v2.4 local kernel</div>
@@ -14,7 +14,7 @@ export default function Sidebar({ activeMode, onModeChange, onOpenDocs }) {
         <button
           onClick={() => onModeChange('single')}
           aria-label="Single analysis"
-          className={`${itemBase} justify-center rounded-lg px-2 py-3 md:w-full md:justify-start md:px-4 md:py-4 md:hover:translate-x-1 ${
+          className={`${itemBase} justify-center rounded-lg px-2 py-2.5 md:w-full md:justify-start md:px-4 md:py-4 md:hover:translate-x-1 ${
             activeMode === 'single'
               ? "bg-primary/12 text-primary ring-1 ring-primary/25 md:border-l-4 md:border-primary" 
               : "text-outline hover:bg-surface-container-high hover:text-on-surface md:border-l-4 md:border-transparent"
@@ -26,7 +26,7 @@ export default function Sidebar({ activeMode, onModeChange, onOpenDocs }) {
         <button
           onClick={() => onModeChange('batch')}
           aria-label="Batch matrix"
-          className={`${itemBase} justify-center rounded-lg px-2 py-3 md:w-full md:justify-start md:px-4 md:py-4 md:hover:translate-x-1 ${
+          className={`${itemBase} justify-center rounded-lg px-2 py-2.5 md:w-full md:justify-start md:px-4 md:py-4 md:hover:translate-x-1 ${
             activeMode === 'batch'
               ? "bg-primary/12 text-primary ring-1 ring-primary/25 md:border-l-4 md:border-primary" 
               : "text-outline hover:bg-surface-container-high hover:text-on-surface md:border-l-4 md:border-transparent"
@@ -38,7 +38,7 @@ export default function Sidebar({ activeMode, onModeChange, onOpenDocs }) {
         <button
           onClick={onOpenDocs}
           aria-label="Model docs"
-          className={`${itemBase} justify-center rounded-lg px-2 py-3 md:w-full md:justify-start md:px-4 md:py-4 md:hover:translate-x-1 ${
+          className={`${itemBase} justify-center rounded-lg px-2 py-2.5 md:w-full md:justify-start md:px-4 md:py-4 md:hover:translate-x-1 ${
             activeMode === 'docs' ? 'bg-primary/12 text-primary ring-1 ring-primary/25 md:border-l-4 md:border-primary' : 'text-outline hover:bg-surface-container-high hover:text-on-surface md:border-l-4 md:border-transparent'
           }`}
         >

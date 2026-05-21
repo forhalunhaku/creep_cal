@@ -28,33 +28,35 @@ export default function SingleCalculationDashboard() {
   };
 
   const ActiveComponent = ComponentTree[engine][algorithm];
+  const algorithms = [
+    { id: 'aci209', label: 'ACI 209R-92', shortLabel: 'ACI 209' },
+    { id: 'mc2010', label: 'fib MC 2010', shortLabel: 'MC 2010' },
+    { id: 'b4', label: 'B4 MODEL', shortLabel: 'B4' },
+    { id: 'b4s', label: 'B4S MODEL', shortLabel: 'B4S' }
+  ];
 
   return (
     <div className="animate-fade-in relative z-10 w-full">
       {/* Top Controller Bar */}
-      <div className="mb-8 glass-card rounded-lg p-3 md:p-4 flex flex-col xl:flex-row gap-4 justify-between items-stretch xl:items-center border border-outline-variant/30 relative overflow-hidden">
+      <div className="mb-6 glass-card rounded-lg p-2 md:mb-8 md:p-4 flex flex-col xl:flex-row gap-2 md:gap-4 justify-between items-stretch xl:items-center border border-outline-variant/30 relative overflow-hidden">
         {/* Decorative background glow */}
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,113,227,0.08),transparent_42%,rgba(52,199,89,0.05))] pointer-events-none"></div>
 
         {/* Algorithm Selection Segmented Control */}
         <div className="relative z-10 flex w-full overflow-x-auto p-1 bg-surface-container-highest rounded-md border border-outline-variant/30 xl:w-auto">
-          {[
-            { id: 'aci209', label: 'ACI 209R-92' },
-            { id: 'mc2010', label: 'fib MC 2010' },
-            { id: 'b4', label: 'B4 MODEL' },
-            { id: 'b4s', label: 'B4S MODEL' }
-          ].map((algo, index) => (
+          {algorithms.map((algo, index) => (
             <button
               key={algo.id}
               onClick={() => setAlgorithm(algo.id)}
               style={{ '--stagger-index': index }}
-              className={`stagger-pop control-tab px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all flex-1 xl:flex-none whitespace-nowrap active:scale-[0.98] ${
+              className={`stagger-pop control-tab px-3 py-2 rounded-sm font-label uppercase tracking-[0.08em] text-[10px] transition-all flex-1 xl:flex-none whitespace-nowrap active:scale-[0.98] md:px-5 md:py-3 md:text-xs md:tracking-[0.14em] ${
                 algorithm === algo.id 
                   ? 'is-active bg-primary/14 text-primary border border-primary/25'
                   : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
               }`}
             >
-              {algo.label}
+              <span className="md:hidden">{algo.shortLabel}</span>
+              <span className="hidden md:inline">{algo.label}</span>
             </button>
           ))}
         </div>
@@ -64,26 +66,28 @@ export default function SingleCalculationDashboard() {
           <button
             onClick={() => setEngine('rust')}
             style={{ '--stagger-index': 4 }}
-            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
+            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-1.5 px-3 py-2 rounded-sm font-label uppercase tracking-[0.08em] text-[10px] transition-all active:scale-[0.98] md:gap-2 md:px-5 md:py-3 md:text-xs md:tracking-[0.14em] ${
               engine === 'rust'
                 ? 'is-active bg-primary/14 text-primary border border-primary/25'
                 : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
             }`}
           >
             <span className="material-symbols-outlined text-sm" aria-hidden="true">memory</span>
-            RUST KERNEL
+            <span className="md:hidden">Rust</span>
+            <span className="hidden md:inline">RUST KERNEL</span>
           </button>
           <button
             onClick={() => setEngine('js')}
             style={{ '--stagger-index': 5 }}
-            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
+            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-1.5 px-3 py-2 rounded-sm font-label uppercase tracking-[0.08em] text-[10px] transition-all active:scale-[0.98] md:gap-2 md:px-5 md:py-3 md:text-xs md:tracking-[0.14em] ${
               engine === 'js'
                 ? 'is-active bg-secondary/14 text-secondary border border-secondary/25'
                 : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
             }`}
           >
             <span className="material-symbols-outlined text-sm text-[16px] leading-none" aria-hidden="true">javascript</span>
-            STANDARD JS
+            <span className="md:hidden">JS</span>
+            <span className="hidden md:inline">STANDARD JS</span>
           </button>
         </div>
       </div>

@@ -177,12 +177,12 @@ export default function CalculatorWrapper({
 
   return (
     <div ref={rootRef}>
-      <header className="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+      <header className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-background mb-4 text-balance">
+          <h1 className="font-headline text-3xl md:text-5xl font-bold tracking-tight text-on-background mb-3 md:mb-4 text-balance">
             {modelName} <span className="text-primary">analysis</span>
           </h1>
-          <p className="text-on-surface-variant text-base md:text-lg leading-relaxed max-w-[65ch]">
+          <p className="text-on-surface-variant text-sm md:text-lg leading-relaxed max-w-[65ch]">
             {modelDescription}
           </p>
         </div>

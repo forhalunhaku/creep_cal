@@ -19,7 +19,7 @@ export default function Layout({
         onOpenDocs={onOpenDocs}
       />
 
-      <main id="main-content" className="relative z-[2] px-4 pb-12 pt-40 md:ml-72 md:px-10 md:pt-28 lg:px-12 min-h-[100dvh]">
+      <main id="main-content" className="relative z-[2] px-4 pb-12 pt-28 md:ml-72 md:px-10 md:pt-28 lg:px-12 min-h-[100dvh]">
         {children}
       </main>
 
