@@ -54,7 +54,7 @@ export function ParameterSlider({ label, value, min, max, unit, name, colorClass
 
   if (options) {
     return (
-      <div className="stagger-pop space-y-3" style={{ '--stagger-index': motionIndex }}>
+      <div className="parameter-motion stagger-pop space-y-3" style={{ '--stagger-index': motionIndex }}>
         <div className="flex justify-between items-center">
           <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
             {label}
@@ -71,7 +71,7 @@ export function ParameterSlider({ label, value, min, max, unit, name, colorClass
   }
 
   return (
-    <div className="stagger-pop space-y-4" style={{ '--stagger-index': motionIndex }}>
+    <div className="parameter-motion stagger-pop space-y-4" style={{ '--stagger-index': motionIndex }}>
       <div className="flex justify-between items-center">
         <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
           {label} {unit && `(${unit})`}
@@ -152,7 +152,7 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
             onClick={onCalculate}
             disabled={!calculateReady}
             aria-busy={!calculateReady}
-            className={`w-full ${calculateReady ? 'kinetic-gradient hover:brightness-110 hover:-translate-y-0.5' : 'bg-surface-container-high opacity-70'} text-on-primary-fixed py-5 rounded-md font-headline font-bold text-base md:text-lg tracking-[0.16em] shadow-[0_18px_40px_rgba(2,14,16,0.28)] transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-4 disabled:cursor-not-allowed`}
+            className={`calculate-trigger w-full ${calculateReady ? 'kinetic-gradient hover:brightness-110 hover:-translate-y-0.5' : 'bg-surface-container-high opacity-70'} text-on-primary-fixed py-5 rounded-md font-headline font-bold text-base md:text-lg tracking-[0.16em] shadow-[0_18px_40px_rgba(2,14,16,0.28)] transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-4 disabled:cursor-not-allowed`}
           >
             <span className="material-symbols-outlined" aria-hidden="true" style={{fontVariationSettings: "'FILL' 1"}}>bolt</span>
             {buttonText || 'INITIATE CALCULATION'}

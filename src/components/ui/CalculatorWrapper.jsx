@@ -3,6 +3,7 @@ import DynamicParameters from './DynamicParameters';
 import ResultsSidebar from './ResultsSidebar';
 import BentoCards from './BentoCards';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { useCalculationMotion } from '../../hooks/useCalculationMotion';
 
 function exportToCSV(modelName, params, chartData, chartLines) {
   if (!chartData || chartData.length === 0) return;
@@ -151,9 +152,18 @@ export default function CalculatorWrapper({
   const hasResults = chartData && chartData.length > 0;
   const numericResult = parseFloat(phiResult);
   const hasNumericResult = Number.isFinite(numericResult);
+  const { rootRef, playCalculationMotion } = useCalculationMotion();
+
+  const handleCalculate = async () => {
+    const result = onCalculate?.();
+    await Promise.resolve(result);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(playCalculationMotion);
+    });
+  };
 
   return (
-    <>
+    <div ref={rootRef}>
       <header className="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
           <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-background mb-4 text-balance">
@@ -192,7 +202,7 @@ export default function CalculatorWrapper({
             paramsConfig={paramsConfig} 
             params={params} 
             onParamChange={onParamChange}
-            onCalculate={onCalculate}
+            onCalculate={handleCalculate}
             calculateReady={calculateReady}
             buttonText={buttonText}
           />
@@ -213,6 +223,6 @@ export default function CalculatorWrapper({
         
         <ResultsSidebar phi={phiResult} feedLogs={feedLogs} extraResults={extraResults} resultLabel={resultLabel} />
       </div>
-    </>
+    </div>
   );
 }

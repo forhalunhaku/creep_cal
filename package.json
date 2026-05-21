@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animejs": "^4.4.1",
     "katex": "^0.16.9",
     "papaparse": "^5.5.3",
     "react": "^19.1.0",

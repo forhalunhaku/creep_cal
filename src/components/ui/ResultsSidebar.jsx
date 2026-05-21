@@ -1,4 +1,5 @@
 import React from 'react';
+import AnimatedMetric from './AnimatedMetric';
 
 export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabel }) {
   const circumference = 553;
@@ -14,7 +15,7 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
   return (
     <aside className="col-span-12 lg:col-span-4 space-y-8">
       {/* Circular Gauge */}
-      <div className="motion-card glass-card rounded-lg p-5 md:p-8 border border-primary/20 relative overflow-hidden group">
+      <div className="result-panel motion-card glass-card rounded-lg p-5 md:p-8 border border-primary/20 relative overflow-hidden group">
         <div className="absolute -right-16 -top-20 h-44 w-52 rotate-12 bg-primary/8 blur-3xl group-hover:bg-primary/12 transition-colors"></div>
         <div className="text-center">
           <div className="text-xs font-label text-on-surface-variant uppercase tracking-widest mb-8">{resultLabel || 'Creep Coefficient φ(t,t₀)'}</div>
@@ -43,9 +44,11 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
               </defs>
             </svg>
             <div className="absolute flex flex-col items-center">
-              <span className="text-5xl font-headline font-bold text-primary">
-                {isNaN(phiValue) ? '--' : isComplianceJ ? phiValue.toExponential(3) : phiValue.toFixed(3)}
-              </span>
+              <AnimatedMetric
+                value={phiValue}
+                format={isComplianceJ ? 'exponential' : 'fixed'}
+                className="result-readout text-5xl font-headline font-bold text-primary"
+              />
               <span className="text-[10px] font-label text-neutral-500">CURRENT VALUE</span>
             </div>
           </div>
@@ -91,7 +94,7 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
         </div>
         <div className="p-6 space-y-4 overflow-y-auto text-[11px] font-body flex-1 flex flex-col justify-end">
           {feedLogs.map((log, index) => (
-            <div key={index} className="flex gap-3">
+            <div key={index} className="system-feed-line flex gap-3">
               <span className="text-neutral-600 shrink-0">{log.time}</span>
               <span className={`${log.type === 'error' ? 'text-error' : log.type === 'success' ? 'text-primary' : log.type === 'warning' ? 'text-secondary' : 'text-on-surface-variant'}`}>
                 {log.message}
