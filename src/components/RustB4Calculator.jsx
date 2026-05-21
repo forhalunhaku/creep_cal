@@ -126,7 +126,7 @@ export default function RustB4Calculator() {
   return (
     <CalculatorWrapper 
       modelName="B4 Model (RUST)"
-      modelDescription="Multi-decade comprehensive creep and shrinkage prediction model powered by Rust kernel."
+      modelDescription="B4 compliance and shrinkage calculation using the Rust WASM kernel for long-range response curves."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

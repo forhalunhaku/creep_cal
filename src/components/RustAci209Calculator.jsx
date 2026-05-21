@@ -70,7 +70,7 @@ export default function RustAci209Calculator() {
   return (
     <CalculatorWrapper 
       modelName="ACI 209R (RUST)"
-      modelDescription="High-fidelity time-dependent deformation modeling based on ACI 209R-92 standard, powered by standard Rust WASM Kernel."
+      modelDescription="ACI 209R-92 creep coefficient calculation using the Rust WASM kernel for the 10000-day time series."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

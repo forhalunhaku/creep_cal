@@ -28,10 +28,10 @@ export default function Layout({
           <div>
             © 2026 halunhaku. Concrete creep calculation workspace.
           </div>
-          <div className="flex flex-wrap gap-4 md:gap-8">
-            <span className="transition-colors hover:text-primary">Specifications</span>
-            <span className="transition-colors hover:text-primary">Validation</span>
-            <span className="transition-colors hover:text-primary">API</span>
+          <div className="flex flex-wrap gap-4 text-on-surface-variant md:gap-8">
+            <span>Vite build</span>
+            <span>Rust WASM</span>
+            <span>CSV / XLSX</span>
           </div>
         </div>
       </footer>

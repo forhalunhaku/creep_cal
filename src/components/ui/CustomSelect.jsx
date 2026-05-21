@@ -74,11 +74,13 @@ export default function CustomSelect({ name, value, onChange, options }) {
   ];
 
   return (
-    <div className={`relative w-full ${open ? 'z-[100]' : 'z-0'}`} ref={ref}>
+    <div className={`relative w-full ${open ? 'z-40' : 'z-0'}`} ref={ref}>
       {/* ── Trigger ─────────────────────────────────────────────── */}
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
+        aria-expanded={open}
+        aria-haspopup="listbox"
         className={`
           w-full flex items-center justify-between
           px-5 py-3 rounded-md text-sm font-body
@@ -102,8 +104,9 @@ export default function CustomSelect({ name, value, onChange, options }) {
       {/* ── Dropdown list (PORTAL) ─────────────────────────────── */}
       {open && typeof document !== 'undefined' && createPortal(
         <div 
-          className="custom-select-portal absolute z-[9999] bg-surface-container border border-primary/30 rounded-lg shadow-[0_18px_50px_rgba(1,8,10,0.55)] overflow-hidden"
+          className="custom-select-portal absolute z-50 bg-surface-container border border-primary/30 rounded-lg shadow-[0_18px_50px_rgba(1,8,10,0.55)] overflow-hidden"
           style={{ top: coords.top, left: coords.left, width: coords.width }}
+          role="listbox"
         >
           {opts.map((opt, idx) => {
             const isSelected = opt.value === value;
@@ -115,6 +118,8 @@ export default function CustomSelect({ name, value, onChange, options }) {
                 key={opt.value}
                 type="button"
                 onClick={() => handleSelect(opt)}
+                role="option"
+                aria-selected={isSelected}
                 className={`
                   w-full flex items-center gap-3 px-4 py-3 text-sm text-left
                   transition-colors duration-150

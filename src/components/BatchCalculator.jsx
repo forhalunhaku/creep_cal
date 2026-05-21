@@ -165,7 +165,7 @@ export default function BatchCalculator() {
         <div className="absolute right-[-8rem] top-[-8rem] h-64 w-72 rotate-12 bg-primary/8 blur-3xl pointer-events-none"></div>
         <h3 className="font-headline text-xl font-semibold tracking-tight text-primary mb-6">Pipeline configuration</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div>
+          <div className="min-w-0">
             <label className="block text-xs font-label uppercase text-outline tracking-[0.16em] mb-2">Target algorithm</label>
             <CustomSelect
               name="activeModel"
@@ -176,7 +176,7 @@ export default function BatchCalculator() {
           </div>
           <div>
             <label className="block text-xs font-label uppercase text-outline tracking-[0.16em] mb-2">Required columns</label>
-            <div className="w-full bg-surface-container border border-outline-variant/20 text-on-surface-variant rounded-md px-4 py-3 font-mono text-xs break-all leading-relaxed">
+            <div className="w-full bg-surface-container border border-outline-variant/20 text-on-surface-variant rounded-md px-4 py-3 font-mono text-xs break-words leading-relaxed">
               {model.req}
             </div>
           </div>
@@ -184,12 +184,12 @@ export default function BatchCalculator() {
         <div className="flex flex-wrap gap-4 items-center border-t border-outline-variant/20 pt-8 mt-4">
           <label className="px-6 py-3 rounded-md bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/50 cursor-pointer transition-all active:scale-[0.98] flex items-center gap-2">
             <span className="material-symbols-outlined text-primary" aria-hidden="true">upload_file</span>
-            <span className="font-label tracking-[0.14em] text-sm text-on-surface">{isProcessing ? 'PROCESSING...' : 'UPLOAD SET (.CSV / .XLSX)'}</span>
+            <span className="font-label tracking-[0.14em] text-sm text-on-surface">{isProcessing ? 'Processing file' : 'Upload CSV / XLSX'}</span>
             <input type="file" className="hidden" accept=".csv,.xlsx" onChange={handleBatchFile} disabled={isProcessing} />
           </label>
           <button onClick={downloadTemplate} className="px-6 py-3 rounded-md text-primary hover:bg-primary/10 border border-primary/20 transition-all active:scale-[0.98] flex items-center gap-2">
             <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
-            <span className="font-label tracking-[0.14em] text-sm uppercase">Extract template</span>
+            <span className="font-label tracking-[0.14em] text-sm uppercase">Download template</span>
           </button>
         </div>
         {batchError && (
@@ -200,16 +200,40 @@ export default function BatchCalculator() {
       </div>
 
       {/* Results */}
+      {batchResults.length === 0 && !batchError && (
+        <div className="glass-card rounded-lg border border-outline-variant/30 p-6 md:p-8">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div className="text-[10px] font-label uppercase tracking-[0.18em] text-primary mb-2">Ready for dataset</div>
+              <h3 className="font-headline text-2xl font-semibold tracking-tight text-on-background">Upload a table to generate the output matrix</h3>
+              <p className="mt-3 max-w-[62ch] text-sm leading-relaxed text-on-surface-variant">
+                Use the template if you want the exact column names for the selected model. Results and visualization controls will appear here after import.
+              </p>
+            </div>
+            <div className="grid min-w-52 grid-cols-2 gap-3 text-center">
+              <div className="metric-tile rounded-md border border-outline-variant/20 bg-surface-container-low p-3">
+                <div className="font-mono text-lg text-primary">{model.resultKeys.length}</div>
+                <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-outline">outputs</div>
+              </div>
+              <div className="metric-tile rounded-md border border-outline-variant/20 bg-surface-container-low p-3">
+                <div className="font-mono text-lg text-secondary">{model.req.split(', ').length}</div>
+                <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-outline">columns</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {batchResults.length > 0 && (
         <>
           {/* Table */}
           <div className="glass-card rounded-lg border border-outline-variant/30 overflow-hidden animate-fade-in-up">
             <div className="bg-surface-container p-4 border-b border-outline-variant/20 flex justify-between items-center flex-wrap gap-3">
-              <h3 className="font-headline text-lg uppercase tracking-widest text-on-background">
-                Output Matrix <span className="text-outline text-sm ml-2">({batchResults.length} records)</span>
+              <h3 className="font-headline text-lg tracking-tight text-on-background">
+                Output matrix <span className="text-outline text-sm ml-2">({batchResults.length} records)</span>
               </h3>
               <button onClick={exportCSV} className="px-5 py-2 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/30 transition-all font-label tracking-[0.14em] text-xs uppercase active:scale-[0.98]">
-                EXPORT CSV
+                Export CSV
               </button>
             </div>
             <div className="overflow-x-auto max-h-[400px]">
@@ -248,10 +272,10 @@ export default function BatchCalculator() {
           </div>
 
           {/* Visualization */}
-          <div className="glass-card rounded-lg border border-outline-variant/30 p-5 md:p-8">
+          <div className="motion-card glass-card rounded-lg border border-outline-variant/30 p-5 md:p-8">
             <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-              <h3 className="font-headline text-xl uppercase tracking-widest text-on-background">
-                Result <span className="text-primary italic">Visualizer</span>
+              <h3 className="font-headline text-xl tracking-tight text-on-background">
+                Result <span className="text-primary italic">visualizer</span>
               </h3>
               <div className="flex gap-2 flex-wrap items-center">
                 {/* Chart type toggle */}
@@ -294,7 +318,7 @@ export default function BatchCalculator() {
                 <p className="font-label text-xs uppercase tracking-[0.16em]">Select numeric X column to visualize</p>
               </div>
             ) : (
-              <div style={{ width: '100%', height: 380 }}>
+              <div className="chart-stage" style={{ width: '100%', height: 380 }}>
                 <ResponsiveContainer width="100%" height={380}>
                   {chartType === 'scatter' ? (
                     <ScatterChart margin={{ top: 10, right: 20, left: 10, bottom: 30 }}>
@@ -308,7 +332,14 @@ export default function BatchCalculator() {
                         contentStyle={{ backgroundColor: '#131319', border: '1px solid #25252d', borderRadius: '8px', color: '#f9f5fd' }}
                         formatter={(v, n) => [v?.toFixed(5), n]}
                       />
-                      <Scatter data={chartData} fill="#6ee7d8" fillOpacity={0.7} />
+                      <Scatter
+                        data={chartData}
+                        fill="#6ee7d8"
+                        fillOpacity={0.7}
+                        isAnimationActive="auto"
+                        animationDuration={900}
+                        animationEasing="spring"
+                      />
                     </ScatterChart>
                   ) : (
                     <LineChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 30 }}>
@@ -321,7 +352,17 @@ export default function BatchCalculator() {
                         contentStyle={{ backgroundColor: '#131319', border: '1px solid #25252d', borderRadius: '8px', color: '#f9f5fd' }}
                         formatter={(v) => [v?.toFixed(5), yKey]}
                       />
-                      <Line type="monotone" dataKey="y" stroke="#6ee7d8" strokeWidth={2} dot={false} />
+                      <Line
+                        type="monotone"
+                        dataKey="y"
+                        stroke="#6ee7d8"
+                        strokeWidth={2}
+                        dot={false}
+                        activeDot={{ r: 5, stroke: '#6ee7d8', strokeWidth: 2, fill: '#0b0f12' }}
+                        isAnimationActive="auto"
+                        animationDuration={1200}
+                        animationEasing="ease-out"
+                      />
                     </LineChart>
                   )}
                 </ResponsiveContainer>

@@ -65,6 +65,131 @@
   .animate-fade-in-up {
     animation: fade-in-up 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+
+  .stagger-pop {
+    animation: stagger-pop 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--stagger-index, 0) * 46ms);
+  }
+
+  .motion-card {
+    transform: translateZ(0);
+    transition:
+      transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .motion-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(110, 231, 216, 0.32);
+  }
+
+  .control-tab {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .control-tab::after {
+    content: "";
+    position: absolute;
+    inset: auto 16% 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(110, 231, 216, 0.78), transparent);
+    opacity: 0;
+    transform: scaleX(0.2);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .control-tab.is-active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .motion-field {
+    opacity: 0.42;
+    transform: rotate(-10deg);
+    mask-image: radial-gradient(circle, black 0 48%, transparent 76%);
+  }
+
+  .motion-dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: rgba(110, 231, 216, 0.58);
+    animation: dot-breathe 2600ms ease-in-out infinite;
+    animation-delay: calc(var(--dot-index) * 42ms);
+    box-shadow: 0 0 18px rgba(110, 231, 216, 0.18);
+  }
+
+  .gauge-pulse::before {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    border-radius: 9999px;
+    border: 1px solid rgba(110, 231, 216, 0.12);
+    animation: gauge-ring 2400ms ease-in-out infinite;
+  }
+
+  .status-beacon {
+    animation: beacon 1600ms ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(110, 231, 216, 0.34);
+  }
+
+  .metric-tile {
+    animation: metric-rise 1800ms cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+  }
+
+  .metric-tile:nth-child(2) {
+    animation-delay: 220ms;
+  }
+
+  .chart-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+
+  .chart-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, transparent 0%, rgba(110, 231, 216, 0.08) 48%, transparent 72%),
+      radial-gradient(circle at 18% 22%, rgba(110, 231, 216, 0.10), transparent 28%);
+    transform: translateX(-105%);
+    animation: chart-scan 1900ms cubic-bezier(0.16, 1, 0.3, 1) 160ms both;
+    mix-blend-mode: screen;
+  }
+
+  .chart-stage .recharts-wrapper {
+    animation: chart-rise 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .chart-stage .recharts-cartesian-grid line {
+    animation: grid-fade 760ms ease-out both;
+    animation-delay: 120ms;
+  }
+
+  .chart-stage .recharts-cartesian-axis-tick {
+    animation: axis-tick-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 260ms;
+  }
+
+  .chart-stage .recharts-line-curve {
+    filter: drop-shadow(0 0 8px rgba(110, 231, 216, 0.10));
+  }
+
+  .chart-stage .recharts-reference-line-line {
+    animation: reference-pulse 1800ms ease-in-out infinite;
+  }
+
+  .chart-stage .recharts-scatter-symbol {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: scatter-pop 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
 /* Custom Range Slider Styles */
@@ -104,5 +229,132 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes stagger-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dot-breathe {
+  0%, 100% {
+    opacity: 0.28;
+    transform: scale(0.7);
+  }
+  48% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes gauge-ring {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes beacon {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(110, 231, 216, 0.34);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(110, 231, 216, 0);
+  }
+}
+
+@keyframes metric-rise {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes chart-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chart-scan {
+  0% {
+    opacity: 0;
+    transform: translateX(-105%);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(105%);
+  }
+}
+
+@keyframes grid-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.82;
+  }
+}
+
+@keyframes axis-tick-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reference-pulse {
+  0%, 100% {
+    opacity: 0.42;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes scatter-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }

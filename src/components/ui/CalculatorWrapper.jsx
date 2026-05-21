@@ -63,7 +63,7 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
   const data   = chartData.filter((_, i) => i % 10 === 0);
 
   return (
-    <div className="glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
+    <div className="motion-card glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
         <h3 className="font-headline text-xl font-semibold tracking-tight text-on-background">System analytics trace</h3>
         <button
@@ -75,7 +75,7 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
           Log X-Axis
         </button>
       </div>
-      <div className="h-80">
+      <div className="chart-stage h-80">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 5, right: 20, left: 15, bottom: 25 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#25252d" />
@@ -101,9 +101,27 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
             )}
             {chartLines ? chartLines.map((line, idx) => (
               <Line key={idx} type="monotone" dataKey={line.dataKey} stroke={line.stroke}
-                strokeWidth={2} dot={false} name={line.name} />
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 5, stroke: line.stroke, strokeWidth: 2, fill: '#0b0f12' }}
+                name={line.name}
+                isAnimationActive="auto"
+                animationBegin={idx * 120}
+                animationDuration={1300}
+                animationEasing="ease-out" />
             )) : (
-              <Line type="monotone" dataKey="phi" stroke="#6ee7d8" strokeWidth={2} dot={false} name="Creep Coefficient φ" />
+              <Line
+                type="monotone"
+                dataKey="phi"
+                stroke="#6ee7d8"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 5, stroke: '#6ee7d8', strokeWidth: 2, fill: '#0b0f12' }}
+                name="Creep Coefficient φ"
+                isAnimationActive="auto"
+                animationDuration={1300}
+                animationEasing="ease-out"
+              />
             )}
           </LineChart>
         </ResponsiveContainer>
@@ -136,7 +154,7 @@ export default function CalculatorWrapper({
 
   return (
     <>
-      <header className="mb-12 flex justify-between items-end">
+      <header className="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
           <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-background mb-4 text-balance">
             {modelName} <span className="text-primary">analysis</span>
@@ -146,11 +164,11 @@ export default function CalculatorWrapper({
           </p>
         </div>
         {/* Export buttons — single result always shown when phi computed, CSV only when chart exists */}
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex w-full flex-wrap gap-2 md:w-auto md:justify-end">
           {hasNumericResult && (
             <button
               onClick={() => exportSingleResult(modelName, params, phiResult)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-emerald-500/10 text-emerald-300 hover:text-white border border-emerald-500/20 hover:border-emerald-400/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase"
+              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-emerald-500/10 text-emerald-300 hover:text-white border border-emerald-500/20 hover:border-emerald-400/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
             >
               <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
               Export Result
@@ -159,7 +177,7 @@ export default function CalculatorWrapper({
           {hasResults && (
             <button
               onClick={() => exportToCSV(modelName, params, chartData, chartLines)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/20 hover:border-primary/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase"
+              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:text-white border border-primary/20 hover:border-primary/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
             >
               <span className="material-symbols-outlined text-sm" aria-hidden="true">table_chart</span>
               Export Time Series

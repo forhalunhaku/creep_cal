@@ -126,7 +126,7 @@ export default function RustB4sCalculator() {
   return (
     <CalculatorWrapper 
       modelName="B4S Model (RUST)"
-      modelDescription="Simplified B4 Model for rapid analysis powered by Rust kernel."
+      modelDescription="Simplified B4 calculation using the Rust WASM kernel for compliance and shrinkage time series."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

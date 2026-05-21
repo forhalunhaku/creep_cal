@@ -94,7 +94,7 @@ export default function Mc2010Calculator() {
   return (
     <CalculatorWrapper 
       modelName="fib MC 2010 (JS)"
-      modelDescription="High-fidelity time-dependent deformation modeling based on European Concrete standard, powered by standard Javascript Engine."
+      modelDescription="fib Model Code 2010 calculation for basic and drying creep with strength, humidity, section size, temperature, and cement class inputs."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

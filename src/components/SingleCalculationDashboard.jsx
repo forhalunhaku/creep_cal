@@ -43,13 +43,14 @@ export default function SingleCalculationDashboard() {
             { id: 'mc2010', label: 'fib MC 2010' },
             { id: 'b4', label: 'B4 MODEL' },
             { id: 'b4s', label: 'B4S MODEL' }
-          ].map(algo => (
+          ].map((algo, index) => (
             <button
               key={algo.id}
               onClick={() => setAlgorithm(algo.id)}
-              className={`px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all flex-1 xl:flex-none whitespace-nowrap active:scale-[0.98] ${
+              style={{ '--stagger-index': index }}
+              className={`stagger-pop control-tab px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all flex-1 xl:flex-none whitespace-nowrap active:scale-[0.98] ${
                 algorithm === algo.id 
-                  ? 'bg-primary/14 text-primary border border-primary/25' 
+                  ? 'is-active bg-primary/14 text-primary border border-primary/25'
                   : 'text-outline hover:text-on-surface hover:bg-white/5 border border-transparent'
               }`}
             >
@@ -62,9 +63,10 @@ export default function SingleCalculationDashboard() {
         <div className="relative z-10 flex w-full p-1 bg-surface-container-highest rounded-md border border-outline-variant/30 xl:w-auto">
           <button
             onClick={() => setEngine('rust')}
-            className={`flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
+            style={{ '--stagger-index': 4 }}
+            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
               engine === 'rust'
-                ? 'bg-primary/14 text-primary border border-primary/25'
+                ? 'is-active bg-primary/14 text-primary border border-primary/25'
                 : 'text-outline hover:text-on-surface hover:bg-white/5 border border-transparent'
             }`}
           >
@@ -73,9 +75,10 @@ export default function SingleCalculationDashboard() {
           </button>
           <button
             onClick={() => setEngine('js')}
-            className={`flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
+            style={{ '--stagger-index': 5 }}
+            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-2 px-5 py-3 rounded-sm font-label uppercase tracking-[0.14em] text-xs transition-all active:scale-[0.98] ${
               engine === 'js'
-                ? 'bg-secondary/14 text-secondary border border-secondary/25'
+                ? 'is-active bg-secondary/14 text-secondary border border-secondary/25'
                 : 'text-outline hover:text-on-surface hover:bg-white/5 border border-transparent'
             }`}
           >

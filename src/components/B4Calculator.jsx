@@ -170,7 +170,7 @@ export default function B4Calculator() {
   return (
     <CalculatorWrapper 
       modelName="B4 Model (JS)"
-      modelDescription="Multi-decade comprehensive creep and shrinkage prediction model powered by Javascript Engine."
+      modelDescription="B4 compliance and shrinkage calculation with mix design, aggregate, humidity, temperature, and specimen geometry inputs."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

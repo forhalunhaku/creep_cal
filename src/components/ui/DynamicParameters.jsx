@@ -49,12 +49,12 @@ function EditableValue({ value, min, max, colorClass, onChange, name, step }) {
 }
 
 // Reusable Slider Component
-export function ParameterSlider({ label, value, min, max, unit, name, colorClass, options, onChange }) {
+export function ParameterSlider({ label, value, min, max, unit, name, colorClass, options, onChange, motionIndex = 0 }) {
   const step = max > 10 ? 1 : (max <= 1 ? 0.01 : 0.1);
 
   if (options) {
     return (
-      <div className="space-y-3">
+      <div className="stagger-pop space-y-3" style={{ '--stagger-index': motionIndex }}>
         <div className="flex justify-between items-center">
           <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
             {label}
@@ -71,7 +71,7 @@ export function ParameterSlider({ label, value, min, max, unit, name, colorClass
   }
 
   return (
-    <div className="space-y-4">
+    <div className="stagger-pop space-y-4" style={{ '--stagger-index': motionIndex }}>
       <div className="flex justify-between items-center">
         <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
           {label} {unit && `(${unit})`}
@@ -112,7 +112,10 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
       <div className="glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
         <div className="flex items-center gap-3 mb-8">
           <span className="material-symbols-outlined text-primary" aria-hidden="true">tune</span>
-          <h2 className="font-headline text-xl font-semibold tracking-tight">Dynamic parameters</h2>
+          <div>
+            <h2 className="font-headline text-xl font-semibold tracking-tight">Dynamic parameters</h2>
+            <p className="mt-1 text-xs text-on-surface-variant">{paramsConfig.length} inputs configured for the active model.</p>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
@@ -129,6 +132,7 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
             return (
               <ParameterSlider
                 key={config.name}
+                motionIndex={idx}
                 label={config.label}
                 name={config.name}
                 value={params[config.name] ?? config.min}
@@ -147,6 +151,7 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
           <button 
             onClick={onCalculate}
             disabled={!calculateReady}
+            aria-busy={!calculateReady}
             className={`w-full ${calculateReady ? 'kinetic-gradient hover:brightness-110 hover:-translate-y-0.5' : 'bg-surface-container-high opacity-70'} text-on-primary-fixed py-5 rounded-md font-headline font-bold text-base md:text-lg tracking-[0.16em] shadow-[0_18px_40px_rgba(2,14,16,0.28)] transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-4 disabled:cursor-not-allowed`}
           >
             <span className="material-symbols-outlined" aria-hidden="true" style={{fontVariationSettings: "'FILL' 1"}}>bolt</span>

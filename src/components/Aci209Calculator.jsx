@@ -55,7 +55,7 @@ export default function Aci209Calculator() {
   return (
     <CalculatorWrapper 
       modelName="ACI 209R (JS)"
-      modelDescription="High-fidelity time-dependent deformation modeling based on ACI 209R-92 standard, powered by standard Javascript Engine."
+      modelDescription="ACI 209R-92 creep coefficient calculation with editable humidity, geometry, sand ratio, cement content, and air content inputs."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

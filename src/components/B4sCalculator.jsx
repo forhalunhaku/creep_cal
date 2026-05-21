@@ -170,7 +170,7 @@ export default function B4sCalculator() {
   return (
     <CalculatorWrapper 
       modelName="B4S Model (JS)"
-      modelDescription="Simplified B4 Model for rapid analysis powered by Javascript Engine."
+      modelDescription="Simplified B4 calculation using compressive strength, humidity, aggregate, temperature, and specimen geometry inputs."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

@@ -87,7 +87,7 @@ export default function RustMc2010Calculator() {
   return (
     <CalculatorWrapper 
       modelName="fib MC 2010 (RUST)"
-      modelDescription="High-fidelity time-dependent deformation modeling based on European Concrete standard, powered by standard Rust WASM Kernel."
+      modelDescription="fib Model Code 2010 calculation using the Rust WASM kernel for rapid 10000-day creep coefficient series."
       paramsConfig={PARAMS_CONFIG}
       params={params}
       onParamChange={handleParamChange}

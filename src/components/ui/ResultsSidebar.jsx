@@ -14,12 +14,12 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
   return (
     <aside className="col-span-12 lg:col-span-4 space-y-8">
       {/* Circular Gauge */}
-      <div className="glass-card rounded-lg p-5 md:p-8 border border-primary/20 relative overflow-hidden group">
+      <div className="motion-card glass-card rounded-lg p-5 md:p-8 border border-primary/20 relative overflow-hidden group">
         <div className="absolute -right-16 -top-20 h-44 w-52 rotate-12 bg-primary/8 blur-3xl group-hover:bg-primary/12 transition-colors"></div>
         <div className="text-center">
           <div className="text-xs font-label text-on-surface-variant uppercase tracking-widest mb-8">{resultLabel || 'Creep Coefficient φ(t,t₀)'}</div>
           
-          <div className="relative w-48 h-48 mx-auto flex items-center justify-center mb-8">
+          <div className="gauge-pulse relative w-48 h-48 mx-auto flex items-center justify-center mb-8">
             <svg className="w-full h-full -rotate-90">
               <circle cx="96" cy="96" r="88" fill="none" stroke="#25252d" strokeWidth="8"></circle>
               {/* Actual value curve */}
@@ -46,17 +46,17 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
               <span className="text-5xl font-headline font-bold text-primary">
                 {isNaN(phiValue) ? '--' : isComplianceJ ? phiValue.toExponential(3) : phiValue.toFixed(3)}
               </span>
-              <span className="text-[10px] font-label text-neutral-500">NOMINAL</span>
+              <span className="text-[10px] font-label text-neutral-500">CURRENT VALUE</span>
             </div>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div className="p-3 bg-surface-container-low rounded-md">
               <div className="text-[10px] text-neutral-500 mb-1">Status</div>
-              <div className="text-sm font-headline">{isNaN(phiValue) ? 'PENDING' : 'COMPUTED'}</div>
+              <div className="text-sm font-headline">{isNaN(phiValue) ? 'Awaiting input' : 'Computed'}</div>
             </div>
             <div className="p-3 bg-surface-container-low rounded-md">
-              <div className="text-[10px] text-neutral-500 mb-1">T max</div>
+              <div className="text-[10px] text-neutral-500 mb-1">Series range</div>
               <div className="text-sm font-headline text-tertiary">10000d</div>
             </div>
           </div>
@@ -65,8 +65,8 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
 
       {/* Extra Results (e.g., shrinkage strains for B4/B4S) */}
       {extraResults && extraResults.length > 0 && (
-        <div className="glass-card rounded-lg p-6 border border-emerald-500/20 space-y-3">
-          <div className="text-xs font-label text-emerald-400 uppercase tracking-widest mb-4">Shrinkage Results</div>
+        <div className="motion-card glass-card rounded-lg p-6 border border-emerald-500/20 space-y-3">
+          <div className="text-xs font-label text-emerald-400 uppercase tracking-widest mb-4">Shrinkage results</div>
           {extraResults.map((item, i) => (
             <div key={i} className="flex items-center justify-between p-3 bg-surface-container-low rounded-md">
               <div>
@@ -81,13 +81,13 @@ export default function ResultsSidebar({ phi, feedLogs, extraResults, resultLabe
       )}
 
       {/* System Feed */}
-      <div className="glass-card rounded-lg border border-outline-variant/10 flex flex-col h-[400px]">
+      <div className="motion-card glass-card rounded-lg border border-outline-variant/10 flex flex-col h-[400px]">
         <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-sm text-primary" aria-hidden="true">terminal</span>
-            <span className="text-xs font-label uppercase tracking-widest">System Feed</span>
+            <span className="text-xs font-label uppercase tracking-widest">System feed</span>
           </div>
-          <div className="h-2 w-2 rounded-sm bg-primary"></div>
+          <div className="status-beacon h-2 w-2 rounded-sm bg-primary"></div>
         </div>
         <div className="p-6 space-y-4 overflow-y-auto text-[11px] font-body flex-1 flex flex-col justify-end">
           {feedLogs.map((log, index) => (
