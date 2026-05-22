@@ -8,7 +8,7 @@ const PARAMS_CONFIG = [
   { name: 'VS', label: 'Volume-Surface Ratio', min: 0, max: 1000, unit: 'mm' },
   { name: 'sPhi', label: 'Sand Ratio', min: 0, max: 1, unit: '' },
   { name: 'Cc', label: 'Cement Content', min: 0, max: 1000, unit: 'kg/m³' },
-  { name: 'alpha', label: 'Air Content', min: 0, max: 1, unit: '' }
+  { name: 'alpha', label: 'Air Content', min: 0, max: 0.1, unit: '' }
 ];
 
 export default function RustAci209Calculator() {

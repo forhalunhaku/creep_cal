@@ -1,64 +1,79 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CustomSelect from './CustomSelect';
 
-// Editable number display component
-function EditableValue({ value, min, max, colorClass, onChange, name, step }) {
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState('');
+function formatLimit(value, unit) {
+  const suffix = unit === 'Days' ? 'd' : unit === '°C' ? '°' : unit || '';
+  return `${value}${suffix}`;
+}
 
-  const startEdit = () => {
+function NumericParameterInput({ value, min, max, unit, name, onChange, step, inputId }) {
+  const [draft, setDraft] = useState(String(value));
+  const cancelCommitRef = useRef(false);
+
+  useEffect(() => {
     setDraft(String(value));
-    setEditing(true);
-  };
+  }, [value]);
 
   const commitEdit = () => {
+    if (cancelCommitRef.current) {
+      cancelCommitRef.current = false;
+      setDraft(String(value));
+      return;
+    }
+
     const parsed = parseFloat(draft);
     if (!isNaN(parsed)) {
       const clamped = Math.min(max, Math.max(min, parsed));
       onChange({ target: { name, value: clamped } });
+      setDraft(String(clamped));
+    } else {
+      setDraft(String(value));
     }
-    setEditing(false);
   };
 
-  if (editing) {
-    return (
+  return (
+    <div className="flex items-stretch rounded-md border border-outline-variant/35 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.74)] focus-within:border-primary/70 focus-within:ring-2 focus-within:ring-primary/10">
       <input
-        autoFocus
+        id={inputId}
         type="number"
+        inputMode="decimal"
         value={draft}
         min={min}
         max={max}
         step={step}
         onChange={e => setDraft(e.target.value)}
         onBlur={commitEdit}
-        onKeyDown={e => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') setEditing(false); }}
-        className={`${colorClass} font-mono text-lg bg-transparent border-b border-current outline-none w-24 text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`}
+        onKeyDown={e => {
+          if (e.key === 'Enter') e.currentTarget.blur();
+          if (e.key === 'Escape') {
+            cancelCommitRef.current = true;
+            setDraft(String(value));
+            e.currentTarget.blur();
+          }
+        }}
+        className="h-11 w-full min-w-0 rounded-l-md bg-transparent px-3 text-right font-mono text-base text-on-background outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
-    );
-  }
-
-  return (
-    <span
-      className={`${colorClass} font-headline text-lg cursor-text hover:opacity-80 transition-opacity border-b border-transparent hover:border-current`}
-      title="Click to edit"
-      onClick={startEdit}
-    >
-      {value}
-    </span>
+      {unit && (
+        <span className="flex min-w-12 items-center justify-center border-l border-outline-variant/25 px-3 text-[11px] font-label uppercase tracking-[0.08em] text-outline">
+          {unit === 'Days' ? 'd' : unit}
+        </span>
+      )}
+    </div>
   );
 }
 
-// Reusable Slider Component
-export function ParameterSlider({ label, value, min, max, unit, name, colorClass, options, onChange, motionIndex = 0 }) {
+export function ParameterSlider({ label, value, min, max, unit, name, options, onChange, motionIndex = 0 }) {
   const step = max > 10 ? 1 : (max <= 1 ? 0.01 : 0.1);
+  const inputId = `param-input-${name}`;
 
   if (options) {
     return (
-      <div className="parameter-motion stagger-pop space-y-3" style={{ '--stagger-index': motionIndex }}>
-        <div className="flex justify-between items-center">
+      <div className="parameter-motion stagger-pop rounded-lg border border-outline-variant/20 bg-surface-container-low/55 p-4 space-y-3" style={{ '--stagger-index': motionIndex }}>
+        <div className="flex items-center justify-between gap-3">
           <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
             {label}
           </label>
+          <span className="material-symbols-outlined text-base text-primary" aria-hidden="true">list_alt</span>
         </div>
         <CustomSelect
           name={name}
@@ -71,23 +86,33 @@ export function ParameterSlider({ label, value, min, max, unit, name, colorClass
   }
 
   return (
-    <div className="parameter-motion stagger-pop space-y-4" style={{ '--stagger-index': motionIndex }}>
-      <div className="flex justify-between items-center">
-        <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
-          {label} {unit && `(${unit})`}
-        </label>
-        <EditableValue
+    <div className="parameter-motion stagger-pop rounded-lg border border-outline-variant/20 bg-surface-container-low/55 p-4 transition-colors focus-within:border-primary/35 hover:border-outline-variant/40" style={{ '--stagger-index': motionIndex }}>
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(8rem,11rem)] items-center gap-4">
+        <div className="min-w-0">
+          <label htmlFor={inputId} className="block font-label text-xs uppercase tracking-widest text-on-surface-variant">
+            {label}
+          </label>
+          <div className="mt-1 flex items-center gap-2 text-[10px] font-label uppercase tracking-[0.12em] text-outline">
+            <span>{formatLimit(min, unit)}</span>
+            <span className="h-px w-5 bg-outline-variant/60"></span>
+            <span>{formatLimit(max, unit)}</span>
+          </div>
+        </div>
+        <NumericParameterInput
           value={value}
           min={min}
           max={max}
+          unit={unit}
           step={step}
-          colorClass={colorClass}
           name={name}
           onChange={onChange}
+          inputId={inputId}
         />
       </div>
       <input 
-        className="w-full" 
+        id={`param-${name}`}
+        aria-label={`${label} slider`}
+        className="mt-4 w-full accent-primary" 
         name={name}
         type="range" 
         min={min} 
@@ -96,10 +121,6 @@ export function ParameterSlider({ label, value, min, max, unit, name, colorClass
         onChange={onChange}
         step={step}
       />
-      <div className="flex justify-between text-[10px] text-neutral-600 font-label">
-        <span>{min}{unit ? (unit === '%' ? '%' : (unit === '°C' ? '°' : unit === 'Days' ? 'd' : '')) : ''}</span>
-        <span>{max}{unit ? (unit === '%' ? '%' : (unit === '°C' ? '°' : unit === 'Days' ? 'd' : '')) : ''}</span>
-      </div>
     </div>
   );
 }
@@ -118,17 +139,8 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {paramsConfig.map((config, idx) => {
-            const colors = [
-              "text-primary", 
-              "text-secondary", 
-              "text-on-surface", 
-              "text-primary-fixed-dim",
-              "text-tertiary",
-              "text-outline"
-            ];
-            const colorClass = colors[idx % colors.length];
             return (
               <ParameterSlider
                 key={config.name}
@@ -140,7 +152,6 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
                 max={config.max}
                 unit={config.unit}
                 options={config.options}
-                colorClass={colorClass}
                 onChange={onParamChange}
               />
             );
