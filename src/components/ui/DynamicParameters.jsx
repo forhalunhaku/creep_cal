@@ -32,7 +32,7 @@ function NumericParameterInput({ value, min, max, unit, name, onChange, step, in
   };
 
   return (
-    <div className="flex items-stretch rounded-md border border-outline-variant/35 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.74)] focus-within:border-primary/70 focus-within:ring-2 focus-within:ring-primary/10">
+    <div className="flex items-stretch rounded-input border border-line bg-surface focus-within:border-green-border focus-within:ring-2 focus-within:ring-green/10">
       <input
         id={inputId}
         type="number"
@@ -51,10 +51,10 @@ function NumericParameterInput({ value, min, max, unit, name, onChange, step, in
             e.currentTarget.blur();
           }
         }}
-        className="h-11 w-full min-w-0 rounded-l-md bg-transparent px-3 text-right font-mono text-base text-on-background outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        className="h-11 w-full min-w-0 rounded-l-input bg-transparent px-3 text-right font-mono text-base text-primary outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
       {unit && (
-        <span className="flex min-w-12 items-center justify-center border-l border-outline-variant/25 px-3 text-[11px] font-label uppercase tracking-[0.08em] text-outline">
+        <span className="flex min-w-12 items-center justify-center border-l border-line/50 px-3 text-[11px] font-label uppercase tracking-[0.08em] text-muted">
           {unit === 'Days' ? 'd' : unit}
         </span>
       )}
@@ -68,12 +68,12 @@ export function ParameterSlider({ label, value, min, max, unit, name, options, o
 
   if (options) {
     return (
-      <div className="parameter-motion stagger-pop rounded-lg border border-outline-variant/20 bg-surface-container-low/55 p-4 space-y-3" style={{ '--stagger-index': motionIndex }}>
+      <div className="parameter-motion stagger-pop card p-4 space-y-3" style={{ '--stagger-index': motionIndex }}>
         <div className="flex items-center justify-between gap-3">
-          <label className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
+          <label className="font-label text-xs uppercase tracking-widest text-muted">
             {label}
           </label>
-          <span className="material-symbols-outlined text-base text-primary" aria-hidden="true">list_alt</span>
+          <span className="material-symbols-outlined text-base text-green" aria-hidden="true">list_alt</span>
         </div>
         <CustomSelect
           name={name}
@@ -86,15 +86,15 @@ export function ParameterSlider({ label, value, min, max, unit, name, options, o
   }
 
   return (
-    <div className="parameter-motion stagger-pop rounded-lg border border-outline-variant/20 bg-surface-container-low/55 p-4 transition-colors focus-within:border-primary/35 hover:border-outline-variant/40" style={{ '--stagger-index': motionIndex }}>
+    <div className="parameter-motion stagger-pop card p-4 transition-colors focus-within:border-green-border hover:border-green-border/50" style={{ '--stagger-index': motionIndex }}>
       <div className="grid grid-cols-[minmax(0,1fr)_minmax(8rem,11rem)] items-center gap-4">
         <div className="min-w-0">
-          <label htmlFor={inputId} className="block font-label text-xs uppercase tracking-widest text-on-surface-variant">
+          <label htmlFor={inputId} className="block font-label text-xs uppercase tracking-widest text-muted">
             {label}
           </label>
-          <div className="mt-1 flex items-center gap-2 text-[10px] font-label uppercase tracking-[0.12em] text-outline">
+          <div className="mt-1 flex items-center gap-2 text-[10px] font-label uppercase tracking-[0.12em] text-faint">
             <span>{formatLimit(min, unit)}</span>
-            <span className="h-px w-5 bg-outline-variant/60"></span>
+            <span className="h-px w-5 bg-line/60"></span>
             <span>{formatLimit(max, unit)}</span>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function ParameterSlider({ label, value, min, max, unit, name, options, o
       <input 
         id={`param-${name}`}
         aria-label={`${label} slider`}
-        className="mt-4 w-full accent-primary" 
+        className="mt-4 w-full accent-green" 
         name={name}
         type="range" 
         min={min} 
@@ -125,17 +125,15 @@ export function ParameterSlider({ label, value, min, max, unit, name, options, o
   );
 }
 
-
-// B4 / ACI209 / MC2010 parameters differ. We will pass a configs array.
 export default function DynamicParameters({ paramsConfig, params, onParamChange, onCalculate, calculateReady, buttonText }) {
   return (
-    <section className="col-span-12 lg:col-span-8 space-y-8">
-      <div className="glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
+    <section className="space-y-8">
+      <div className="card p-5 md:p-8">
         <div className="flex items-center gap-3 mb-8">
-          <span className="material-symbols-outlined text-primary" aria-hidden="true">tune</span>
+          <span className="material-symbols-outlined text-green" aria-hidden="true">tune</span>
           <div>
-            <h2 className="font-headline text-xl font-semibold tracking-tight">Dynamic parameters</h2>
-            <p className="mt-1 text-xs text-on-surface-variant">{paramsConfig.length} inputs configured for the active model.</p>
+            <h2 className="font-sans text-xl font-semibold tracking-tight text-primary">Dynamic parameters</h2>
+            <p className="mt-1 text-xs text-muted">{paramsConfig.length} inputs configured for the active model.</p>
           </div>
         </div>
         
@@ -163,7 +161,9 @@ export default function DynamicParameters({ paramsConfig, params, onParamChange,
             onClick={onCalculate}
             disabled={!calculateReady}
             aria-busy={!calculateReady}
-            className={`calculate-trigger w-full ${calculateReady ? 'kinetic-gradient hover:brightness-105 hover:-translate-y-0.5 shadow-[0_14px_30px_rgba(0,113,227,0.22)]' : 'bg-surface-container-high text-outline opacity-70 shadow-none'} text-on-primary py-4.5 md:py-5 rounded-md font-headline font-semibold text-sm md:text-base tracking-[0.14em] transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-3 disabled:cursor-not-allowed`}
+            className={`calculate-trigger btn-primary w-full py-4 md:py-5 text-sm md:text-base tracking-[0.10em] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
+              calculateReady ? 'shadow-card hover:shadow-card-hover' : ''
+            }`}
           >
             <span className="material-symbols-outlined" aria-hidden="true" style={{fontVariationSettings: "'FILL' 1"}}>bolt</span>
             {buttonText || 'INITIATE CALCULATION'}

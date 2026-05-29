@@ -11,7 +11,7 @@ function FormulaExpression({ expr }) {
 
   return (
     <div
-      className="formula-render flex-1 overflow-x-auto rounded-md border border-outline-variant/10 bg-surface-container px-4 py-3 text-on-surface"
+      className="formula-render flex-1 overflow-x-auto rounded-card border border-line/10 bg-surface-soft px-4 py-3 text-primary"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -23,9 +23,6 @@ const MODELS = [
     name: 'ACI 209R-92',
     category: 'North American Standard',
     engine: ['JS', 'RUST'],
-    color: 'bg-primary/12',
-    border: 'border-primary/30',
-    textColor: 'text-primary',
     description: 'The ACI 209R-92 implementation in this app returns the creep coefficient φ(t,t₀). It uses the current shared kernel: a time development term based on t−t₀ multiplied by correction factors for loading age, humidity, volume-to-surface ratio, slump parameter, cement content, and α.',
     params: [
       { name: 't0', description: 'Age at loading (days)' },
@@ -55,9 +52,6 @@ const MODELS = [
     name: 'fib Model Code 2010',
     category: 'European Standard',
     engine: ['JS', 'RUST'],
-    color: 'bg-secondary/12',
-    border: 'border-secondary/30',
-    textColor: 'text-secondary',
     description: 'The fib Model Code 2010 implementation in this app returns the creep coefficient φ(t,t₀) as the sum of basic creep and drying creep. The current kernel adjusts loading age for temperature and cement class, then uses cross-section size, humidity, strength, and t−t₀ for the final coefficient.',
     params: [
       { name: 'fcm', description: 'Mean compressive strength (MPa)' },
@@ -87,9 +81,6 @@ const MODELS = [
     name: 'B4 Model',
     category: 'Multi-Decade Comprehensive',
     engine: ['JS', 'RUST'],
-    color: 'bg-green-500/12',
-    border: 'border-green-500/30',
-    textColor: 'text-green-700',
     description: 'The B4 implementation in this app returns compliance J(t,t′) and drying shrinkage εsh. It uses equivalent time from temperature, D=2V/S, material coefficients from cement and aggregate type, and composition inputs c, w/c, and a/c.',
     params: [
       { name: 't0', description: 'Drying start age (days)' },
@@ -123,9 +114,6 @@ const MODELS = [
     name: 'B4S Model',
     category: 'Simplified Rapid Analysis',
     engine: ['JS', 'RUST'],
-    color: 'bg-amber-500/12',
-    border: 'border-orange-500/30',
-    textColor: 'text-orange-300',
     description: 'The B4S implementation keeps the same B4-style compliance and drying shrinkage structure but derives material terms from compressive strength fc and cement type, so it does not require c, w/c, or a/c.',
     params: [
       { name: 't0', description: 'Drying start age (days)' },
@@ -160,26 +148,26 @@ export default function DocsPage() {
   const model = MODELS.find(m => m.id === selected);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-fade-in relative z-10">
+    <div className="max-w-content mx-auto space-y-8 animate-fade-in relative z-10">
       <header className="mb-10">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-background mb-4">
-          Model <span className="text-primary">library</span>
+          <h1 className="font-serif text-4xl md:text-5xl font-normal tracking-tight text-primary mb-4">
+          Model <span className="text-green">library</span>
         </h1>
-        <p className="text-on-surface-variant text-base md:text-lg max-w-[65ch] leading-relaxed">
+        <p className="text-muted text-base md:text-lg max-w-[65ch] leading-relaxed">
           Reference documentation for all supported concrete creep & shrinkage prediction models.
         </p>
       </header>
 
-      {/* Model Tabs */}
+      {/* Model Tabs — pill style */}
       <div className="flex gap-2 flex-wrap">
         {MODELS.map(m => (
           <button
             key={m.id}
             onClick={() => setSelected(m.id)}
-            className={`px-5 py-2.5 rounded-lg font-label uppercase tracking-widest text-xs transition-all active:scale-95 border ${
+            className={`px-5 py-2 rounded-full font-label uppercase tracking-widest text-xs transition-all duration-200 border ${
               selected === m.id
-                ? `${m.color} ${m.textColor} ${m.border}`
-                : 'text-neutral-500 hover:text-on-surface border-outline-variant/30 hover:bg-surface-container-high'
+                ? 'bg-green-soft text-green-dark border-green-border'
+                : 'text-faint hover:text-primary border-line/30 hover:bg-green-soft/50'
             }`}
           >
             {m.name}
@@ -188,34 +176,32 @@ export default function DocsPage() {
       </div>
 
       {/* Model Detail Panel */}
-      <div className={`glass-card rounded-lg border ${model.border} p-5 md:p-8 relative overflow-hidden`}>
-        <div className={`absolute top-[-10rem] right-[-10rem] h-96 w-96 rotate-12 ${model.color} blur-3xl pointer-events-none`}></div>
-
+      <div className="card p-5 md:p-8 relative overflow-hidden">
         <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
           <div>
-            <div className={`text-[10px] font-label uppercase tracking-widest ${model.textColor} mb-2`}>{model.category}</div>
-            <h2 className="font-headline text-3xl font-bold text-on-background">{model.name}</h2>
+            <div className="text-[10px] font-label uppercase tracking-widest text-green mb-2">{model.category}</div>
+            <h2 className="font-serif text-3xl font-normal text-primary">{model.name}</h2>
           </div>
           <div className="flex gap-2">
             {model.engine.map(e => (
-              <span key={e} className={`px-3 py-1 rounded-sm text-[10px] font-label uppercase tracking-widest border ${model.border} ${model.textColor} ${model.color}`}>
+              <span key={e} className="tag">
                 {e} Engine
               </span>
             ))}
           </div>
         </div>
 
-        <p className="text-on-surface-variant leading-relaxed mb-10">{model.description}</p>
+        <p className="text-muted leading-relaxed mb-10">{model.description}</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* Parameters Table */}
           <div>
-            <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-4">Input Parameters</h3>
+            <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Input Parameters</h3>
             <div className="space-y-2">
               {model.params.map(p => (
-                <div key={p.name} className="flex items-start gap-3 p-3 rounded-md bg-surface-container-low border border-outline-variant/10">
-                  <code className={`text-xs font-mono font-bold ${model.textColor} shrink-0 w-24 pt-0.5`}>{p.name}</code>
-                  <span className="text-on-surface-variant text-sm">{p.description}</span>
+                <div key={p.name} className="flex items-start gap-3 p-3 rounded-card bg-surface-soft border border-line/10">
+                  <code className="text-xs font-mono font-bold text-green shrink-0 w-24 pt-0.5">{p.name}</code>
+                  <span className="text-muted text-sm">{p.description}</span>
                 </div>
               ))}
             </div>
@@ -224,34 +210,34 @@ export default function DocsPage() {
           {/* Output & Reference */}
           <div className="space-y-6">
             <div>
-              <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-4">Output</h3>
-              <div className={`p-4 rounded-md ${model.color} border ${model.border}`}>
-                <p className={`font-mono text-sm ${model.textColor}`}>{model.output}</p>
+              <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Output</h3>
+              <div className="p-4 rounded-card bg-green-soft border border-green-border">
+                <p className="font-mono text-sm text-green-dark">{model.output}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-4">Reference</h3>
-              <div className="p-4 rounded-md bg-surface-container-low border border-outline-variant/10">
-                <p className="text-on-surface-variant text-sm leading-relaxed italic">{model.reference}</p>
+              <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Reference</h3>
+              <div className="p-4 rounded-card bg-surface-soft border border-line/10">
+                <p className="text-muted text-sm leading-relaxed italic">{model.reference}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-4">Computation Engine</h3>
+              <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Computation Engine</h3>
               <div className="space-y-2">
-                <div className="flex items-center gap-3 p-3 rounded-md bg-surface-container-low border border-primary/10">
-                  <span className="material-symbols-outlined text-primary text-[18px]" aria-hidden="true">memory</span>
+                <div className="flex items-center gap-3 p-3 rounded-card bg-surface-soft border border-green-border/30">
+                  <span className="material-symbols-outlined text-green text-[18px]" aria-hidden="true">memory</span>
                   <div>
-                    <div className="text-xs font-label uppercase tracking-wider text-primary">RUST WASM Kernel</div>
-                    <div className="text-[10px] text-neutral-500 mt-0.5">High-performance WebAssembly, ~10k points in &lt;50ms</div>
+                    <div className="text-xs font-label uppercase tracking-wider text-green">RUST WASM Kernel</div>
+                    <div className="text-[10px] text-faint mt-0.5">High-performance WebAssembly, ~10k points in &lt;50ms</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-md bg-surface-container-low border border-secondary/10">
-                  <span className="material-symbols-outlined text-secondary text-[18px]" aria-hidden="true">javascript</span>
+                <div className="flex items-center gap-3 p-3 rounded-card bg-surface-soft border border-line/30">
+                  <span className="material-symbols-outlined text-muted text-[18px]" aria-hidden="true">javascript</span>
                   <div>
-                    <div className="text-xs font-label uppercase tracking-wider text-secondary">Standard JS Engine</div>
-                    <div className="text-[10px] text-neutral-500 mt-0.5">Pure JavaScript reference implementation</div>
+                    <div className="text-xs font-label uppercase tracking-wider text-muted">Standard JS Engine</div>
+                    <div className="text-[10px] text-faint mt-0.5">Pure JavaScript reference implementation</div>
                   </div>
                 </div>
               </div>
@@ -261,12 +247,12 @@ export default function DocsPage() {
 
         {/* Formulas Section */}
         {model.formulas && (
-          <div className="border-t border-outline-variant/20 pt-8 mt-2">
-            <h3 className="font-headline text-sm uppercase tracking-widest text-outline mb-6">Core Calculation Formulas</h3>
+          <div className="border-t border-line/20 pt-8 mt-2">
+            <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-6">Core Calculation Formulas</h3>
             <div className="space-y-3">
               {model.formulas.map((f, i) => (
-                <div key={i} className="flex flex-col gap-3 p-4 rounded-md bg-surface-container-low border border-outline-variant/10">
-                  <span className={`text-[10px] font-label uppercase tracking-widest shrink-0 sm:w-52 ${model.textColor}`}>{f.label}</span>
+                <div key={i} className="flex flex-col gap-3 p-4 rounded-card bg-surface-soft border border-line/10">
+                  <span className="text-[10px] font-label uppercase tracking-widest shrink-0 sm:w-52 text-green">{f.label}</span>
                   <FormulaExpression expr={f.expr} />
                 </div>
               ))}

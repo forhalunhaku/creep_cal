@@ -106,7 +106,7 @@ export default function Mc2010Calculator() {
       concreteClass={`fcm: ${params.fcm} MPa`}
       crossSectionInfo={`h_e: ${currentHEff} mm`}
       chartData={results}
-      chartLines={[{ dataKey: "phi", stroke: "#34c759", name: "Creep Coefficient φ" }]}
+      chartLines={[{ dataKey: "phi", stroke: "#2f6f4e", name: "Creep Coefficient φ" }]}
     />
   );
 }

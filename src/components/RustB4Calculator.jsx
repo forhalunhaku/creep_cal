@@ -139,8 +139,8 @@ export default function RustB4Calculator() {
       crossSectionInfo={`${params.aggregateType}`}
       chartData={results}
       chartLines={[
-        { dataKey: "j", stroke: "#34c759", name: "Compliance J (×10⁻⁶ GPa⁻¹)" },
-        { dataKey: "epsilon_sh", stroke: "#0071e3", name: "Drying Shrinkage εsh (με)" },
+        { dataKey: "j", stroke: "#2f6f4e", name: "Compliance J (×10⁻⁶ GPa⁻¹)" },
+        { dataKey: "epsilon_sh", stroke: "#4a9e6e", name: "Drying Shrinkage εsh (με)" },
         { dataKey: "epsilon_au", stroke: "#8fc7b8", name: "Autogenous Shrinkage εau (με)" }
       ]}
       resultLabel="Compliance J(t,t′) · 1/GPa"

@@ -2,90 +2,46 @@ import React from 'react';
 
 const LoadingSpinner = ({ 
   size = 40, 
-  message = "加载中...", 
+  message = "Loading...", 
   showMessage = true,
-  color = "var(--color-primary)"
 }) => {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      gap: '12px'
-    }}>
-      {/* 旋转的齿轮图标 */}
+    <div className="flex flex-col items-center justify-center p-5 gap-3">
       <div
+        className="rounded-full animate-spin"
         style={{
           width: `${size}px`,
           height: `${size}px`,
-          border: `3px solid ${color}20`,
-          borderTop: `3px solid ${color}`,
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
+          border: `3px solid var(--green-soft)`,
+          borderTop: `3px solid var(--green)`,
         }}
       />
       
       {showMessage && (
-        <div style={{
-          color: 'var(--color-text)',
-          fontSize: '0.9rem',
-          fontWeight: '500',
-          textAlign: 'center'
-        }}>
+        <div className="text-muted text-sm font-medium text-center">
           {message}
         </div>
       )}
-      
-
     </div>
   );
 };
 
-// Rust引擎专用加载组件
 export const RustEngineLoader = ({ isLoading, error }) => {
   if (error) {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '40px 20px',
-        textAlign: 'center',
-        background: 'rgba(255, 0, 0, 0.05)',
-        borderRadius: 'var(--border-radius)',
-        border: '1px solid rgba(255, 0, 0, 0.2)'
-      }}>
-        <div style={{ fontSize: '2rem', marginBottom: '12px' }}>⚠️</div>
-        <div style={{ 
-          color: '#d32f2f', 
-          fontWeight: '600',
-          marginBottom: '8px'
-        }}>
-          Rust引擎加载失败
+      <div className="flex flex-col items-center justify-center p-10 text-center rounded-card border border-error/20 bg-error/5">
+        <div className="text-3xl mb-3">⚠️</div>
+        <div className="text-error font-semibold mb-2">
+          Rust engine failed to load
         </div>
-        <div style={{ 
-          color: '#666', 
-          fontSize: '0.9rem',
-          marginBottom: '16px'
-        }}>
-          请刷新页面重试，或使用JavaScript版本
+        <div className="text-muted text-sm mb-4">
+          Please refresh or switch to the JavaScript version.
         </div>
         <button
           onClick={() => window.location.reload()}
-          style={{
-            background: '#d32f2f',
-            color: 'white',
-            border: 'none',
-            padding: '8px 16px',
-            borderRadius: 'var(--border-radius-small)',
-            cursor: 'pointer',
-            fontSize: '0.9rem'
-          }}
+          className="btn-delete"
         >
-          🔄 刷新页面
+          Refresh page
         </button>
       </div>
     );
@@ -93,29 +49,13 @@ export const RustEngineLoader = ({ isLoading, error }) => {
 
   if (isLoading) {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '40px 20px',
-        textAlign: 'center',
-        background: 'rgba(52, 152, 219, 0.05)',
-        borderRadius: 'var(--border-radius)',
-        border: '1px solid rgba(52, 152, 219, 0.2)'
-      }}>
+      <div className="flex flex-col items-center justify-center p-10 text-center rounded-card border border-green-border/20 bg-green-soft/30">
         <LoadingSpinner 
           size={48}
-          message="🦀 正在加载Rust高性能引擎..."
-          color="var(--color-primary)"
+          message="🦀 Loading Rust WASM engine..."
         />
-        <div style={{
-          marginTop: '16px',
-          fontSize: '0.85rem',
-          color: '#666',
-          maxWidth: '300px'
-        }}>
-          首次加载可能需要几秒钟，请耐心等待...
+        <div className="mt-4 text-xs text-faint max-w-[300px]">
+          First load may take a few seconds...
         </div>
       </div>
     );

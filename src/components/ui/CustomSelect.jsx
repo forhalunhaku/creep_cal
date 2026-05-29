@@ -1,17 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
-/**
- * CustomSelect: compact trigger with a portal-rendered menu.
- * Props:
- *   name, value, onChange, options: [{ value, label }] | [string]
- *   label (optional) – not rendered here, callers handle the label
- */
 export default function CustomSelect({ name, value, onChange, options }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
-  // Normalise options
   const opts = options.map(o =>
     typeof o === 'string' ? { value: o, label: o } : o
   );
@@ -24,17 +17,15 @@ export default function CustomSelect({ name, value, onChange, options }) {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY + 8, // 8px margin
+        top: rect.bottom + window.scrollY + 8,
         left: rect.left + window.scrollX,
         width: rect.width
       });
     }
   }, []);
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e) => {
-      // Check if click is outside both the trigger and the portal content
       const isOutsideTrigger = ref.current && !ref.current.contains(e.target);
       const portalElements = document.querySelectorAll('.custom-select-portal');
       const isOutsidePortal = Array.from(portalElements).every(el => !el.contains(e.target));
@@ -47,7 +38,6 @@ export default function CustomSelect({ name, value, onChange, options }) {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // Update coords on open/scroll/resize
   useEffect(() => {
     if (open) {
       updateCoords();
@@ -65,17 +55,15 @@ export default function CustomSelect({ name, value, onChange, options }) {
     setOpen(false);
   };
 
-  // Assign a deterministic accent colour per option (cycles through palette)
   const palette = [
-    'text-primary bg-primary/12',
-    'text-secondary bg-secondary/14',
-    'text-green-700 bg-green-500/12',
-    'text-on-surface bg-surface-container-high',
+    'text-green-dark bg-green-soft',
+    'text-muted bg-surface-soft',
+    'text-muted bg-surface-soft',
+    'text-muted bg-surface-soft',
   ];
 
   return (
     <div className={`relative w-full ${open ? 'z-40' : 'z-0'}`} ref={ref}>
-      {/* ── Trigger ─────────────────────────────────────────────── */}
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
@@ -83,28 +71,27 @@ export default function CustomSelect({ name, value, onChange, options }) {
         aria-haspopup="listbox"
         className={`
           w-full flex items-center justify-between
-          px-5 py-3 rounded-md text-sm font-body
-          bg-surface-container-high text-on-surface
+          px-5 py-3 rounded-full text-sm font-body
+          bg-surface-soft text-primary
           border transition-all duration-200
           ${open
-            ? 'border-primary ring-1 ring-primary/30'
-            : 'border-outline-variant/30 hover:border-primary/50'
+            ? 'border-green-border ring-1 ring-green/30'
+            : 'border-line/30 hover:border-green-border/60'
           }
         `}
       >
         <span className="truncate">{selected?.label}</span>
         <span
           aria-hidden="true"
-          className={`material-symbols-outlined text-[18px] text-primary ml-2 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`material-symbols-outlined text-[18px] text-green ml-2 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         >
           expand_more
         </span>
       </button>
 
-      {/* ── Dropdown list (PORTAL) ─────────────────────────────── */}
       {open && typeof document !== 'undefined' && createPortal(
         <div 
-          className="custom-select-portal absolute z-50 bg-surface-container border border-primary/25 rounded-lg shadow-[0_18px_50px_rgba(29,29,31,0.14)] overflow-hidden"
+          className="custom-select-portal absolute z-50 bg-surface border border-green-border/30 rounded-card shadow-card overflow-hidden"
           style={{ top: coords.top, left: coords.left, width: coords.width }}
           role="listbox"
         >
@@ -124,25 +111,17 @@ export default function CustomSelect({ name, value, onChange, options }) {
                   w-full flex items-center gap-3 px-4 py-3 text-sm text-left
                   transition-colors duration-150
                   ${isSelected
-                    ? 'bg-primary/20 text-primary'
-                    : 'text-on-surface hover:bg-surface-container-high'
+                    ? 'bg-green-soft text-green-dark'
+                    : 'text-primary hover:bg-surface-soft'
                   }
                 `}
               >
-                {/* Letter badge */}
-                <span className={`
-                  w-7 h-7 rounded-md flex-shrink-0 flex items-center justify-center
-                  text-[11px] font-headline font-bold ${accent}
-                `}>
+                <span className={`w-7 h-7 rounded-md flex-shrink-0 flex items-center justify-center text-[11px] font-sans font-bold ${accent}`}>
                   {letter}
                 </span>
-
-                {/* Label */}
                 <span className="flex-1 truncate">{opt.label}</span>
-
-                {/* Checkmark / selected indicator */}
                 {isSelected && (
-                  <span className="material-symbols-outlined text-[16px] text-primary" aria-hidden="true">check_circle</span>
+                  <span className="material-symbols-outlined text-[16px] text-green" aria-hidden="true">check_circle</span>
                 )}
               </button>
             );

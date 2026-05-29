@@ -7,14 +7,9 @@ import { useCalculationMotion } from '../../hooks/useCalculationMotion';
 function exportToCSV(modelName, params, chartData, chartLines) {
   if (!chartData || chartData.length === 0) return;
 
-  // Build header from chart line dataKeys + time column
   const lineKeys = chartLines ? chartLines.map(l => l.dataKey) : ['phi'];
   const headers = ['t_days', ...lineKeys];
-
-  // Rows from chart data
   const rows = chartData.map(row => [row.t, ...lineKeys.map(k => row[k] ?? '')]);
-
-  // Param summary at top
   const paramRows = Object.entries(params).map(([k, v]) => [`# ${k}`, v]);
 
   const allRows = [
@@ -69,7 +64,7 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
         y={viewBox.y + 18}
         fill="#bf7a12"
         fontSize={10}
-        fontFamily="Manrope, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        fontFamily="Geist, system-ui, sans-serif"
       >
         {`t₀=${t0ref}d`}
       </text>
@@ -77,13 +72,13 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
   };
 
   return (
-    <div className="motion-card glass-card rounded-lg p-5 md:p-8 border border-outline-variant/30">
+    <div className="card card-hoverable p-5 md:p-8">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-        <h3 className="font-headline text-xl font-semibold tracking-tight text-on-background">System analytics trace</h3>
+        <h3 className="font-sans text-xl font-semibold tracking-tight text-primary">System analytics trace</h3>
         <button
           onClick={() => setLogX(v => !v)}
-          className={`px-3 py-1.5 rounded text-[10px] font-label uppercase tracking-widest border transition-all ${
-            logX ? 'text-primary border-primary/40 bg-primary/10' : 'text-outline border-outline-variant/30 hover:bg-surface-container-high hover:text-on-surface'
+          className={`px-3 py-1.5 rounded-full text-[10px] font-label uppercase tracking-widest border transition-all ${
+            logX ? 'bg-green-soft text-green-dark border-green-border' : 'text-muted border-line hover:bg-green-soft/50 hover:text-primary'
           }`}
         >
           Log X-Axis
@@ -92,34 +87,34 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
       <div className="chart-stage h-80">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 8, right: 18, left: 12, bottom: 30 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#d2d2d7" />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
             <XAxis
-              dataKey="t" stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }}
+              dataKey="t" stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
               scale={logX ? 'log' : 'linear'}
               domain={logX ? ['auto', 'auto'] : undefined}
               allowDataOverflow={logX}
               tickCount={6}
               minTickGap={28}
-              label={{ value: 'Time (days)', position: 'insideBottomRight', offset: -12, fill: '#6e6e73', fontSize: 10 }}
+              label={{ value: 'Time (days)', position: 'insideBottomRight', offset: -12, fill: 'var(--text-muted)', fontSize: 10 }}
             />
-            <YAxis stroke="#6e6e73" tick={{ fill: '#6e6e73', fontSize: 11 }} width={48}
-              label={{ value: yLabel, angle: -90, position: 'insideLeft', offset: 0, fill: '#6e6e73', fontSize: 10 }}
+            <YAxis stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }} width={48}
+              label={{ value: yLabel, angle: -90, position: 'insideLeft', offset: 0, fill: 'var(--text-muted)', fontSize: 10 }}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #d2d2d7', borderRadius: '8px', color: '#1d1d1f' }}
+              contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '8px', color: 'var(--text)' }}
               formatter={(v, name) => [typeof v === 'number' ? v.toFixed(5) : v, name]}
               labelFormatter={l => `t = ${l} days`}
             />
             <Legend iconSize={8} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
             {t0ref != null && !isNaN(t0ref) && (
-              <ReferenceLine x={t0ref} stroke="#f59e0b" strokeDasharray="4 4"
+              <ReferenceLine x={t0ref} stroke="#bf7a12" strokeDasharray="4 4"
                 label={renderT0Label} />
             )}
             {chartLines ? chartLines.map((line, idx) => (
               <Line key={idx} type="monotone" dataKey={line.dataKey} stroke={line.stroke}
                 strokeWidth={2}
                 dot={false}
-                activeDot={{ r: 5, stroke: line.stroke, strokeWidth: 2, fill: '#ffffff' }}
+                activeDot={{ r: 5, stroke: line.stroke, strokeWidth: 2, fill: 'var(--surface)' }}
                 name={line.name}
                 isAnimationActive="auto"
                 animationBegin={idx * 120}
@@ -129,10 +124,10 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
               <Line
                 type="monotone"
                 dataKey="phi"
-                stroke="#0071e3"
+                stroke="var(--green)"
                 strokeWidth={2}
                 dot={false}
-                activeDot={{ r: 5, stroke: '#0071e3', strokeWidth: 2, fill: '#ffffff' }}
+                activeDot={{ r: 5, stroke: 'var(--green)', strokeWidth: 2, fill: 'var(--surface)' }}
                 name="Creep Coefficient φ"
                 isAnimationActive="auto"
                 animationDuration={1300}
@@ -158,9 +153,9 @@ export default function CalculatorWrapper({
   phiResult,
   feedLogs,
   chartData,
-  chartLines, // Array of { dataKey, stroke, name }
-  extraResults, // Array of { label, value } for secondary metrics (e.g. εsh)
-  resultLabel   // Override the gauge title (default: 'Creep Coefficient φ')
+  chartLines,
+  extraResults,
+  resultLabel
 }) {
   const hasResults = chartData && chartData.length > 0;
   const numericResult = parseFloat(phiResult);
@@ -179,19 +174,18 @@ export default function CalculatorWrapper({
     <div ref={rootRef}>
       <header className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
-          <h1 className="font-headline text-3xl md:text-5xl font-bold tracking-tight text-on-background mb-3 md:mb-4 text-balance">
-            {modelName} <span className="text-primary">analysis</span>
+          <h1 className="font-serif text-3xl md:text-5xl font-normal tracking-tight text-primary mb-3 md:mb-4 text-balance">
+            {modelName} <span className="text-green">analysis</span>
           </h1>
-          <p className="text-on-surface-variant text-sm md:text-lg leading-relaxed max-w-[65ch]">
+          <p className="text-muted text-sm md:text-lg leading-relaxed max-w-[65ch]">
             {modelDescription}
           </p>
         </div>
-        {/* Export buttons — single result always shown when phi computed, CSV only when chart exists */}
         <div className="flex w-full flex-wrap gap-2 md:w-auto md:justify-end">
           {hasNumericResult && (
             <button
               onClick={() => exportSingleResult(modelName, params, phiResult)}
-              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-secondary/10 text-on-surface hover:bg-secondary/15 border border-outline-variant/40 hover:border-outline transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
+              className="btn-secondary flex-1 md:flex-none text-[10px] py-2 px-3 md:py-2.5 md:px-4"
             >
               <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
               Export Result
@@ -200,7 +194,7 @@ export default function CalculatorWrapper({
           {hasResults && (
             <button
               onClick={() => exportToCSV(modelName, params, chartData, chartLines)}
-              className="flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary/15 border border-primary/20 hover:border-primary/50 transition-all active:scale-[0.98] font-label tracking-[0.14em] text-xs uppercase md:flex-none"
+              className="btn-primary flex-1 md:flex-none text-[10px] py-2 px-3 md:py-2.5 md:px-4"
             >
               <span className="material-symbols-outlined text-sm" aria-hidden="true">table_chart</span>
               Export Time Series

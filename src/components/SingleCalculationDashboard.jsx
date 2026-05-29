@@ -35,24 +35,22 @@ export default function SingleCalculationDashboard() {
     { id: 'b4s', label: 'B4S MODEL', shortLabel: 'B4S' }
   ];
 
+  const pillBase = "px-3 py-2 rounded-full text-[10px] font-label uppercase tracking-[0.08em] transition-all duration-200 flex-1 xl:flex-none whitespace-nowrap flex items-center justify-center gap-1.5 md:px-5 md:py-2.5 md:text-xs md:tracking-[0.12em]";
+
   return (
     <div className="animate-fade-in relative z-10 w-full">
-      {/* Top Controller Bar */}
-      <div className="mb-6 glass-card rounded-lg p-2 md:mb-8 md:p-4 flex flex-col xl:flex-row gap-2 md:gap-4 justify-between items-stretch xl:items-center border border-outline-variant/30 relative overflow-hidden">
-        {/* Decorative background glow */}
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,113,227,0.08),transparent_42%,rgba(52,199,89,0.05))] pointer-events-none"></div>
-
-        {/* Algorithm Selection Segmented Control */}
-        <div className="relative z-10 flex w-full overflow-x-auto p-1 bg-surface-container-highest rounded-md border border-outline-variant/30 xl:w-auto">
-          {algorithms.map((algo, index) => (
+      {/* Top Controller Bar — pill group */}
+      <div className="mb-6 card card-hoverable p-2 md:mb-8 md:p-3 flex flex-col xl:flex-row gap-2 md:gap-3 items-stretch xl:items-center">
+        {/* Algorithm Selection — pill group */}
+        <div className="flex w-full overflow-x-auto p-0.5 bg-surface-soft rounded-full border border-line/50 xl:w-auto">
+          {algorithms.map((algo) => (
             <button
               key={algo.id}
               onClick={() => setAlgorithm(algo.id)}
-              style={{ '--stagger-index': index }}
-              className={`stagger-pop control-tab px-3 py-2 rounded-sm font-label uppercase tracking-[0.08em] text-[10px] transition-all flex-1 xl:flex-none whitespace-nowrap active:scale-[0.98] md:px-5 md:py-3 md:text-xs md:tracking-[0.14em] ${
+              className={`${pillBase} ${
                 algorithm === algo.id 
-                  ? 'is-active bg-primary/14 text-primary border border-primary/25'
-                  : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
+                  ? 'bg-green text-white shadow-sm'
+                  : 'text-muted hover:text-primary hover:bg-green-soft/50'
               }`}
             >
               <span className="md:hidden">{algo.shortLabel}</span>
@@ -61,15 +59,14 @@ export default function SingleCalculationDashboard() {
           ))}
         </div>
 
-        {/* Engine Selection Toggle */}
-        <div className="relative z-10 flex w-full p-1 bg-surface-container-highest rounded-md border border-outline-variant/30 xl:w-auto">
+        {/* Engine Selection — pill group */}
+        <div className="flex w-full p-0.5 bg-surface-soft rounded-full border border-line/50 xl:w-auto">
           <button
             onClick={() => setEngine('rust')}
-            style={{ '--stagger-index': 4 }}
-            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-1.5 px-3 py-2 rounded-sm font-label uppercase tracking-[0.08em] text-[10px] transition-all active:scale-[0.98] md:gap-2 md:px-5 md:py-3 md:text-xs md:tracking-[0.14em] ${
+            className={`${pillBase} ${
               engine === 'rust'
-                ? 'is-active bg-primary/14 text-primary border border-primary/25'
-                : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
+                ? 'bg-green text-white shadow-sm'
+                : 'text-muted hover:text-primary hover:bg-green-soft/50'
             }`}
           >
             <span className="material-symbols-outlined text-sm" aria-hidden="true">memory</span>
@@ -78,21 +75,20 @@ export default function SingleCalculationDashboard() {
           </button>
           <button
             onClick={() => setEngine('js')}
-            style={{ '--stagger-index': 5 }}
-            className={`stagger-pop control-tab flex-1 xl:flex-none justify-center items-center flex gap-1.5 px-3 py-2 rounded-sm font-label uppercase tracking-[0.08em] text-[10px] transition-all active:scale-[0.98] md:gap-2 md:px-5 md:py-3 md:text-xs md:tracking-[0.14em] ${
+            className={`${pillBase} ${
               engine === 'js'
-                ? 'is-active bg-secondary/14 text-secondary border border-secondary/25'
-                : 'text-outline hover:text-on-surface hover:bg-surface-container-high border border-transparent'
+                ? 'bg-green text-white shadow-sm'
+                : 'text-muted hover:text-primary hover:bg-green-soft/50'
             }`}
           >
-            <span className="material-symbols-outlined text-sm text-[16px] leading-none" aria-hidden="true">javascript</span>
+            <span className="material-symbols-outlined text-sm" aria-hidden="true">javascript</span>
             <span className="md:hidden">JS</span>
             <span className="hidden md:inline">STANDARD JS</span>
           </button>
         </div>
       </div>
 
-      {/* Render the selected calculator directly beneath */}
+      {/* Render the selected calculator */}
       <ActiveComponent />
     </div>
   );
