@@ -117,45 +117,45 @@ wasm-pack build --target web --out-dir ../src/wasm-pkg
 
 ```
 creep_cal/
-├── DESIGN.md                       # HALUNHAKU 绿色设计规范
-├── rust-engine/                    # Rust WASM 核心源码
-├── public/                         # 静态资源 (favicon, 示例数据, 文档)
-│   ├── 模型示例/                    # 各模型 CSV/XLSX 示例
-│   └── 模型说明/                    # 各模型 Markdown 文档
+├── DESIGN.md                       # HALUNHAKU 设计规范
+├── rust-engine/                    # Rust WASM 源码
+├── public/                         # 静态资源
+│   ├── 模型示例/                    # CSV/XLSX 示例
+│   └── 模型说明/                    # Markdown 文档
 ├── src/
-│   ├── App.jsx                     # 根组件 & 路由
+│   ├── App.jsx                     # 根组件
 │   ├── components/
-│   │   ├── SingleCalculationDashboard.jsx  # 单点计算控制面板
-│   │   ├── BatchCalculator.jsx     # 批量计算模块
-│   │   ├── DocsPage.jsx            # 模型文档页
-│   │   ├── Aci209Calculator.js     # ACI 209R-92 (JS)
-│   │   ├── RustAci209Calculator.js # ACI 209R-92 (Rust)
-│   │   ├── Mc2010Calculator.js     # fib MC 2010 (JS)
-│   │   ├── RustMc2010Calculator.js # fib MC 2010 (Rust)
-│   │   ├── B4Calculator.js         # B4 Model (JS)
-│   │   ├── RustB4Calculator.js     # B4 Model (Rust)
-│   │   ├── B4sCalculator.js        # B4S Model (JS)
-│   │   ├── RustB4sCalculator.js    # B4S Model (Rust)
-│   │   ├── ErrorBoundary.jsx       # 错误边界
-│   │   ├── LoadingSpinner.jsx      # 加载指示器
-│   │   ├── MarkdownViewer.jsx      # Markdown 渲染
-│   │   └── ui/                     # 通用 UI 组件
-│   │       ├── Layout.jsx          # 页面骨架
-│   │       ├── Header.jsx          # 药丸导航栏
-│   │       ├── CalculatorWrapper.jsx  # 计算器统一容器
-│   │       ├── DynamicParameters.jsx  # 参数输入 (含可编辑滑块)
-│   │       ├── ResultsSidebar.jsx  # 结果面板 & 系统日志
-│   │       ├── CustomSelect.jsx    # 自定义下拉选择
-│   │       ├── AnimatedMetric.jsx  # 数字动效组件
-│   │       └── BackgroundElements.jsx  # 背景装饰
+│   │   ├── SingleCalculationDashboard.jsx  # 单点计算面板
+│   │   ├── BatchCalculator.jsx             # 批量计算
+│   │   ├── DocsPage.jsx                    # 模型文档
+│   │   ├── Aci209Calculator.js             # ACI 209R-92 (JS)
+│   │   ├── RustAci209Calculator.js         # ACI 209R-92 (Rust)
+│   │   ├── Mc2010Calculator.js             # fib MC 2010 (JS)
+│   │   ├── RustMc2010Calculator.js         # fib MC 2010 (Rust)
+│   │   ├── B4Calculator.js                 # B4 Model (JS)
+│   │   ├── RustB4Calculator.js             # B4 Model (Rust)
+│   │   ├── B4sCalculator.js                # B4S Model (JS)
+│   │   ├── RustB4sCalculator.js            # B4S Model (Rust)
+│   │   ├── ErrorBoundary.jsx               # 错误边界
+│   │   ├── LoadingSpinner.jsx              # 加载指示器
+│   │   ├── MarkdownViewer.jsx              # Markdown 渲染
+│   │   └── ui/
+│   │       ├── Layout.jsx                  # 页面骨架
+│   │       ├── Header.jsx                  # 药丸导航栏
+│   │       ├── CalculatorWrapper.jsx       # 计算器容器
+│   │       ├── DynamicParameters.jsx       # 参数滑块
+│   │       ├── ResultsSidebar.jsx          # 结果面板
+│   │       ├── CustomSelect.jsx            # 下拉选择
+│   │       ├── AnimatedMetric.jsx          # 数字动效
+│   │       └── BackgroundElements.jsx      # 背景装饰
 │   ├── hooks/
-│   │   └── useCalculationMotion.js # 计算动效 Hook
+│   │   └── useCalculationMotion.js         # 计算动效
 │   ├── math/
-│   │   └── creepModels.js          # JS 引擎计算核心
+│   │   └── creepModels.js                  # JS 计算核心
 │   ├── wasm/
-│   │   └── creepEngine.js          # WASM 加载器
-│   └── index.css                   # 设计 Token & CSS 变量
-└── tailwind.config.js              # Tailwind 配置 (绿色面板)
+│   │   └── creepEngine.js                  # WASM 加载器
+│   └── index.css                           # 设计 Token
+└── tailwind.config.js                      # Tailwind 配置
 ```
 
 ---
