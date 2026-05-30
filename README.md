@@ -115,31 +115,31 @@ wasm-pack build --target web --out-dir ../src/wasm-pkg
 
 ## 📁 项目结构
 
-```
+```text
 creep_cal/
-├── DESIGN.md                         # design specification
-├── rust-engine/                      # Rust WASM source
-├── public/                           # static assets
-├── src/
-│   ├── App.jsx                       # root component
-│   ├── components/
-│   │   ├── ui/                       # shared UI kit
-│   │   ├── SingleCalculationDashboard.jsx
-│   │   ├── BatchCalculator.jsx
-│   │   ├── DocsPage.jsx
-│   │   ├── *Calculator.js            # per-model calculators (x8)
-│   │   ├── ErrorBoundary.jsx
-│   │   ├── LoadingSpinner.jsx
-│   │   └── MarkdownViewer.jsx
-│   ├── hooks/
-│   │   └── useCalculationMotion.js
-│   ├── math/
-│   │   └── creepModels.js            # JS calculation engine
-│   ├── wasm/
-│   │   └── creepEngine.js            # WASM loader
-│   ├── index.css                     # design tokens & CSS vars
-│   └── tailwind.config.js            # Tailwind config
-└── package.json
++-- DESIGN.md                     # design specification
++-- rust-engine/                  # Rust WASM source
++-- public/                       # static assets
++-- src/
+|   +-- App.jsx                   # root component
+|   +-- components/
+|   |   +-- ui/                   # shared UI kit
+|   |   +-- SingleCalculationDashboard.jsx
+|   |   +-- BatchCalculator.jsx
+|   |   +-- DocsPage.jsx
+|   |   +-- *Calculator.js        # per-model calculators (x8)
+|   |   +-- ErrorBoundary.jsx
+|   |   +-- LoadingSpinner.jsx
+|   |   +-- MarkdownViewer.jsx
+|   +-- hooks/
+|   |   +-- useCalculationMotion.js
+|   +-- math/
+|   |   +-- creepModels.js        # JS calculation engine
+|   +-- wasm/
+|   |   +-- creepEngine.js        # WASM loader
+|   +-- index.css                 # design tokens & CSS vars
+|   +-- tailwind.config.js        # Tailwind config
++-- package.json
 ```
 
 ---
