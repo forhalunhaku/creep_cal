@@ -117,25 +117,29 @@ wasm-pack build --target web --out-dir ../src/wasm-pkg
 
 ```
 creep_cal/
-├── DESIGN.md                          — design specification
-├── rust-engine/                       — Rust WASM source
-├── public/                            — static assets
+├── DESIGN.md                         # design specification
+├── rust-engine/                      # Rust WASM source
+├── public/                           # static assets
 ├── src/
-│   ├── App.jsx                        — root component
+│   ├── App.jsx                       # root component
 │   ├── components/
-│   │   ├── ui/                        — shared UI kit (Layout, Header, etc.)
-│   │   ├── SingleCalculationDashboard.jsx  — single calc panel
-│   │   ├── BatchCalculator.jsx        — batch pipeline
-│   │   ├── DocsPage.jsx               — model documentation
-│   │   ├── *Calculator.js             — per-model calculators (x8)
-│   │   ├── ErrorBoundary.jsx          — error boundary
-│   │   ├── LoadingSpinner.jsx         — loading indicator
-│   │   └── MarkdownViewer.jsx         — Markdown renderer
-│   ├── hooks/useCalculationMotion.js  — calc animation hook
-│   ├── math/creepModels.js            — JS engine
-│   ├── wasm/creepEngine.js            — WASM loader
-│   └── index.css                      — design tokens & CSS vars
-└── tailwind.config.js                 — Tailwind config
+│   │   ├── ui/                       # shared UI kit
+│   │   ├── SingleCalculationDashboard.jsx
+│   │   ├── BatchCalculator.jsx
+│   │   ├── DocsPage.jsx
+│   │   ├── *Calculator.js            # per-model calculators (x8)
+│   │   ├── ErrorBoundary.jsx
+│   │   ├── LoadingSpinner.jsx
+│   │   └── MarkdownViewer.jsx
+│   ├── hooks/
+│   │   └── useCalculationMotion.js
+│   ├── math/
+│   │   └── creepModels.js            # JS calculation engine
+│   ├── wasm/
+│   │   └── creepEngine.js            # WASM loader
+│   ├── index.css                     # design tokens & CSS vars
+│   └── tailwind.config.js            # Tailwind config
+└── package.json
 ```
 
 ---
