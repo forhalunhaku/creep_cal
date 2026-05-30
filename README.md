@@ -117,17 +117,15 @@ wasm-pack build --target web --out-dir ../src/wasm-pkg
 
 ```
 creep_cal/
-├── DESIGN.md                       # HALUNHAKU 设计规范
-├── rust-engine/                    # Rust WASM 源码
-├── public/                         # 静态资源
-│   ├── 模型示例/                    # CSV/XLSX 示例
-│   └── 模型说明/                    # Markdown 文档
+├── DESIGN.md                       # HALUNHAKU design spec
+├── rust-engine/                    # Rust WASM source
+├── public/                         # Static assets
 ├── src/
-│   ├── App.jsx                     # 根组件
+│   ├── App.jsx                     # Root component
 │   ├── components/
-│   │   ├── SingleCalculationDashboard.jsx  # 单点计算面板
-│   │   ├── BatchCalculator.jsx             # 批量计算
-│   │   ├── DocsPage.jsx                    # 模型文档
+│   │   ├── SingleCalculationDashboard.jsx  # Single calc panel
+│   │   ├── BatchCalculator.jsx             # Batch pipeline
+│   │   ├── DocsPage.jsx                    # Model docs
 │   │   ├── Aci209Calculator.js             # ACI 209R-92 (JS)
 │   │   ├── RustAci209Calculator.js         # ACI 209R-92 (Rust)
 │   │   ├── Mc2010Calculator.js             # fib MC 2010 (JS)
@@ -136,26 +134,26 @@ creep_cal/
 │   │   ├── RustB4Calculator.js             # B4 Model (Rust)
 │   │   ├── B4sCalculator.js                # B4S Model (JS)
 │   │   ├── RustB4sCalculator.js            # B4S Model (Rust)
-│   │   ├── ErrorBoundary.jsx               # 错误边界
-│   │   ├── LoadingSpinner.jsx              # 加载指示器
-│   │   ├── MarkdownViewer.jsx              # Markdown 渲染
-│   │   └── ui/
-│   │       ├── Layout.jsx                  # 页面骨架
-│   │       ├── Header.jsx                  # 药丸导航栏
-│   │       ├── CalculatorWrapper.jsx       # 计算器容器
-│   │       ├── DynamicParameters.jsx       # 参数滑块
-│   │       ├── ResultsSidebar.jsx          # 结果面板
-│   │       ├── CustomSelect.jsx            # 下拉选择
-│   │       ├── AnimatedMetric.jsx          # 数字动效
-│   │       └── BackgroundElements.jsx      # 背景装饰
+│   │   ├── ErrorBoundary.jsx               # Error boundary
+│   │   ├── LoadingSpinner.jsx              # Loading indicator
+│   │   ├── MarkdownViewer.jsx              # MD renderer
+│   │   └── ui/                             # Shared UI kit
+│   │       ├── Layout.jsx                  # Page shell
+│   │       ├── Header.jsx                  # Pill nav bar
+│   │       ├── CalculatorWrapper.jsx       # Calc container
+│   │       ├── DynamicParameters.jsx       # Parameter sliders
+│   │       ├── ResultsSidebar.jsx          # Result panel
+│   │       ├── CustomSelect.jsx            # Custom dropdown
+│   │       ├── AnimatedMetric.jsx          # Number animation
+│   │       └── BackgroundElements.jsx      # BG decoration
 │   ├── hooks/
-│   │   └── useCalculationMotion.js         # 计算动效
+│   │   └── useCalculationMotion.js         # Calc animation
 │   ├── math/
-│   │   └── creepModels.js                  # JS 计算核心
+│   │   └── creepModels.js                  # JS engine
 │   ├── wasm/
-│   │   └── creepEngine.js                  # WASM 加载器
-│   └── index.css                           # 设计 Token
-└── tailwind.config.js                      # Tailwind 配置
+│   │   └── creepEngine.js                  # WASM loader
+│   └── index.css                           # Design tokens
+└── tailwind.config.js                      # Tailwind config
 ```
 
 ---
