@@ -123,37 +123,19 @@ creep_cal/
 ├── src/
 │   ├── App.jsx                     # Root component
 │   ├── components/
-│   │   ├── SingleCalculationDashboard.jsx  # Single calc panel
-│   │   ├── BatchCalculator.jsx             # Batch pipeline
-│   │   ├── DocsPage.jsx                    # Model docs
-│   │   ├── Aci209Calculator.js             # ACI 209R-92 (JS)
-│   │   ├── RustAci209Calculator.js         # ACI 209R-92 (Rust)
-│   │   ├── Mc2010Calculator.js             # fib MC 2010 (JS)
-│   │   ├── RustMc2010Calculator.js         # fib MC 2010 (Rust)
-│   │   ├── B4Calculator.js                 # B4 Model (JS)
-│   │   ├── RustB4Calculator.js             # B4 Model (Rust)
-│   │   ├── B4sCalculator.js                # B4S Model (JS)
-│   │   ├── RustB4sCalculator.js            # B4S Model (Rust)
-│   │   ├── ErrorBoundary.jsx               # Error boundary
-│   │   ├── LoadingSpinner.jsx              # Loading indicator
-│   │   ├── MarkdownViewer.jsx              # MD renderer
-│   │   └── ui/                             # Shared UI kit
-│   │       ├── Layout.jsx                  # Page shell
-│   │       ├── Header.jsx                  # Pill nav bar
-│   │       ├── CalculatorWrapper.jsx       # Calc container
-│   │       ├── DynamicParameters.jsx       # Parameter sliders
-│   │       ├── ResultsSidebar.jsx          # Result panel
-│   │       ├── CustomSelect.jsx            # Custom dropdown
-│   │       ├── AnimatedMetric.jsx          # Number animation
-│   │       └── BackgroundElements.jsx      # BG decoration
-│   ├── hooks/
-│   │   └── useCalculationMotion.js         # Calc animation
-│   ├── math/
-│   │   └── creepModels.js                  # JS engine
-│   ├── wasm/
-│   │   └── creepEngine.js                  # WASM loader
-│   └── index.css                           # Design tokens
-└── tailwind.config.js                      # Tailwind config
+│   │   ├── ui/                     # Shared UI kit
+│   │   ├── SingleCalculationDashboard.jsx
+│   │   ├── BatchCalculator.jsx
+│   │   ├── DocsPage.jsx
+│   │   ├── *Calculator.js          # Per-model calculators (x8)
+│   │   ├── ErrorBoundary.jsx
+│   │   ├── LoadingSpinner.jsx
+│   │   └── MarkdownViewer.jsx
+│   ├── hooks/useCalculationMotion.js
+│   ├── math/creepModels.js         # JS calculation engine
+│   ├── wasm/creepEngine.js         # WASM loader
+│   └── index.css                   # Design tokens & variables
+└── tailwind.config.js
 ```
 
 ---
