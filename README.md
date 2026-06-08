@@ -103,7 +103,7 @@ Each model is exposed through both a JavaScript reference implementation and a R
 ## Local Development
 
 ```bash
-git clone https://github.com/forhalunhaku/creep_cal.git
+git clone https://github.com/halunhaku/creep_cal.git
 cd creep_cal
 npm install
 npm run dev
