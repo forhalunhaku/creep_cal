@@ -77,8 +77,8 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
         <h3 className="font-sans text-xl font-semibold tracking-tight text-primary">System analytics trace</h3>
         <button
           onClick={() => setLogX(v => !v)}
-          className={`px-3 py-1.5 rounded-full text-[10px] font-label uppercase tracking-widest border transition-all ${
-            logX ? 'bg-green-soft text-green-dark border-green-border' : 'text-muted border-line hover:bg-green-soft/50 hover:text-primary'
+          className={`px-3 py-1.5 rounded-full text-[10px] font-label uppercase tracking-[0.12em] border transition-all ${
+            logX ? 'active-pill' : 'text-muted border-line hover:bg-green-soft/50 hover:text-primary hover:border-green-border/50'
           }`}
         >
           Log X-Axis
@@ -86,22 +86,23 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
       </div>
       <div className="chart-stage h-80">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 8, right: 18, left: 12, bottom: 30 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+          <LineChart data={data} margin={{ top: 10, right: 24, left: 18, bottom: 34 }}>
+            <CartesianGrid strokeDasharray="4 6" stroke="var(--line)" />
             <XAxis
-              dataKey="t" stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
+              dataKey="t" stroke="var(--text-faint)" tick={{ fill: 'var(--text)', fontSize: 12, fontWeight: 520 }}
               scale={logX ? 'log' : 'linear'}
               domain={logX ? ['auto', 'auto'] : undefined}
               allowDataOverflow={logX}
               tickCount={6}
               minTickGap={28}
-              label={{ value: 'Time (days)', position: 'insideBottomRight', offset: -12, fill: 'var(--text-muted)', fontSize: 10 }}
+              label={{ value: 'Time (days)', position: 'insideBottomRight', offset: -12, fill: 'var(--text-muted)', fontSize: 11, fontWeight: 650 }}
             />
-            <YAxis stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }} width={48}
-              label={{ value: yLabel, angle: -90, position: 'insideLeft', offset: 0, fill: 'var(--text-muted)', fontSize: 10 }}
+            <YAxis stroke="var(--text-faint)" tick={{ fill: 'var(--text)', fontSize: 12, fontWeight: 520 }} width={56}
+              label={{ value: yLabel, angle: -90, position: 'insideLeft', offset: 0, fill: 'var(--text-muted)', fontSize: 11, fontWeight: 650 }}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '8px', color: 'var(--text)' }}
+              cursor={{ stroke: 'var(--green)', strokeOpacity: 0.26, strokeWidth: 1.5 }}
+              contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--green-border)', borderRadius: '10px', color: 'var(--text)', boxShadow: 'var(--shadow-sm)' }}
               formatter={(v, name) => [typeof v === 'number' ? v.toFixed(5) : v, name]}
               labelFormatter={l => `t = ${l} days`}
             />
@@ -112,9 +113,9 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
             )}
             {chartLines ? chartLines.map((line, idx) => (
               <Line key={idx} type="monotone" dataKey={line.dataKey} stroke={line.stroke}
-                strokeWidth={2}
+                strokeWidth={2.6}
                 dot={false}
-                activeDot={{ r: 5, stroke: line.stroke, strokeWidth: 2, fill: 'var(--surface)' }}
+                activeDot={{ r: 6, stroke: line.stroke, strokeWidth: 2.5, fill: 'var(--surface)' }}
                 name={line.name}
                 isAnimationActive="auto"
                 animationBegin={idx * 120}
@@ -125,9 +126,9 @@ function AnalyticsChart({ chartData, chartLines, t0 }) {
                 type="monotone"
                 dataKey="phi"
                 stroke="var(--green)"
-                strokeWidth={2}
+                strokeWidth={2.6}
                 dot={false}
-                activeDot={{ r: 5, stroke: 'var(--green)', strokeWidth: 2, fill: 'var(--surface)' }}
+                activeDot={{ r: 6, stroke: 'var(--green)', strokeWidth: 2.5, fill: 'var(--surface)' }}
                 name="Creep Coefficient φ"
                 isAnimationActive="auto"
                 animationDuration={1300}

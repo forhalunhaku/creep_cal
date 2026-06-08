@@ -35,7 +35,7 @@ export default function SingleCalculationDashboard() {
     { id: 'b4s', label: 'B4S MODEL', shortLabel: 'B4S' }
   ];
 
-  const pillBase = "px-3 py-2 rounded-full text-[10px] font-label uppercase tracking-[0.08em] transition-all duration-200 flex-1 xl:flex-none whitespace-nowrap flex items-center justify-center gap-1.5 md:px-5 md:py-2.5 md:text-xs md:tracking-[0.12em]";
+  const pillBase = "px-3 py-2 rounded-full text-[10px] font-label uppercase tracking-[0.08em] border border-transparent transition-all duration-200 flex-1 xl:flex-none whitespace-nowrap flex items-center justify-center gap-1.5 md:px-5 md:py-2.5 md:text-xs md:tracking-[0.12em]";
 
   return (
     <div className="animate-fade-in relative z-10 w-full">
@@ -49,8 +49,8 @@ export default function SingleCalculationDashboard() {
               onClick={() => setAlgorithm(algo.id)}
               className={`${pillBase} ${
                 algorithm === algo.id 
-                  ? 'bg-green text-white shadow-sm'
-                  : 'text-muted hover:text-primary hover:bg-green-soft/50'
+                  ? 'bg-green text-white border-green shadow-sm font-semibold'
+                  : 'text-muted hover:text-primary hover:bg-green-soft/50 hover:border-green-border/50'
               }`}
             >
               <span className="md:hidden">{algo.shortLabel}</span>
@@ -65,8 +65,8 @@ export default function SingleCalculationDashboard() {
             onClick={() => setEngine('rust')}
             className={`${pillBase} ${
               engine === 'rust'
-                ? 'bg-green text-white shadow-sm'
-                : 'text-muted hover:text-primary hover:bg-green-soft/50'
+                ? 'bg-green text-white border-green shadow-sm font-semibold'
+                : 'text-muted hover:text-primary hover:bg-green-soft/50 hover:border-green-border/50'
             }`}
           >
             <span className="material-symbols-outlined text-sm" aria-hidden="true">memory</span>
@@ -77,8 +77,8 @@ export default function SingleCalculationDashboard() {
             onClick={() => setEngine('js')}
             className={`${pillBase} ${
               engine === 'js'
-                ? 'bg-green text-white shadow-sm'
-                : 'text-muted hover:text-primary hover:bg-green-soft/50'
+                ? 'bg-green text-white border-green shadow-sm font-semibold'
+                : 'text-muted hover:text-primary hover:bg-green-soft/50 hover:border-green-border/50'
             }`}
           >
             <span className="material-symbols-outlined text-sm" aria-hidden="true">javascript</span>

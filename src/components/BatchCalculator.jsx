@@ -183,7 +183,7 @@ export default function BatchCalculator() {
         <h3 className="font-sans text-xl font-semibold tracking-tight text-green mb-6">Pipeline configuration</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div className="min-w-0">
-            <label className="block text-xs font-label uppercase text-faint tracking-[0.16em] mb-2">Target algorithm</label>
+            <label className="block text-xs font-label uppercase label-strong mb-2">Target algorithm</label>
             <CustomSelect
               name="activeModel"
               value={activeModel}
@@ -199,8 +199,8 @@ export default function BatchCalculator() {
             />
           </div>
           <div>
-            <label className="block text-xs font-label uppercase text-faint tracking-[0.16em] mb-2">Required columns</label>
-            <div className="w-full bg-surface-soft border border-line/20 text-muted rounded-card px-4 py-3 font-mono text-xs break-words leading-relaxed">
+            <label className="block text-xs font-label uppercase label-strong mb-2">Required columns</label>
+            <div className="w-full bg-surface-soft border border-line/60 text-primary rounded-card px-4 py-3 font-mono text-xs break-words leading-relaxed">
               {model.req}
             </div>
           </div>
@@ -241,11 +241,11 @@ export default function BatchCalculator() {
             <div className="grid min-w-52 grid-cols-2 gap-3 text-center">
               <div className="metric-tile rounded-card border border-line/20 bg-surface-soft p-3">
                 <div className="font-mono text-lg text-green">{model.resultKeys.length}</div>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-faint">outputs</div>
+                <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-muted font-semibold">outputs</div>
               </div>
               <div className="metric-tile rounded-card border border-line/20 bg-surface-soft p-3">
                 <div className="font-mono text-lg text-muted">{model.req.split(', ').length}</div>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-faint">columns</div>
+                <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-muted font-semibold">columns</div>
               </div>
             </div>
           </div>
@@ -258,21 +258,21 @@ export default function BatchCalculator() {
           <div className="card overflow-hidden animate-fade-in-up">
             <div className="bg-surface-soft p-4 border-b border-line/20 flex justify-between items-center flex-wrap gap-3">
               <h3 className="font-sans text-lg tracking-tight text-primary">
-                Output matrix <span className="text-faint text-sm ml-2">({batchResults.length} records)</span>
+                Output matrix <span className="text-muted text-sm ml-2">({batchResults.length} records)</span>
               </h3>
               <button onClick={exportCSV} className="btn-primary text-[10px] py-2 px-4">
                 Export CSV
               </button>
             </div>
             <div className="overflow-x-auto max-h-[400px]">
-              <table className="w-full text-left border-collapse min-w-max">
+              <table className="data-table w-full text-left border-collapse min-w-max">
                 <thead className="sticky top-0 bg-surface-soft shadow-sm z-10">
                   <tr>
                     {batchHeaders.map(h => (
-                      <th key={h} className="p-4 text-xs font-label uppercase tracking-wider text-faint border-b border-line/20 whitespace-nowrap">{h}</th>
+                      <th key={h} className="px-4 py-3.5 text-xs font-label uppercase tracking-[0.11em] whitespace-nowrap">{h}</th>
                     ))}
                     {allResultKeys.map((k, i) => (
-                      <th key={k} className="p-4 text-xs font-label uppercase tracking-wider text-green border-b border-line/20 whitespace-nowrap bg-green-soft/50">
+                      <th key={k} className="px-4 py-3.5 text-xs font-label uppercase tracking-[0.11em] whitespace-nowrap bg-green-soft/60 text-green-dark">
                         {model.labels[i] || k}
                       </th>
                     ))}
@@ -280,12 +280,12 @@ export default function BatchCalculator() {
                 </thead>
                 <tbody>
                   {batchResults.slice(0, 100).map((row, idx) => (
-                    <tr key={idx} className="hover:bg-surface-soft/50 transition-colors">
+                    <tr key={idx} className="transition-colors">
                       {batchHeaders.map(h => (
-                        <td key={h} className="p-4 border-b border-line/10 text-muted font-mono text-sm">{row[h]}</td>
+                        <td key={h} className="px-4 py-3.5 font-mono text-[13px] md:text-sm">{row[h]}</td>
                       ))}
                       {allResultKeys.map(k => (
-                        <td key={k} className="p-4 border-b border-line/10 text-green font-mono text-sm bg-green-soft/30 font-bold">{row[k]}</td>
+                        <td key={k} className="result-cell px-4 py-3.5 font-mono text-[13px] md:text-sm">{row[k]}</td>
                       ))}
                     </tr>
                   ))}
@@ -308,8 +308,8 @@ export default function BatchCalculator() {
               <div className="flex gap-2 flex-wrap items-center">
                 {['scatter', 'line'].map(t => (
                   <button key={t} onClick={() => setChartType(t)}
-                    className={`px-3 py-1.5 rounded-full text-[10px] font-label uppercase tracking-widest border transition-all ${
-                      chartType === t ? 'bg-green-soft text-green-dark border-green-border' : 'text-faint border-line/30 hover:bg-green-soft/50 hover:text-primary'
+                    className={`px-3 py-1.5 rounded-full text-[10px] font-label uppercase tracking-[0.12em] border transition-all ${
+                      chartType === t ? 'active-pill' : 'text-muted border-line hover:bg-green-soft/50 hover:text-primary hover:border-green-border/50'
                     }`}>
                     {t}
                   </button>
@@ -319,7 +319,7 @@ export default function BatchCalculator() {
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <label className="text-[10px] font-label uppercase text-faint tracking-wider block mb-2">X Axis (Input Parameter)</label>
+                <label className="text-[10px] font-label uppercase label-strong block mb-2">X Axis (Input Parameter)</label>
                 <CustomSelect
                   name="xKey"
                   value={xKey}
@@ -328,7 +328,7 @@ export default function BatchCalculator() {
                 />
               </div>
               <div>
-                <label className="text-[10px] font-label uppercase text-faint tracking-wider block mb-2">Y Axis (Result)</label>
+                <label className="text-[10px] font-label uppercase label-strong block mb-2">Y Axis (Result)</label>
                 <CustomSelect
                   name="yKey"
                   value={yKey}
@@ -347,46 +347,70 @@ export default function BatchCalculator() {
               <div className="chart-stage" style={{ width: '100%', height: 380 }}>
                 <ResponsiveContainer width="100%" height={380}>
                   {chartType === 'scatter' ? (
-                    <ScatterChart margin={{ top: 10, right: 18, left: 12, bottom: 30 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
-                      <XAxis dataKey="x" name={xKey} stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
+                    <ScatterChart margin={{ top: 10, right: 24, left: 18, bottom: 34 }}>
+                      <CartesianGrid strokeDasharray="4 6" stroke="var(--line)" />
+                      <XAxis dataKey="x" name={xKey} stroke="var(--text-faint)" tick={{ fill: 'var(--text)', fontSize: 12, fontWeight: 520 }}
                         tickCount={6} minTickGap={28}
-                        label={{ value: xKey, position: 'insideBottomRight', offset: -8, fill: 'var(--text-muted)', fontSize: 10 }} type="number" />
-                      <YAxis dataKey="y" name={yKey} stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }} width={48}
-                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 10 }} />
+                        label={{ value: xKey, position: 'insideBottomRight', offset: -8, fill: 'var(--text-muted)', fontSize: 11, fontWeight: 650 }} type="number" />
+                      <YAxis dataKey="y" name={yKey} stroke="var(--text-faint)" tick={{ fill: 'var(--text)', fontSize: 12, fontWeight: 520 }} width={56}
+                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 11, fontWeight: 650 }} />
                       <Tooltip
-                        cursor={{ strokeDasharray: '3 3' }}
-                        contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '8px', color: 'var(--text)' }}
+                        cursor={{ stroke: 'var(--green)', strokeDasharray: '4 4', strokeOpacity: 0.32, strokeWidth: 1.5 }}
+                        contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--green-border)', borderRadius: '10px', color: 'var(--text)', boxShadow: 'var(--shadow-sm)' }}
                         formatter={(v, n) => [v?.toFixed(5), n]}
                       />
                       <Scatter
                         data={chartData}
                         fill={greenHex}
-                        fillOpacity={0.7}
+                        fillOpacity={0.86}
+                        stroke={greenHex}
+                        strokeWidth={1.4}
+                        shape={(props) => (
+                          <circle
+                            cx={props.cx}
+                            cy={props.cy}
+                            r={5}
+                            fill={greenHex}
+                            fillOpacity={0.90}
+                            stroke="var(--surface)"
+                            strokeWidth={1.6}
+                          />
+                        )}
+                        activeShape={(props) => (
+                          <circle
+                            cx={props.cx}
+                            cy={props.cy}
+                            r={7}
+                            fill={greenHex}
+                            stroke="var(--surface)"
+                            strokeWidth={2}
+                          />
+                        )}
                         isAnimationActive="auto"
                         animationDuration={900}
                         animationEasing="spring"
                       />
                     </ScatterChart>
                   ) : (
-                    <LineChart data={chartData} margin={{ top: 10, right: 18, left: 12, bottom: 30 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
-                      <XAxis dataKey="x" stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
+                    <LineChart data={chartData} margin={{ top: 10, right: 24, left: 18, bottom: 34 }}>
+                      <CartesianGrid strokeDasharray="4 6" stroke="var(--line)" />
+                      <XAxis dataKey="x" stroke="var(--text-faint)" tick={{ fill: 'var(--text)', fontSize: 12, fontWeight: 520 }}
                         tickCount={6} minTickGap={28}
-                        label={{ value: xKey, position: 'insideBottomRight', offset: -8, fill: 'var(--text-muted)', fontSize: 10 }} />
-                      <YAxis stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)', fontSize: 11 }} width={48}
-                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 10 }} />
+                        label={{ value: xKey, position: 'insideBottomRight', offset: -8, fill: 'var(--text-muted)', fontSize: 11, fontWeight: 650 }} />
+                      <YAxis stroke="var(--text-faint)" tick={{ fill: 'var(--text)', fontSize: 12, fontWeight: 520 }} width={56}
+                        label={{ value: yKey, angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 11, fontWeight: 650 }} />
                       <Tooltip
-                        contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '8px', color: 'var(--text)' }}
+                        cursor={{ stroke: 'var(--green)', strokeOpacity: 0.26, strokeWidth: 1.5 }}
+                        contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--green-border)', borderRadius: '10px', color: 'var(--text)', boxShadow: 'var(--shadow-sm)' }}
                         formatter={(v) => [v?.toFixed(5), yKey]}
                       />
                       <Line
                         type="monotone"
                         dataKey="y"
                         stroke={greenHex}
-                        strokeWidth={2}
+                        strokeWidth={2.6}
                         dot={false}
-                        activeDot={{ r: 5, stroke: greenHex, strokeWidth: 2, fill: 'var(--surface)' }}
+                        activeDot={{ r: 6, stroke: greenHex, strokeWidth: 2.5, fill: 'var(--surface)' }}
                         isAnimationActive="auto"
                         animationDuration={1200}
                         animationEasing="ease-out"

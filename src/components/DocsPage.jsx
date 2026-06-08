@@ -11,7 +11,7 @@ function FormulaExpression({ expr }) {
 
   return (
     <div
-      className="formula-render flex-1 overflow-x-auto rounded-card border border-line/10 bg-surface-soft px-4 py-3 text-primary"
+      className="formula-render flex-1 overflow-x-auto rounded-card border border-line/50 bg-surface px-4 py-3 text-primary"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -164,10 +164,10 @@ export default function DocsPage() {
           <button
             key={m.id}
             onClick={() => setSelected(m.id)}
-            className={`px-5 py-2 rounded-full font-label uppercase tracking-widest text-xs transition-all duration-200 border ${
+            className={`px-5 py-2 rounded-full font-label uppercase tracking-[0.12em] text-xs transition-all duration-200 border ${
               selected === m.id
-                ? 'bg-green-soft text-green-dark border-green-border'
-                : 'text-faint hover:text-primary border-line/30 hover:bg-green-soft/50'
+                ? 'active-pill'
+                : 'text-muted hover:text-primary border-line hover:bg-green-soft/50 hover:border-green-border/50'
             }`}
           >
             {m.name}
@@ -176,10 +176,10 @@ export default function DocsPage() {
       </div>
 
       {/* Model Detail Panel */}
-      <div className="card p-5 md:p-8 relative overflow-hidden">
+      <div className="card p-5 md:p-8 relative overflow-hidden max-w-[1040px] mx-auto">
         <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
           <div>
-            <div className="text-[10px] font-label uppercase tracking-widest text-green mb-2">{model.category}</div>
+            <div className="text-[10px] font-label uppercase tracking-[0.13em] text-green-dark font-bold mb-2">{model.category}</div>
             <h2 className="font-serif text-3xl font-normal text-primary">{model.name}</h2>
           </div>
           <div className="flex gap-2">
@@ -191,53 +191,56 @@ export default function DocsPage() {
           </div>
         </div>
 
-        <p className="text-muted leading-relaxed mb-10">{model.description}</p>
+        <p className="text-muted leading-relaxed mb-10 max-w-[92ch]">{model.description}</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* Parameters Table */}
-          <div>
-            <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Input Parameters</h3>
+          <div className="doc-section">
+            <div className="mb-5 flex items-center justify-between gap-3 border-b border-line pb-3">
+              <h3 className="font-sans text-sm uppercase doc-section-title">Input Parameters</h3>
+              <span className="tag text-[10px]">{model.params.length} fields</span>
+            </div>
             <div className="space-y-2">
               {model.params.map(p => (
-                <div key={p.name} className="flex items-start gap-3 p-3 rounded-card bg-surface-soft border border-line/10">
+                <div key={p.name} className="flex items-start gap-3 p-3 rounded-card bg-surface border border-line">
                   <code className="text-xs font-mono font-bold text-green shrink-0 w-24 pt-0.5">{p.name}</code>
-                  <span className="text-muted text-sm">{p.description}</span>
+                  <span className="text-primary text-sm leading-relaxed">{p.description}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Output & Reference */}
-          <div className="space-y-6">
+          <div className="doc-section space-y-6">
             <div>
-              <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Output</h3>
-              <div className="p-4 rounded-card bg-green-soft border border-green-border">
+              <h3 className="font-sans text-sm uppercase doc-section-title mb-4">Output</h3>
+              <div className="p-4 rounded-card bg-green-soft border border-green-border shadow-sm">
                 <p className="font-mono text-sm text-green-dark">{model.output}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Reference</h3>
-              <div className="p-4 rounded-card bg-surface-soft border border-line/10">
-                <p className="text-muted text-sm leading-relaxed italic">{model.reference}</p>
+              <h3 className="font-sans text-sm uppercase doc-section-title mb-4">Reference</h3>
+              <div className="p-4 rounded-card bg-surface border border-line">
+                <p className="text-primary text-sm leading-relaxed italic">{model.reference}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-4">Computation Engine</h3>
+              <h3 className="font-sans text-sm uppercase doc-section-title mb-4">Computation Engine</h3>
               <div className="space-y-2">
-                <div className="flex items-center gap-3 p-3 rounded-card bg-surface-soft border border-green-border/30">
+                <div className="flex items-center gap-3 p-3 rounded-card bg-surface border border-green-border">
                   <span className="material-symbols-outlined text-green text-[18px]" aria-hidden="true">memory</span>
                   <div>
-                    <div className="text-xs font-label uppercase tracking-wider text-green">RUST WASM Kernel</div>
-                    <div className="text-[10px] text-faint mt-0.5">High-performance WebAssembly, ~10k points in &lt;50ms</div>
+                    <div className="text-xs font-label uppercase tracking-[0.12em] text-green-dark font-bold">RUST WASM Kernel</div>
+                    <div className="text-[11px] text-muted mt-0.5">High-performance WebAssembly, ~10k points in &lt;50ms</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-card bg-surface-soft border border-line/30">
+                <div className="flex items-center gap-3 p-3 rounded-card bg-surface border border-line">
                   <span className="material-symbols-outlined text-muted text-[18px]" aria-hidden="true">javascript</span>
                   <div>
-                    <div className="text-xs font-label uppercase tracking-wider text-muted">Standard JS Engine</div>
-                    <div className="text-[10px] text-faint mt-0.5">Pure JavaScript reference implementation</div>
+                    <div className="text-xs font-label uppercase tracking-[0.12em] text-muted font-bold">Standard JS Engine</div>
+                    <div className="text-[11px] text-muted mt-0.5">Pure JavaScript reference implementation</div>
                   </div>
                 </div>
               </div>
@@ -248,11 +251,14 @@ export default function DocsPage() {
         {/* Formulas Section */}
         {model.formulas && (
           <div className="border-t border-line/20 pt-8 mt-2">
-            <h3 className="font-sans text-sm uppercase tracking-widest text-faint mb-6">Core Calculation Formulas</h3>
+            <div className="mb-6 flex items-center justify-between gap-3">
+              <h3 className="font-sans text-sm uppercase doc-section-title">Core Calculation Formulas</h3>
+              <span className="tag text-[10px]">{model.formulas.length} formulas</span>
+            </div>
             <div className="space-y-3">
               {model.formulas.map((f, i) => (
-                <div key={i} className="flex flex-col gap-3 p-4 rounded-card bg-surface-soft border border-line/10">
-                  <span className="text-[10px] font-label uppercase tracking-widest shrink-0 sm:w-52 text-green">{f.label}</span>
+                <div key={i} className="flex flex-col gap-3 p-4 md:p-5 rounded-card bg-surface-soft border border-line">
+                  <span className="text-[10px] font-label uppercase tracking-[0.13em] shrink-0 sm:w-52 text-green-dark font-bold">{f.label}</span>
                   <FormulaExpression expr={f.expr} />
                 </div>
               ))}
